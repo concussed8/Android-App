@@ -1,53 +1,58 @@
-<!DOCTYPE html>
+ <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>ZXing QR Code Scanner</title>
+    <script src="https://cdn.jsdelivr.net/npm/@zxing/browser@0.0.11"></script>
 </head>
 <body>
-    <h1>QR Code with library Scanner</h1>
+    <h1>QR Code yo yo Scanner</h1>
     <video id="video" autoplay></video>
     <p id="status">Status: Waiting for camera...</p>
-    <script src="https://cdn.jsdelivr.net/npm/@zxing/browser@latest"></script>
     <script>
         const videoElement = document.getElementById('video');
         const statusElement = document.getElementById('status');
 
-        async function startQRScanner() {
+        async function startScanner() {
             try {
+                // Initialize the ZXing QR Code Reader
                 const { BrowserQRCodeReader } = window.ZXingBrowser;
                 const codeReader = new BrowserQRCodeReader();
+
+                // List available video input devices (cameras)
                 const devices = await codeReader.listVideoInputDevices();
-                
+
                 if (devices.length === 0) {
-                    statusElement.textContent = 'No camera devices found.';
+                    statusElement.textContent = 'Error: No cameras found.';
                     return;
                 }
-                
+
+                // Use the first available camera (default to rear-facing on most devices)
                 const firstDeviceId = devices[0].deviceId;
 
-                // Start decoding from the first available camera
+                // Start scanning for QR codes
                 codeReader.decodeFromVideoDevice(firstDeviceId, videoElement, (result, error) => {
                     if (result) {
+                        // Display the scanned QR code result
                         statusElement.textContent = `QR Code detected: ${result.text}`;
                         codeReader.reset(); // Stop scanning after a successful scan
                     }
-                    if (error && !(error instanceof ZXingBrowser.NotFoundException)) {
-                        console.warn("QR scanning error:", error.message);
+
+                    if (error && !(error instanceof window.ZXingBrowser.NotFoundException)) {
+                        console.warn('QR scanning error:', error.message);
                     }
                 });
 
                 statusElement.textContent = 'Scanning for QR codes...';
-            } catch (err) {
-                console.error('Error starting QR scanner:', err);
-                statusElement.textContent = 'Error: Unable to start the scanner.';
+            } catch (error) {
+                console.error('Error initializing scanner:', error);
+                statusElement.textContent = `Error: ${error.message}`;
             }
         }
 
-        // Start the scanner when the page loads
-        window.addEventListener('load', startQRScanner);
+        // Start the scanner on page load
+        window.addEventListener('load', startScanner);
     </script>
 </body>
 </html>
- 
