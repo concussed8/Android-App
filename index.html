@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Start Camera</title>
+    <title>Camera with Scan Button</title>
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -76,27 +76,33 @@
     </style>
 </head>
 <body>
-    <h1>Start 1 Camera</h1>
+    <h1>Camera with Scan Button</h1>
     <div class="camera-box">
         <video id="video" autoplay></video>
     </div>
     <p id="status">Status: Camera not started.</p>
     <button id="startCamera">Start Rear Camera</button>
+    <button id="scanButton" style="display: none;">Scan</button>
 
     <script>
         const video = document.getElementById('video');
         const status = document.getElementById('status');
         const startCameraButton = document.getElementById('startCamera');
+        const scanButton = document.getElementById('scanButton');
+
+        let stream = null; // To store the camera stream
 
         // Function to start the camera
         function startCamera() {
             status.textContent = "Status: Requesting camera access...";
             navigator.mediaDevices
                 .getUserMedia({ video: { facingMode: "environment" } })
-                .then((stream) => {
-                    video.srcObject = stream;
+                .then((mediaStream) => {
+                    stream = mediaStream;
+                    video.srcObject = mediaStream;
                     video.play();
                     status.textContent = "Status: Rear camera is active.";
+                    scanButton.style.display = "block"; // Show the scan button
                 })
                 .catch((err) => {
                     console.error("Camera access error:", err);
@@ -104,8 +110,14 @@
                 });
         }
 
-        // Attach event listener to the button
+        // Attach event listener to the start camera button
         startCameraButton.addEventListener('click', startCamera);
+
+        // Placeholder for Scan button functionality
+        scanButton.addEventListener('click', () => {
+            status.textContent = "Status: Scan button clicked. Functionality not implemented yet.";
+            console.log("Scan button clicked!");
+        });
     </script>
 </body>
 </html>
