@@ -4,7 +4,6 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>QR Code Scanner</title>
-    <!-- Load ZXing library from jsDelivr -->
     <script src="https://cdn.jsdelivr.net/npm/@zxing/browser@0.0.11/umd/index.min.js"></script>
     <style>
         body {
@@ -37,7 +36,6 @@
 
         video {
             width: 100%;
-            max-width: 320px;
             height: 100%;
             object-fit: cover;
         }
@@ -56,7 +54,7 @@
     </style>
 </head>
 <body>
-    <h1>QR Code Scanner</h1>
+    <h1>Updated QR</h1>
     <div class="camera-box">
         <video id="video" autoplay></video>
     </div>
@@ -68,38 +66,34 @@
         const status = document.getElementById('status');
         const result = document.getElementById('result');
 
-        // Initialize ZXing QR Code Reader
         const { BrowserQRCodeReader } = window.ZXingBrowser;
         const codeReader = new BrowserQRCodeReader();
 
-        // Request access to the rear-facing camera
+        // Attempt to access the camera
         navigator.mediaDevices
             .getUserMedia({ video: { facingMode: "environment" } })
             .then((stream) => {
-                // Display the camera feed
+                // Show the camera feed
                 video.srcObject = stream;
                 video.play();
-
-                // Update status
                 status.textContent = "Status: Camera is active. Scanning for QR codes...";
 
-                // Start scanning for QR codes
+                // Start scanning QR codes
                 codeReader.decodeFromVideoDevice(null, video, (decodedResult, error) => {
                     if (decodedResult) {
-                        // Display the decoded result
+                        // Display the result
                         result.textContent = `Scanned Result: ${decodedResult.text}`;
                     }
                     if (error && !(error instanceof ZXingBrowser.NotFoundException)) {
-                        console.warn(error.message);
+                        console.warn("QR scanning error:", error.message);
                     }
                 });
             })
             .catch((err) => {
-                // Handle errors (e.g., permissions denied)
-                console.error("Camera access error:", err.message);
-                status.textContent = `Error: ${err.message}`;
+                // Log and display error details
+                console.error("Camera access error:", err);
+                status.textContent = `Error: ${err.name} - ${err.message}`;
             });
     </script>
 </body>
 </html>
-
