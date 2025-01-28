@@ -3,31 +3,71 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Access Rear Camera</title>
+    <title>Styled Camera Box</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            flex-direction: column;
+        }
+
+        h1 {
+            color: #333;
+            margin-bottom: 20px;
+        }
+
+        .camera-box {
+            width: 320px;
+            height: 240px;
+            position: relative;
+            border: 4px solid #007BFF;
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+            overflow: hidden;
+            background-color: #000;
+        }
+
+        video {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        #status {
+            margin-top: 15px;
+            color: #007BFF;
+            font-weight: bold;
+        }
+    </style>
 </head>
 <body>
-    <h1>Rear Camera Access</h1>
-    <video id="video" width="300" height="200" autoplay style="border: 1px solid black;"></video>
+    <h1>Styled Camera Box</h1>
+    <div class="camera-box">
+        <video id="video" autoplay></video>
+    </div>
     <p id="status">Status: Initializing camera...</p>
 
     <script>
-        // Select the video element and status text
         const video = document.getElementById('video');
         const status = document.getElementById('status');
 
-        // Request access to the rear-facing camera
         navigator.mediaDevices
             .getUserMedia({ video: { facingMode: "environment" } })
             .then((stream) => {
-                // Assign the stream to the video element
                 video.srcObject = stream;
                 status.textContent = "Status: Camera is active.";
             })
             .catch((err) => {
-                // Handle errors
                 console.error("Camera access error:", err.message);
                 status.textContent = `Error: ${err.message}`;
             });
     </script>
 </body>
 </html>
+
