@@ -1,4 +1,44 @@
-object-fit: cover;
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>QR Code Scanner</title>
+    <!-- Load ZXing library -->
+    <script src="https://cdn.jsdelivr.net/npm/@zxing/browser@0.0.11/umd/index.min.js"></script>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            flex-direction: column;
+        }
+
+        h1 {
+            color: #333;
+            margin-bottom: 20px;
+        }
+
+        .camera-box {
+            width: 320px;
+            height: 240px;
+            position: relative;
+            border: 4px solid #007BFF;
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+            overflow: hidden;
+            background-color: #000;
+        }
+
+        video {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
         }
 
         #status {
@@ -12,50 +52,75 @@ object-fit: cover;
             color: #28a745;
             font-weight: bold;
         }
+
+        button {
+            margin-top: 20px;
+            padding: 10px 20px;
+            font-size: 16px;
+            font-weight: bold;
+            color: #fff;
+            background-color: #007BFF;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+
+        button:hover {
+            background-color: #0056b3;
+        }
+
+        button:active {
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+        }
     </style>
 </head>
 <body>
-    <h1>Updated 1 QR</h1>
+    <h1>QR Code Scanner</h1>
     <div class="camera-box">
         <video id="video" autoplay></video>
     </div>
-    <p id="status">Status: Initializing camera...</p>
+    <p id="status">Status: Camera is active.</p>
     <p id="result">Scanned Result: None</p>
+    <button id="scanButton">Scan QR Code</button>
 
     <script>
         const video = document.getElementById('video');
         const status = document.getElementById('status');
         const result = document.getElementById('result');
+        const scanButton = document.getElementById('scanButton');
 
+        // Initialize ZXing QR Code Reader
         const { BrowserQRCodeReader } = window.ZXingBrowser;
         const codeReader = new BrowserQRCodeReader();
 
-        // Attempt to access the camera
+        // Request access to the camera and display the feed
         navigator.mediaDevices
             .getUserMedia({ video: { facingMode: "environment" } })
             .then((stream) => {
-                // Show the camera feed
                 video.srcObject = stream;
                 video.play();
-                status.textContent = "Status: Camera is active. Scanning for QR codes...";
-
-                // Start scanning QR codes
-                codeReader.decodeFromVideoDevice(null, video, (decodedResult, error) => {
-                    if (decodedResult) {
-                        // Display the result
-                        result.textContent = `Scanned Result: ${decodedResult.text}`;
-                    }
-                    if (error && !(error instanceof ZXingBrowser.NotFoundException)) {
-                        console.warn("QR scanning error:", error.message);
-                    }
-                });
+                status.textContent = "Status: Camera is active.";
             })
             .catch((err) => {
-                // Log and display error details
                 console.error("Camera access error:", err);
-                status.textContent = `Error: ${err.name} - ${err.message}`;
+                status.textContent = `Error: ${err.message}`;
             });
+
+        // Add functionality to the scan button
+        scanButton.addEventListener('click', () => {
+            status.textContent = "Status: Scanning for QR code...";
+            codeReader.decodeFromVideoDevice(null, video, (decodedResult, error) => {
+                if (decodedResult) {
+                    result.textContent = `Scanned Result: ${decodedResult.text}`;
+                    status.textContent = "Status: QR code scanned successfully.";
+                }
+                if (error && !(error instanceof ZXingBrowser.NotFoundException)) {
+                    console.warn("QR scanning error:", error.message);
+                }
+            });
+        });
     </script>
 </body>
 </html>
-            
+
