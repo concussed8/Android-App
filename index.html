@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>QR Code Scanner</title>
+
+    <script src="https://cdn.jsdelivr.net/npm/@zxing/browser@0.0.11/umd/index.min.js"></script>
+
+</head>
+
+<body>
+
+    <h1>QR Code Scanner</h1>
+
+    <video id="video" width="300" height="200" style="border: 1px solid black;"></video>
+
+    <p id="result">Scanned Result: None</p>
+
+
+    <script>
+
+        // Import the ZXing library
+
+        const { BrowserQRCodeReader } = window.ZXingBrowser;
+
+
+        const videoElement = document.getElementById("video");
+
+        const resultElement = document.getElementById("result");
+
+
+        // Initialize the QR code reader
+
+        const codeReader = new BrowserQRCodeReader();
+
+
+        // Request the camera
+
+        navigator.mediaDevices
+
+            .getUserMedia({ video: { facingMode: "environment" } })
+
+            .then((stream) => {
+
+                // Set the video stream
+
+                videoElement.srcObject = stream;
+
+                videoElement.play();
+
+
+                // Start decoding QR codes
+
+                codeReader.decodeFromVideoDevice(null, videoElement, (result, error) => {
+
+                    if (result) {
+
+                        resultElement.textContent = `Scanned Result: ${result.text}`;
+
+                    }
+
+                    if (error) {
+
+                        console.warn(error);
+
+                    }
+
+                });
+
+            })
+
+            .catch((err) => {
+
+                console.error("Camera access denied:", err.message);
+
+                resultElement.textContent = "Error: Camera access was denied.";
+
+            });
+
+    </script>
+
+</body>
+
+</html>
+
