@@ -1,56 +1,33 @@
-
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>QR Code Scanner</title>
-    <!-- Load ZXing library from jsDelivr -->
-    <script src="https://cdn.jsdelivr.net/npm/@zxing/browser@0.0.11/umd/index.min.js"></script>
+    <title>Access Rear Camera</title>
 </head>
 <body>
-    <h1>QR Code Scanner</h1>
-    <video id="video" width="300" height="200" style="border: 1px solid black;"></video>
-    <p id="result">Scanned Result: None</p>
+    <h1>Rear Camera Access</h1>
+    <video id="video" width="300" height="200" autoplay style="border: 1px solid black;"></video>
+    <p id="status">Status: Initializing camera...</p>
 
     <script>
-        // Import ZXing library
-        const { BrowserQRCodeReader } = window.ZXingBrowser;
+        // Select the video element and status text
+        const video = document.getElementById('video');
+        const status = document.getElementById('status');
 
-        // Get video and result elements
-        const videoElement = document.getElementById("video");
-        const resultElement = document.getElementById("result");
-
-        // Initialize the QR code reader
-        const codeReader = new BrowserQRCodeReader();
-
-        // Request camera access
+        // Request access to the rear-facing camera
         navigator.mediaDevices
             .getUserMedia({ video: { facingMode: "environment" } })
             .then((stream) => {
-                // Set video stream to video element
-                videoElement.srcObject = stream;
-                videoElement.play();
-
-                // Start scanning for QR codes
-                codeReader.decodeFromVideoDevice(null, videoElement, (result, error) => {
-                    if (result) {
-                        // Display scanned result
-                        resultElement.textContent = `Scanned Result: ${result.text}`;
-                    }
-                    if (error) {
-                        console.warn(error.message);
-                    }
-                });
+                // Assign the stream to the video element
+                video.srcObject = stream;
+                status.textContent = "Status: Camera is active.";
             })
             .catch((err) => {
-                // Handle camera access errors
-                console.error("Camera access denied:", err.message);
-                resultElement.textContent = "Error: Camera access was denied.";
+                // Handle errors
+                console.error("Camera access error:", err.message);
+                status.textContent = `Error: ${err.message}`;
             });
     </script>
 </body>
 </html>
-
-
