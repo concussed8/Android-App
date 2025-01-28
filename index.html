@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Camera with Scan Button</title>
+    <title>QR Code Detection</title>
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -50,6 +50,13 @@
             text-align: center;
         }
 
+        #result {
+            margin-top: 10px;
+            color: #28a745;
+            font-weight: bold;
+            text-align: center;
+        }
+
         button {
             margin-top: 20px;
             padding: 12px 24px;
@@ -76,21 +83,24 @@
     </style>
 </head>
 <body>
-    <h1>Camera with Scan Button</h1>
+    <h1>QR Code Detection</h1>
     <div class="camera-box">
         <video id="video" autoplay></video>
     </div>
     <p id="status">Status: Camera not started.</p>
+    <p id="result">Scanned Result: None</p>
     <button id="startCamera">Start Rear Camera</button>
     <button id="scanButton" style="display: none;">Scan</button>
 
     <script>
         const video = document.getElementById('video');
         const status = document.getElementById('status');
+        const result = document.getElementById('result');
         const startCameraButton = document.getElementById('startCamera');
         const scanButton = document.getElementById('scanButton');
 
         let stream = null; // To store the camera stream
+        let barcodeDetector = null;
 
         // Function to start the camera
         function startCamera() {
@@ -110,14 +120,58 @@
                 });
         }
 
-        // Attach event listener to the start camera button
-        startCameraButton.addEventListener('click', startCamera);
+        // Function to scan for QR codes
+        async function scanQRCode() {
+            if (!stream) {
+                status.textContent = "Error: Camera is not active.";
+                return;
+            }
 
-        // Placeholder for Scan button functionality
-        scanButton.addEventListener('click', () => {
-            status.textContent = "Status: Scan button clicked. Functionality not implemented yet.";
-            console.log("Scan button clicked!");
-        });
+            // Check if BarcodeDetector is supported
+            if (!('BarcodeDetector' in window)) {
+                status.textContent = "Error: Barcode detection is not supported in this browser.";
+                console.error("Barcode detection is not supported in this browser.");
+                return;
+            }
+
+            // Initialize BarcodeDetector for QR codes
+            if (!barcodeDetector) {
+                barcodeDetector = new BarcodeDetector({ formats: ['qr_code'] });
+            }
+
+            status.textContent = "Status: Scanning for QR codes...";
+
+            try {
+                // Capture a frame from the video feed
+                const frame = await captureFrame(video);
+                // Detect barcodes in the frame
+                const barcodes = await barcodeDetector.detect(frame);
+
+                if (barcodes.length > 0) {
+                    result.textContent = `Scanned QR Code: ${barcodes[0].rawValue}`;
+                } else {
+                    result.textContent = "No QR code detected.";
+                }
+            } catch (err) {
+                console.error("QR Code detection error:", err);
+                status.textContent = "Error: Unable to scan QR code.";
+            }
+        }
+
+        // Helper function to capture a video frame as an image bitmap
+        async function captureFrame(videoElement) {
+            const canvas = document.createElement('canvas');
+            canvas.width = videoElement.videoWidth;
+            canvas.height = videoElement.videoHeight;
+            const context = canvas.getContext('2d');
+            context.drawImage(videoElement, 0, 0, canvas.width, canvas.height);
+            return await createImageBitmap(canvas);
+        }
+
+        // Attach event listeners
+        startCameraButton.addEventListener('click', startCamera);
+        scanButton.addEventListener('click', scanQRCode);
     </script>
 </body>
 </html>
+
