@@ -3,9 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>QR Code Scanner</title>
-    <!-- Load ZXing library -->
-    <script src="https://cdn.jsdelivr.net/npm/@zxing/browser@0.0.11/umd/index.min.js"></script>
+    <title>Camera Access Test</title>
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -47,12 +45,6 @@
             font-weight: bold;
         }
 
-        #result {
-            margin-top: 10px;
-            color: #28a745;
-            font-weight: bold;
-        }
-
         button {
             margin-top: 20px;
             padding: 10px 20px;
@@ -76,51 +68,35 @@
     </style>
 </head>
 <body>
-    <h1>QR Code Scanner</h1>
+    <h1>Camera Access Test</h1>
     <div class="camera-box">
         <video id="video" autoplay></video>
     </div>
-    <p id="status">Status: Camera is active.</p>
-    <p id="result">Scanned Result: None</p>
-    <button id="scanButton">Scan QR Code</button>
+    <p id="status">Status: Camera not started.</p>
+    <button id="startCamera">Start Rear Camera</button>
 
     <script>
         const video = document.getElementById('video');
         const status = document.getElementById('status');
-        const result = document.getElementById('result');
-        const scanButton = document.getElementById('scanButton');
+        const startCamera = document.getElementById('startCamera');
 
-        // Initialize ZXing QR Code Reader
-        const { BrowserQRCodeReader } = window.ZXingBrowser;
-        const codeReader = new BrowserQRCodeReader();
+        function startRearCamera() {
+            // Request camera access without specifying facingMode initially
+            navigator.mediaDevices
+                .getUserMedia({ video: { facingMode: "environment" } })
+                .then((stream) => {
+                    video.srcObject = stream;
+                    video.play();
+                    status.textContent = "Status: Rear camera is active.";
+                })
+                .catch((err) => {
+                    console.error("Camera access error:", err);
+                    status.textContent = `Error: ${err.name} - ${err.message}`;
+                });
+        }
 
-        // Request access to the camera and display the feed
-        navigator.mediaDevices
-            .getUserMedia({ video: { facingMode: "environment" } })
-            .then((stream) => {
-                video.srcObject = stream;
-                video.play();
-                status.textContent = "Status: Camera is active.";
-            })
-            .catch((err) => {
-                console.error("Camera access error:", err);
-                status.textContent = `Error: ${err.message}`;
-            });
-
-        // Add functionality to the scan button
-        scanButton.addEventListener('click', () => {
-            status.textContent = "Status: Scanning for QR code...";
-            codeReader.decodeFromVideoDevice(null, video, (decodedResult, error) => {
-                if (decodedResult) {
-                    result.textContent = `Scanned Result: ${decodedResult.text}`;
-                    status.textContent = "Status: QR code scanned successfully.";
-                }
-                if (error && !(error instanceof ZXingBrowser.NotFoundException)) {
-                    console.warn("QR scanning error:", error.message);
-                }
-            });
-        });
+        // Attach event listener to the button
+        startCamera.addEventListener('click', startRearCamera);
     </script>
 </body>
 </html>
-
