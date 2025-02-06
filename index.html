@@ -17,20 +17,21 @@
       background-color: #f8f8f8;
     }
 
-    /* Draggable Header */
+    /* Draggable Header (Brought to Front) */
     .header {
       position: absolute;
       top: 20px; /* Default position */
-      left: 50%;
-      transform: translateX(-50%);
-      background: none;
+      left: 50px; /* Default left position */
+      background: rgba(255, 255, 255, 0.9);
       color: maroon;
       font-size: 24px;
       font-weight: bold;
       font-family: Arial, sans-serif;
       cursor: grab;
-      padding: 10px;
+      padding: 10px 20px;
+      border: 2px solid maroon;
       user-select: none;
+      z-index: 1000; /* Ensures the header is in front */
     }
 
     /* Display position values */
@@ -38,6 +39,7 @@
       font-size: 16px;
       margin-top: 10px;
       font-family: Arial, sans-serif;
+      color: black;
     }
 
     /* Image container with relative positioning */
@@ -46,6 +48,7 @@
       width: 90vw; /* Responsive width */
       max-width: 488px; /* Keep max size same as image */
       aspect-ratio: 488 / 985; /* Maintain image aspect ratio */
+      z-index: 1; /* Ensure it's behind the header */
     }
 
     /* Style the image */
@@ -66,6 +69,7 @@
       font-size: 1em;
       cursor: default;
       user-select: none;
+      z-index: 10; /* Above the image but below the header */
     }
 
     /* Default input field positions */
@@ -81,9 +85,14 @@
     .footer {
       position: absolute;
       bottom: 10px;
+      left: 50%;
+      transform: translateX(-50%);
       font-size: 16px;
       color: black;
       font-family: Arial, sans-serif;
+      background: rgba(255, 255, 255, 0.9);
+      padding: 5px 10px;
+      border: 1px solid black;
     }
 
     /* Ensure mobile responsiveness */
@@ -98,10 +107,10 @@
 <body>
 
   <!-- Draggable Header -->
-  <div class="header" id="draggableHeader">Draggable Header</div>
+  <div class="header" id="draggableHeader">Adult Total Body Surface Area Burned</div>
 
   <!-- Position display at the bottom -->
-  <div class="footer" id="headerPositionDisplay">Header Position: top: 20px; left: 50%;</div>
+  <div class="footer" id="headerPositionDisplay">Header Position: top: 20px; left: 50px;</div>
 
   <div class="image-container">
     <!-- Background Image from GitHub -->
