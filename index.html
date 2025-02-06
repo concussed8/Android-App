@@ -3,17 +3,25 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
-  <title>Fillable Fields on Image</title>
+  <title>Draggable Fillable Fields on Image</title>
   <style>
     /* Ensure the body fills the viewport */
     body {
       margin: 0;
       padding: 0;
       display: flex;
-      justify-content: center;
+      flex-direction: column;
       align-items: center;
+      justify-content: center;
       height: 100vh;
       background-color: #f8f8f8;
+    }
+
+    /* Display position values */
+    .position-display {
+      font-size: 16px;
+      margin-bottom: 10px;
+      font-family: Arial, sans-serif;
     }
 
     /* Image container with relative positioning */
@@ -40,9 +48,11 @@
       border: 3px solid black;
       text-align: center;
       font-size: 1em;
+      cursor: grab;
+      user-select: none;
     }
 
-    /* Adjust positions relative to the image size */
+    /* Default input field positions */
     .field1 { top: 5%; left: 38%; }  /* Head */
     .field2 { top: 19%; left: 38%; } /* Chest */
     .field3 { top: 35%; left: 38%; } /* Abdomen */
@@ -58,10 +68,12 @@
         border: 2px solid black;
       }
     }
-
   </style>
 </head>
 <body>
+
+  <!-- Position display -->
+  <div class="position-display" id="positionDisplay">Move a field to see its position</div>
 
   <div class="image-container">
     <!-- Background Image from GitHub -->
@@ -76,6 +88,61 @@
     <input type="text" class="input-field field6" placeholder="Right Leg">
     <input type="text" class="input-field field7" placeholder="Left Leg">
   </div>
+
+  <script>
+    // Make input fields draggable
+    const inputs = document.querySelectorAll('.input-field');
+    const positionDisplay = document.getElementById("positionDisplay");
+
+    inputs.forEach(input => {
+      let isDragging = false;
+      let offsetX, offsetY;
+
+      input.addEventListener("mousedown", startDragging);
+      input.addEventListener("touchstart", startDragging, { passive: false });
+
+      function startDragging(e) {
+        e.preventDefault();
+        isDragging = true;
+        const rect = input.getBoundingClientRect();
+        offsetX = (e.clientX || e.touches[0].clientX) - rect.left;
+        offsetY = (e.clientY || e.touches[0].clientY) - rect.top;
+
+        document.addEventListener("mousemove", drag);
+        document.addEventListener("mouseup", stopDragging);
+        document.addEventListener("touchmove", drag, { passive: false });
+        document.addEventListener("touchend", stopDragging);
+      }
+
+      function drag(e) {
+        if (!isDragging) return;
+        e.preventDefault();
+
+        const parentRect = input.parentElement.getBoundingClientRect();
+        let x = (e.clientX || e.touches[0].clientX) - offsetX - parentRect.left;
+        let y = (e.clientY || e.touches[0].clientY) - offsetY - parentRect.top;
+
+        // Prevent dragging outside the image container
+        x = Math.max(0, Math.min(x, parentRect.width - input.clientWidth));
+        y = Math.max(0, Math.min(y, parentRect.height - input.clientHeight));
+
+        // Set new position
+        input.style.left = `${x}px`;
+        input.style.top = `${y}px`;
+
+        // Update position display
+        positionDisplay.textContent = `${input.placeholder}: top: ${Math.round(y)}px; left: ${Math.round(x)}px;`;
+      }
+
+      function stopDragging() {
+        isDragging = false;
+        document.removeEventListener("mousemove", drag);
+        document.removeEventListener("mouseup", stopDragging);
+        document.removeEventListener("touchmove", drag);
+        document.removeEventListener("touchend", stopDragging);
+      }
+    });
+  </script>
 
 </body>
 </html>
