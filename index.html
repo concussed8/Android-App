@@ -113,8 +113,9 @@
 
         if (value.length > 0) {
           if (parseInt(value) > maxVal) {
-            alert(`Value cannot exceed ${maxVal}%.`);
-            this.value = maxVal + "%"; // Set max allowed %
+            alert(`Value cannot exceed ${maxVal}%. Please re-enter a valid amount.`);
+            this.value = ""; // Clear the field instead of defaulting to the max
+            return;
           } else {
             this.value = value + "%"; // Append %
           }
