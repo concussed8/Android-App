@@ -96,17 +96,29 @@
     <img src="https://raw.githubusercontent.com/concussed8/IOS-test/main/images/rule_of_9_adult.jpg" alt="Rule of 9 Adult">
 
     <!-- Fillable Fields (Inputs) -->
-    <input type="tel" class="input-field field1" data-max="9" placeholder="0%" maxlength="3">
-    <input type="tel" class="input-field field2" data-max="36" placeholder="0%" maxlength="3">
-    <input type="tel" class="input-field field3" data-max="1" placeholder="0%" maxlength="2">
-    <input type="tel" class="input-field field4" data-max="9" placeholder="0%" maxlength="3">
-    <input type="tel" class="input-field field5" data-max="9" placeholder="0%" maxlength="3">
-    <input type="tel" class="input-field field6" data-max="18" placeholder="0%" maxlength="3">
-    <input type="tel" class="input-field field7" data-max="18" placeholder="0%" maxlength="3">
+    <input type="tel" class="input-field field1" data-max="9" value="0%" maxlength="3">
+    <input type="tel" class="input-field field2" data-max="36" value="0%" maxlength="3">
+    <input type="tel" class="input-field field3" data-max="1" value="0%" maxlength="2">
+    <input type="tel" class="input-field field4" data-max="9" value="0%" maxlength="3">
+    <input type="tel" class="input-field field5" data-max="9" value="0%" maxlength="3">
+    <input type="tel" class="input-field field6" data-max="18" value="0%" maxlength="3">
+    <input type="tel" class="input-field field7" data-max="18" value="0%" maxlength="3">
   </div>
 
   <script>
     document.querySelectorAll(".input-field").forEach(input => {
+      input.addEventListener("focus", function () {
+        if (this.value === "0%") {
+          this.value = ""; // Clear when focused
+        }
+      });
+
+      input.addEventListener("blur", function () {
+        if (this.value === "") {
+          this.value = "0%"; // Reset if empty on blur
+        }
+      });
+
       input.addEventListener("input", function () {
         let value = this.value.replace(/\D/g, ""); // Remove non-numeric characters
         let maxVal = parseInt(this.dataset.max); // Get max allowed % from data attribute
@@ -119,12 +131,7 @@
           } else {
             this.value = value + "%"; // Append %
           }
-        } else {
-          this.value = "0%"; // Default value when empty
         }
-
-        this.style.color = "red"; // Change color to bright red
-        this.style.fontWeight = "bold"; // Make text bold
       });
 
       // Prevent typing non-numeric characters
