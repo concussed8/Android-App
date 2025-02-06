@@ -17,22 +17,22 @@
       background-color: #f8f8f8;
     }
 
-    /* Draggable Header (Brought to Front) */
-    .header {
-      position: absolute;
-      top: 0px; /* Default position */
-      left: 0px; /* Default left position */
-      background: rgba(255, 255, 255, 0.9);
-      color: maroon;
-      font-size: 20px;
-      font-weight: bold;
-      font-family: Arial, sans-serif;
-      cursor: grab;
-      padding: 10px 15px;
-      border: 0px solid maroon;
-      user-select: none;
-      z-index: 1000; /* Ensures the header is in front */
-    }
+  .header {
+  position: absolute;
+  top: 0px; /* Default position */
+  left: 0px; /* Default left position */
+  color: maroon;
+  font-size: 20px;
+  font-weight: bold;
+  font-family: Arial, sans-serif;
+  cursor: grab;
+  padding: 0px; /* Remove padding to ensure text-only */
+  border: none; /* Remove border */
+  background: none; /* Remove background */
+  user-select: none;
+  z-index: 1000; /* Ensures the header is in front */
+}
+
 
     /* Position display for header */
     .footer {
