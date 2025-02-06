@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
-  <title>Draggable Header & Fillable Fields</title>
+  <title>Fixed Header & Fillable Fields</title>
   <style>
     /* Ensure the body fills the viewport */
     body {
@@ -17,36 +17,18 @@
       background-color: #f8f8f8;
     }
 
-  .header {
-  position: absolute;
-  top: 0px; /* Default position */
-  left: 0px; /* Default left position */
-  color: maroon;
-  font-size: 24px;
-  font-weight: bold;
-  font-family: Arial, sans-serif;
-  cursor: grab;
-  padding: 0px; /* Remove padding to ensure text-only */
-  border: none; /* Remove border */
-  background: none; /* Remove background */
-  user-select: none;
-  z-index: 1000; /* Ensures the header is in front */
-}
-
-
-    /* Position display for header */
-    .footer {
-      position: fixed;
-      bottom: 10px;
-      left: 50%;
-      transform: translateX(-50%);
-      font-size: 16px;
-      color: black;
+    /* Fixed Header (No Background, Locked Position) */
+    .header {
+      position: absolute;
+      top: 31px; /* Locked Position */
+      left: 18px; /* Locked Position */
+      color: maroon;
+      font-size: 24px;
+      font-weight: bold;
       font-family: Arial, sans-serif;
-      background: rgba(255, 255, 255, 0.9);
-      padding: 5px 10px;
-      border: 1px solid black;
-      z-index: 1000; /* Ensures it's always visible */
+      cursor: default; /* No dragging */
+      user-select: none;
+      z-index: 1000; /* Ensures it's in front */
     }
 
     /* Image container with relative positioning */
@@ -80,13 +62,18 @@
     }
 
     /* Default input field positions */
-    .field1 { top: 45.5px; left: 120px; }  /* Head */
+    .field1 { top: 45px; left: 120px; }  /* Head */
     .field2 { top: 185px; left: 123px; } /* Chest */
     .field3 { top: 352px; left: 126px; } /* Abdomen */
     .field4 { top: 245px; left: 6px; }  /* Right Arm */
     .field5 { top: 245px; left: 236px; } /* Left Arm */
     .field6 { top: 511px; left: 75px; } /* Right Leg */
     .field7 { top: 511px; left: 185px; } /* Left Leg */
+
+    /* Hidden Position Display */
+    .footer {
+      display: none; /* Hide position display */
+    }
 
     /* Ensure mobile responsiveness */
     @media (max-width: 768px) {
@@ -99,11 +86,11 @@
 </head>
 <body>
 
-  <!-- Draggable Header -->
-  <div class="header" id="draggableHeader">Total Body Surface Area Burned</div>
+  <!-- Fixed Header -->
+  <div class="header" id="draggableHeader">Draggable Header</div>
 
-  <!-- Position display at the bottom -->
-  <div class="footer" id="headerPositionDisplay">Header Position: top: 20px; left: 50px;</div>
+  <!-- Hidden Position Display (Commented Out) -->
+  <!-- <div class="footer" id="headerPositionDisplay">Header Position: top: 31px; left: 18px;</div> -->
 
   <div class="image-container">
     <!-- Background Image from GitHub -->
@@ -120,12 +107,11 @@
   </div>
 
   <script>
-    // Make the header draggable
+    /*
+    // Dragging functionality is commented out, but can be re-enabled when needed
     const header = document.getElementById('draggableHeader');
     const headerPositionDisplay = document.getElementById('headerPositionDisplay');
-    let isDraggingHeader = false;
-    let offsetXHeader, offsetYHeader;
-
+    
     header.addEventListener("mousedown", startDraggingHeader);
     header.addEventListener("touchstart", startDraggingHeader, { passive: false });
 
@@ -149,14 +135,12 @@
       let x = (e.clientX || e.touches[0].clientX) - offsetXHeader;
       let y = (e.clientY || e.touches[0].clientY) - offsetYHeader;
 
-      // Prevent dragging outside viewport
       x = Math.max(0, Math.min(x, window.innerWidth - header.clientWidth));
       y = Math.max(0, Math.min(y, window.innerHeight - header.clientHeight));
 
       header.style.left = `${x}px`;
       header.style.top = `${y}px`;
 
-      // Update position display
       headerPositionDisplay.textContent = `Header Position: top: ${Math.round(y)}px; left: ${Math.round(x)}px;`;
     }
 
@@ -167,6 +151,7 @@
       document.removeEventListener("touchmove", dragHeader);
       document.removeEventListener("touchend", stopDraggingHeader);
     }
+    */
   </script>
 
 </body>
