@@ -114,7 +114,7 @@
       });
 
       input.addEventListener("blur", function () {
-        if (this.value === "") {
+        if (this.value === "" || this.value === "%") {
           this.value = "0%"; // Reset if empty on blur
         }
       });
@@ -141,12 +141,12 @@
         }
       });
 
-      // Prevent manual deletion of the `%`
+      // Allow backspace to fully clear the field
       input.addEventListener("keydown", function (e) {
         if (e.key === "Backspace") {
           if (this.value.length <= 2) {
-            e.preventDefault(); // Prevent deleting to empty state
-            this.value = "0%"; // Reset to 0% if backspace is pressed
+            this.value = ""; // Allow clearing the field completely
+            e.preventDefault();
           } else {
             this.value = this.value.slice(0, -2) + "%"; // Remove last digit but keep %
           }
