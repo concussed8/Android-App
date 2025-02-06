@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no, orientation=portrait">
   <title>Fixed Header & Fillable Fields</title>
   <style>
     /* Ensure the body fills the viewport */
@@ -15,6 +15,33 @@
       justify-content: center;
       height: 100vh;
       background-color: #800000;
+      overflow: hidden;
+    }
+
+    /* Prevent landscape mode */
+    @media screen and (orientation: landscape) {
+      body {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        background-color: black;
+      }
+
+      .image-container, .header {
+        display: none;
+      }
+
+      .landscape-warning {
+        display: block;
+        color: white;
+        font-size: 24px;
+        text-align: center;
+        padding: 20px;
+      }
+    }
+
+    .landscape-warning {
+      display: none; /* Hide by default */
     }
 
     /* Fixed Header (No Background, Locked Position) */
@@ -38,6 +65,8 @@
       max-width: 488px; /* Keep max size same as image */
       aspect-ratio: 488 / 985; /* Maintain image aspect ratio */
       z-index: 1; /* Ensure it's behind the header */
+      border: 6px solid black; /* Border added */
+      border-radius: 8px; /* Optional: Adds rounded corners */
     }
 
     /* Style the image */
@@ -78,21 +107,12 @@
     .field6 { top: 511px; left: 75px; } /* Right Leg (Max 18%) */
     .field7 { top: 511px; left: 185px; } /* Left Leg (Max 18%) */
 
-    /* Hidden Position Display */
-    .footer {
-      display: none; /* Hide position display */
-    }
-
-    /* Ensure mobile responsiveness */
-    @media (max-width: 768px) {
-      .input-field {
-        font-size: 0.8em;
-        border: 2px solid black;
-      }
-    }
   </style>
 </head>
 <body>
+
+  <!-- Warning for Landscape Mode -->
+  <div class="landscape-warning">Please rotate your device to Portrait Mode.</div>
 
   <!-- Fixed Header -->
   <div class="header">Total Body Surface Area Burned</div>
@@ -170,6 +190,20 @@
         }, 50);
       });
     });
+
+    // JavaScript to prevent landscape mode
+    window.addEventListener("orientationchange", function() {
+      if (window.orientation === 90 || window.orientation === -90) {
+        document.querySelector(".landscape-warning").style.display = "block";
+        document.querySelector(".image-container").style.display = "none";
+        document.querySelector(".header").style.display = "none";
+      } else {
+        document.querySelector(".landscape-warning").style.display = "none";
+        document.querySelector(".image-container").style.display = "block";
+        document.querySelector(".header").style.display = "block";
+      }
+    });
+
   </script>
 
 </body>
