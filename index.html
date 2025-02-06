@@ -63,6 +63,12 @@
       z-index: 10; /* Above the image but below the header */
     }
 
+    /* Make the entered text red and bold */
+    .input-field.red-bold {
+      color: red;
+      font-weight: bold;
+    }
+
     /* Default input field positions */
     .field1 { top: 45.55px; left: 120px; }  /* Head (Max 9%) */
     .field2 { top: 185px; left: 123px; } /* Chest/Trunk (Max 36%) */
@@ -116,6 +122,7 @@
       input.addEventListener("blur", function () {
         if (this.value === "" || this.value === "%") {
           this.value = "0%"; // Reset if empty on blur
+          this.classList.remove("red-bold"); // Remove red bold styling
         }
       });
 
@@ -127,9 +134,11 @@
           if (parseInt(value) > maxVal) {
             alert(`Value cannot exceed ${maxVal}%. Please re-enter a valid amount.`);
             this.value = ""; // Clear the field instead of defaulting to the max
+            this.classList.remove("red-bold"); // Remove red bold styling
             return;
           } else {
             this.value = value + "%"; // Append %
+            this.classList.add("red-bold"); // Make text red and bold
           }
         }
       });
@@ -147,6 +156,7 @@
           if (this.value.length <= 2) {
             this.value = ""; // Allow clearing the field completely
             e.preventDefault();
+            this.classList.remove("red-bold"); // Remove red bold styling
           } else {
             this.value = this.value.slice(0, -2) + "%"; // Remove last digit but keep %
           }
