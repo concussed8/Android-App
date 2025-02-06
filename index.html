@@ -28,18 +28,25 @@
       font-weight: bold;
       font-family: Arial, sans-serif;
       cursor: grab;
-      padding: 10px 20px;
+      padding: 10px 15px;
       border: 2px solid maroon;
       user-select: none;
       z-index: 1000; /* Ensures the header is in front */
     }
 
-    /* Display position values */
-    .position-display {
+    /* Position display for header */
+    .footer {
+      position: fixed;
+      bottom: 10px;
+      left: 50%;
+      transform: translateX(-50%);
       font-size: 16px;
-      margin-top: 10px;
-      font-family: Arial, sans-serif;
       color: black;
+      font-family: Arial, sans-serif;
+      background: rgba(255, 255, 255, 0.9);
+      padding: 5px 10px;
+      border: 1px solid black;
+      z-index: 1000; /* Ensures it's always visible */
     }
 
     /* Image container with relative positioning */
@@ -81,20 +88,6 @@
     .field6 { top: 511px; left: 75px; } /* Right Leg */
     .field7 { top: 511px; left: 185px; } /* Left Leg */
 
-    /* Footer for position tracking */
-    .footer {
-      position: absolute;
-      bottom: 10px;
-      left: 50%;
-      transform: translateX(-50%);
-      font-size: 16px;
-      color: black;
-      font-family: Arial, sans-serif;
-      background: rgba(255, 255, 255, 0.9);
-      padding: 5px 10px;
-      border: 1px solid black;
-    }
-
     /* Ensure mobile responsiveness */
     @media (max-width: 768px) {
       .input-field {
@@ -107,7 +100,7 @@
 <body>
 
   <!-- Draggable Header -->
-  <div class="header" id="draggableHeader">Adult Total Body Surface Area Burned</div>
+  <div class="header" id="draggableHeader">Draggable Header</div>
 
   <!-- Position display at the bottom -->
   <div class="footer" id="headerPositionDisplay">Header Position: top: 20px; left: 50px;</div>
