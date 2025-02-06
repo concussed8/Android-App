@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no, orientation=portrait">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
   <title>Fixed Header & Fillable Fields</title>
   <style>
     /* Ensure the body fills the viewport */
@@ -15,33 +15,6 @@
       justify-content: center;
       height: 100vh;
       background-color: #800000;
-      overflow: hidden;
-    }
-
-    /* Prevent landscape mode */
-    @media screen and (orientation: landscape) {
-      body {
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        background-color: black;
-      }
-
-      .image-container, .header {
-        display: none;
-      }
-
-      .landscape-warning {
-        display: block;
-        color: white;
-        font-size: 24px;
-        text-align: center;
-        padding: 20px;
-      }
-    }
-
-    .landscape-warning {
-      display: none; /* Hide by default */
     }
 
     /* Fixed Header (No Background, Locked Position) */
@@ -67,13 +40,11 @@
       z-index: 1; /* Ensure it's behind the header */
     }
 
-    /* Style the image with border */
+    /* Style the image */
     .image-container img {
       width: 100%;
       height: auto;
       display: block;
-      border: 6px solid black; /* Keep only the image border */
-      border-radius: 8px; /* Optional: Adds rounded corners */
     }
 
     /* Positioning for fillable fields */
@@ -82,7 +53,7 @@
       width: 26%;  /* Relative to image width */
       height: 7%; /* Relative to image height */
       background: white;
-      border: none; /* No extra borders */
+      border: 6px solid black;
       text-align: center;
       font-size: 1em;
       font-weight: bold;
@@ -107,12 +78,21 @@
     .field6 { top: 511px; left: 75px; } /* Right Leg (Max 18%) */
     .field7 { top: 511px; left: 185px; } /* Left Leg (Max 18%) */
 
+    /* Hidden Position Display */
+    .footer {
+      display: none; /* Hide position display */
+    }
+
+    /* Ensure mobile responsiveness */
+    @media (max-width: 768px) {
+      .input-field {
+        font-size: 0.8em;
+        border: 2px solid black;
+      }
+    }
   </style>
 </head>
 <body>
-
-  <!-- Warning for Landscape Mode -->
-  <div class="landscape-warning">Please rotate your device to Portrait Mode.</div>
 
   <!-- Fixed Header -->
   <div class="header">Total Body Surface Area Burned</div>
@@ -132,19 +112,6 @@
   </div>
 
   <script>
-    // JavaScript to prevent landscape mode
-    window.addEventListener("orientationchange", function() {
-      if (window.orientation === 90 || window.orientation === -90) {
-        document.querySelector(".landscape-warning").style.display = "block";
-        document.querySelector(".image-container").style.display = "none";
-        document.querySelector(".header").style.display = "none";
-      } else {
-        document.querySelector(".landscape-warning").style.display = "none";
-        document.querySelector(".image-container").style.display = "block";
-        document.querySelector(".header").style.display = "block";
-      }
-    });
-
     document.querySelectorAll(".input-field").forEach(input => {
       input.addEventListener("focus", function () {
         if (this.value === "0%") {
@@ -165,7 +132,7 @@
 
         if (value.length > 0) {
           if (parseInt(value) > maxVal) {
-            alert(`Value cannot exceed ${maxVal}%. Please re-enter a valid amount.`);
+            alert(Value cannot exceed ${maxVal}%. Please re-enter a valid amount.);
             this.value = ""; // Clear the field instead of defaulting to the max
             this.classList.remove("red-bold"); // Remove red bold styling
             return;
@@ -194,6 +161,13 @@
             this.value = this.value.slice(0, -2) + "%"; // Remove last digit but keep %
           }
         }
+      });
+
+      // Automatically select all text when clicked
+      input.addEventListener("focus", function () {
+        setTimeout(() => {
+          this.setSelectionRange(0, this.value.length - 1); // Select only the numbers
+        }, 50);
       });
     });
   </script>
