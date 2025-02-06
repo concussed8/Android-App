@@ -1,0 +1,203 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+  <title>Fixed Header & Fillable Fields</title>
+  <style>
+    /* Ensure the body fills the viewport */
+    body {
+      margin: 0;
+      padding: 0;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      height: 100vh;
+      background-color: #ADD8E6;
+      overflow-y: auto; /* Allows pull-to-refresh */
+    }
+
+    /* Prevent landscape mode */
+    @media screen and (orientation: landscape) {
+      body {
+        display: none; /* Hides everything in landscape mode */
+      }
+    }
+
+    /* Fixed Header (No Background, Locked Position) */
+    .header {
+      position: absolute;
+      top: 31px; /* Locked Position */
+      left: 33px; /* Locked Position */
+      color: maroon;
+      font-size: 22px;
+      font-weight: bold;
+      font-family: Arial, sans-serif;
+      cursor: default; /* No dragging */
+      user-select: none;
+      z-index: 1000; /* Ensures it's in front */
+    }
+
+    /* Image container with relative positioning */
+    .image-container {
+      position: relative;
+      width: 90vw; /* Responsive width */
+      max-width: 488px; /* Keep max size same as image */
+      aspect-ratio: 488 / 985; /* Maintain image aspect ratio */
+      z-index: 1; /* Ensure it's behind the header */
+    }
+
+    /* Style the image */
+    .image-container img {
+      width: 100%;
+      height: auto;
+      display: block;
+      outline: 6px solid black; /* Adjust size & color */
+      border-radius: 8px; /* Optional: Rounds corners */
+    }
+
+    /* Positioning for fillable fields */
+    .input-field {
+      position: absolute;
+      width: 26%;  /* Relative to image width */
+      height: 7%; /* Relative to image height */
+      background: white;
+      border: 6px solid black;
+      text-align: center;
+      font-size: 1em;
+      font-weight: bold;
+      color: black;
+      cursor: default;
+      user-select: none;
+      z-index: 10; /* Above the image but below the header */
+    }
+
+    /* Make the entered text red and bold */
+    .input-field.red-bold {
+      color: red;
+      font-weight: bold;
+    }
+
+    /* Default input field positions */
+    .field1 { top: 45.55px; left: 120px; }  /* Head (Max 9%) */
+    .field2 { top: 185px; left: 123px; } /* Chest/Trunk (Max 36%) */
+    .field3 { top: 352px; left: 126px; } /* Groin (Max 1%) */
+    .field4 { top: 245px; left: 6px; }  /* Right Arm (Max 9%) */
+    .field5 { top: 245px; left: 236px; } /* Left Arm (Max 9%) */
+    .field6 { top: 511px; left: 75px; } /* Right Leg (Max 18%) */
+    .field7 { top: 511px; left: 185px; } /* Left Leg (Max 18%) */
+
+    /* Hidden Position Display */
+    .footer {
+      display: none; /* Hide position display */
+    }
+
+    /* Ensure mobile responsiveness */
+    @media (max-width: 768px) {
+      .input-field {
+        font-size: 0.8em;
+        border: 2px solid black;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Fixed Header -->
+  <div class="header">Total Body Surface Area Burned</div>
+
+  <div class="image-container">
+    <!-- Background Image from GitHub -->
+    <img src="https://raw.githubusercontent.com/concussed8/IOS-test/main/images/rule_of_9_adult.jpg" alt="Rule of 9 Adult">
+
+    <!-- Fillable Fields (Inputs) -->
+    <input type="tel" class="input-field field1" data-max="9" value="0%" maxlength="3">
+    <input type="tel" class="input-field field2" data-max="36" value="0%" maxlength="3">
+    <input type="tel" class="input-field field3" data-max="1" value="0%" maxlength="2">
+    <input type="tel" class="input-field field4" data-max="9" value="0%" maxlength="3">
+    <input type="tel" class="input-field field5" data-max="9" value="0%" maxlength="3">
+    <input type="tel" class="input-field field6" data-max="18" value="0%" maxlength="3">
+    <input type="tel" class="input-field field7" data-max="18" value="0%" maxlength="3">
+  </div>
+
+  <script>
+    document.querySelectorAll(".input-field").forEach(input => {
+      input.addEventListener("focus", function () {
+        if (this.value === "0%") {
+          this.value = ""; // Clear when focused
+        }
+      });
+
+      input.addEventListener("blur", function () {
+        if (this.value === "" || this.value === "%") {
+          this.value = "0%"; // Reset if empty on blur
+          this.classList.remove("red-bold"); // Remove red bold styling
+        }
+      });
+
+      input.addEventListener("input", function () {
+        let value = this.value.replace(/\D/g, ""); // Remove non-numeric characters
+        let maxVal = parseInt(this.dataset.max); // Get max allowed % from data attribute
+
+        if (value.length > 0) {
+          if (parseInt(value) > maxVal) {
+            alert(`Value cannot exceed ${maxVal}%. Please re-enter a valid amount.`);
+            this.value = ""; // Clear the field instead of defaulting to the max
+            this.classList.remove("red-bold"); // Remove red bold styling
+            return;
+          } else {
+            this.value = value + "%"; // Append %
+            this.classList.add("red-bold"); // Make text red and bold
+          }
+        }
+      });
+
+      // Prevent typing non-numeric characters
+      input.addEventListener("keypress", function (e) {
+        if (!/[0-9]/.test(e.key)) {
+          e.preventDefault(); // Block non-numeric input
+        }
+      });
+
+      // Allow backspace to fully clear the field
+      input.addEventListener("keydown", function (e) {
+        if (e.key === "Backspace") {
+          if (this.value.length <= 2) {
+            this.value = ""; // Allow clearing the field completely
+            e.preventDefault();
+            this.classList.remove("red-bold"); // Remove red bold styling
+          } else {
+            this.value = this.value.slice(0, -2) + "%"; // Remove last digit but keep %
+          }
+        }
+      });
+
+      // Automatically select all text when clicked
+      input.addEventListener("focus", function () {
+        setTimeout(() => {
+          this.setSelectionRange(0, this.value.length - 1); // Select only the numbers
+        }, 50);
+      });
+    });
+
+    // Hide everything in landscape mode, but allow pull-to-refresh in portrait
+    function checkOrientation() {
+      if (window.matchMedia("(orientation: landscape)").matches) {
+        document.body.style.display = "none";
+      } else {
+        document.body.style.display = "flex";
+      }
+    }
+
+    // Listen for orientation changes
+    window.addEventListener("resize", checkOrientation);
+    window.addEventListener("orientationchange", checkOrientation);
+
+    // Run on load
+    checkOrientation();
+
+  </script>
+
+</body>
+</html>
