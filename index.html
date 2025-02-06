@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
-  <title>Draggable Fillable Fields on Image</title>
+  <title>Draggable Header & Fillable Fields</title>
   <style>
     /* Ensure the body fills the viewport */
     body {
@@ -17,12 +17,27 @@
       background-color: #f8f8f8;
     }
 
+    /* Draggable Header */
+    .header {
+      position: absolute;
+      top: 20px; /* Default position */
+      left: 50%;
+      transform: translateX(-50%);
+      background: none;
+      color: maroon;
+      font-size: 24px;
+      font-weight: bold;
+      font-family: Arial, sans-serif;
+      cursor: grab;
+      padding: 10px;
+      user-select: none;
+    }
+
     /* Display position values */
     .position-display {
       font-size: 16px;
-      margin-bottom: 10px;
+      margin-top: 10px;
       font-family: Arial, sans-serif;
-      display: none; /* Hides the position display since dragging is disabled */
     }
 
     /* Image container with relative positioning */
@@ -49,12 +64,12 @@
       border: 6px solid black;
       text-align: center;
       font-size: 1em;
-      cursor: default; /* Changed from 'grab' to prevent dragging */
+      cursor: default;
       user-select: none;
     }
 
     /* Default input field positions */
-    .field1 { top: 45.5px; left: 120px; }  /* Head */
+    .field1 { top: 45px; left: 120px; }  /* Head */
     .field2 { top: 185px; left: 123px; } /* Chest */
     .field3 { top: 352px; left: 126px; } /* Abdomen */
     .field4 { top: 245px; left: 6px; }  /* Right Arm */
@@ -62,10 +77,19 @@
     .field6 { top: 511px; left: 75px; } /* Right Leg */
     .field7 { top: 511px; left: 185px; } /* Left Leg */
 
+    /* Footer for position tracking */
+    .footer {
+      position: absolute;
+      bottom: 10px;
+      font-size: 16px;
+      color: black;
+      font-family: Arial, sans-serif;
+    }
+
     /* Ensure mobile responsiveness */
     @media (max-width: 768px) {
       .input-field {
-        font-size: 0.8em; /* Adjust font size for smaller screens */
+        font-size: 0.8em;
         border: 2px solid black;
       }
     }
@@ -73,8 +97,11 @@
 </head>
 <body>
 
-  <!-- Position display (Hidden since dragging is disabled) -->
-  <div class="position-display" id="positionDisplay">Move a field to see its position</div>
+  <!-- Draggable Header -->
+  <div class="header" id="draggableHeader">Draggable Header</div>
+
+  <!-- Position display at the bottom -->
+  <div class="footer" id="headerPositionDisplay">Header Position: top: 20px; left: 50%;</div>
 
   <div class="image-container">
     <!-- Background Image from GitHub -->
@@ -91,63 +118,53 @@
   </div>
 
   <script>
-    /*
-    // Dragging functionality is commented out, but can be re-enabled when needed
-    const inputs = document.querySelectorAll('.input-field');
-    const positionDisplay = document.getElementById("positionDisplay");
-    
-    // Show position display when needed
-    positionDisplay.style.display = "block";
+    // Make the header draggable
+    const header = document.getElementById('draggableHeader');
+    const headerPositionDisplay = document.getElementById('headerPositionDisplay');
+    let isDraggingHeader = false;
+    let offsetXHeader, offsetYHeader;
 
-    inputs.forEach(input => {
-      let isDragging = false;
-      let offsetX, offsetY;
+    header.addEventListener("mousedown", startDraggingHeader);
+    header.addEventListener("touchstart", startDraggingHeader, { passive: false });
 
-      input.addEventListener("mousedown", startDragging);
-      input.addEventListener("touchstart", startDragging, { passive: false });
+    function startDraggingHeader(e) {
+      e.preventDefault();
+      isDraggingHeader = true;
+      const rect = header.getBoundingClientRect();
+      offsetXHeader = (e.clientX || e.touches[0].clientX) - rect.left;
+      offsetYHeader = (e.clientY || e.touches[0].clientY) - rect.top;
 
-      function startDragging(e) {
-        e.preventDefault();
-        isDragging = true;
-        const rect = input.getBoundingClientRect();
-        offsetX = (e.clientX || e.touches[0].clientX) - rect.left;
-        offsetY = (e.clientY || e.touches[0].clientY) - rect.top;
+      document.addEventListener("mousemove", dragHeader);
+      document.addEventListener("mouseup", stopDraggingHeader);
+      document.addEventListener("touchmove", dragHeader, { passive: false });
+      document.addEventListener("touchend", stopDraggingHeader);
+    }
 
-        document.addEventListener("mousemove", drag);
-        document.addEventListener("mouseup", stopDragging);
-        document.addEventListener("touchmove", drag, { passive: false });
-        document.addEventListener("touchend", stopDragging);
-      }
+    function dragHeader(e) {
+      if (!isDraggingHeader) return;
+      e.preventDefault();
 
-      function drag(e) {
-        if (!isDragging) return;
-        e.preventDefault();
+      let x = (e.clientX || e.touches[0].clientX) - offsetXHeader;
+      let y = (e.clientY || e.touches[0].clientY) - offsetYHeader;
 
-        const parentRect = input.parentElement.getBoundingClientRect();
-        let x = (e.clientX || e.touches[0].clientX) - offsetX - parentRect.left;
-        let y = (e.clientY || e.touches[0].clientY) - offsetY - parentRect.top;
+      // Prevent dragging outside viewport
+      x = Math.max(0, Math.min(x, window.innerWidth - header.clientWidth));
+      y = Math.max(0, Math.min(y, window.innerHeight - header.clientHeight));
 
-        // Prevent dragging outside the image container
-        x = Math.max(0, Math.min(x, parentRect.width - input.clientWidth));
-        y = Math.max(0, Math.min(y, parentRect.height - input.clientHeight));
+      header.style.left = `${x}px`;
+      header.style.top = `${y}px`;
 
-        // Set new position
-        input.style.left = `${x}px`;
-        input.style.top = `${y}px`;
+      // Update position display
+      headerPositionDisplay.textContent = `Header Position: top: ${Math.round(y)}px; left: ${Math.round(x)}px;`;
+    }
 
-        // Update position display
-        positionDisplay.textContent = `${input.placeholder}: top: ${Math.round(y)}px; left: ${Math.round(x)}px;`;
-      }
-
-      function stopDragging() {
-        isDragging = false;
-        document.removeEventListener("mousemove", drag);
-        document.removeEventListener("mouseup", stopDragging);
-        document.removeEventListener("touchmove", drag);
-        document.removeEventListener("touchend", stopDragging);
-      }
-    });
-    */
+    function stopDraggingHeader() {
+      isDraggingHeader = false;
+      document.removeEventListener("mousemove", dragHeader);
+      document.removeEventListener("mouseup", stopDraggingHeader);
+      document.removeEventListener("touchmove", dragHeader);
+      document.removeEventListener("touchend", stopDraggingHeader);
+    }
   </script>
 
 </body>
