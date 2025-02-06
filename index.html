@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
   <title>Fillable Fields on Image</title>
   <style>
     /* Ensure the body fills the viewport */
@@ -21,6 +21,7 @@
       position: relative;
       width: 90vw; /* Responsive width */
       max-width: 488px; /* Keep max size same as image */
+      aspect-ratio: 488 / 985; /* Maintain image aspect ratio */
     }
 
     /* Style the image */
@@ -33,24 +34,30 @@
     /* Positioning for fillable fields */
     .input-field {
       position: absolute;
-      width: 26vw;  /* Scales with screen width */
-      max-width: 130px; /* Keep a max size */
-      height: 8vh; /* Scales with screen height */
-      max-height: 75px; /* Keep a max size */
+      width: 24%;  /* Relative to image width */
+      height: 7%; /* Relative to image height */
       background: white;
-      border: 8px solid black;
+      border: 3px solid black;
       text-align: center;
-      font-size: 14px;
+      font-size: 1em;
     }
 
-    /* Responsive positioning for input fields */
-    .field1 { top: 4vh; left: 5.75vw; }  /* Head */
-    .field2 { top: 17.75vh; left: 5.87vw; } /* Chest */
-    .field3 { top: 34vh; left: 6vw; } /* Abdomen */
-    .field4 { top: 23.4vh; left: 0.125vw; }  /* Right Arm */
-    .field5 { top: 23.4vh; left: 11.42vw; } /* Left Arm */
-    .field6 { top: 49.53vh; left: 3.5vw; } /* Right Leg */
-    .field7 { top: 49.53vh; left: 8.9vw; } /* Left Leg */
+    /* Adjust positions relative to the image size */
+    .field1 { top: 5%; left: 38%; }  /* Head */
+    .field2 { top: 19%; left: 38%; } /* Chest */
+    .field3 { top: 35%; left: 38%; } /* Abdomen */
+    .field4 { top: 24%; left: 5%; }  /* Right Arm */
+    .field5 { top: 24%; left: 68%; } /* Left Arm */
+    .field6 { top: 50%; left: 25%; } /* Right Leg */
+    .field7 { top: 50%; left: 55%; } /* Left Leg */
+
+    /* Ensure mobile responsiveness */
+    @media (max-width: 768px) {
+      .input-field {
+        font-size: 0.8em; /* Adjust font size for smaller screens */
+        border: 2px solid black;
+      }
+    }
 
   </style>
 </head>
