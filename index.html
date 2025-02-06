@@ -2,38 +2,71 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <!-- Ensure the page scales correctly on mobile devices -->
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Responsive Image Display</title>
+  <title>Fillable Fields on Image</title>
   <style>
-    /* Ensure the HTML and body take up the full viewport and hide overflow */
-    html, body {
+    /* Ensure the body fills the viewport */
+    body {
       margin: 0;
       padding: 0;
-      height: 100%;
-      width: 100%;
-      overflow: hidden;
-    }
-    
-    /* Center the image and set a background for contrast */
-    body {
       display: flex;
       justify-content: center;
       align-items: center;
+      height: 100vh;
       background-color: #f8f8f8;
     }
-    
-    /* Scale the image to fit within the viewport */
-    img {
-      max-width: 100%;
-      max-height: 100%;
-      object-fit: contain;  /* Ensures the entire image is visible without distortion */
+
+    /* Image container with relative positioning */
+    .image-container {
+      position: relative;
+      width: 488px; /* Match actual image width */
+      height: 985px; /* Match actual image height */
+    }
+
+    /* Style the image */
+    .image-container img {
+      width: 100%;
+      height: auto;
       display: block;
     }
+
+    /* Positioning for fillable fields */
+    .input-field {
+      position: absolute;
+      width: 130px;  /* Default width (adjust as needed) */
+      height: 75px;  /* Default height (adjust as needed) */
+      background: white;
+      border: 6px solid black;
+      text-align: center;
+      font-size: 14px;
+    }
+
+    /* Manual positions (adjustable) */
+    .field1 { top: 58px; left: 166px; }   /* Head */
+    .field2 { top: 253px; left: 170px; }  /* Chest */
+    .field3 { top: 490px; left: 175px; }  /* Abdomen */
+    .field4 { top: 339px; left: 5px; }   /* Right Arm */
+    .field5 { top: 339px; left: 330px; }  /* Left Arm */
+    .field6 { top: 717px; left: 100px; }  /* Right Leg */
+    .field7 { top: 717px; left: 257px; }  /* Left Leg */
+
   </style>
 </head>
 <body>
-  <!-- Use the raw URL to the image so it displays correctly -->
-  <img src="https://raw.githubusercontent.com/concussed8/IOS-test/main/images/rule_of_9_adult.jpg" alt="Rule of 9 Adult">
+
+  <div class="image-container">
+    <!-- Background Image from GitHub -->
+    <img src="https://raw.githubusercontent.com/concussed8/IOS-test/main/images/rule_of_9_adult.jpg" alt="Rule of 9 Adult">
+
+    <!-- Fillable Fields (Inputs) -->
+    <input type="text" class="input-field field1" placeholder="Head">
+    <input type="text" class="input-field field2" placeholder="Chest">
+    <input type="text" class="input-field field3" placeholder="Abdomen">
+    <input type="text" class="input-field field4" placeholder="Right Arm">
+    <input type="text" class="input-field field5" placeholder="Left Arm">
+    <input type="text" class="input-field field6" placeholder="Right Leg">
+    <input type="text" class="input-field field7" placeholder="Left Leg">
+  </div>
+
 </body>
 </html>
