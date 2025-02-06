@@ -64,13 +64,13 @@
     }
 
     /* Default input field positions */
-    .field1 { top: 45.55px; left: 120px; }  /* Head */
-    .field2 { top: 185px; left: 123px; } /* Trunk */
-    .field3 { top: 352px; left: 126px; } /* Groin */
-    .field4 { top: 245px; left: 6px; }  /* Right Arm */
-    .field5 { top: 245px; left: 236px; } /* Left Arm */
-    .field6 { top: 511px; left: 75px; } /* Right Leg */
-    .field7 { top: 511px; left: 185px; } /* Left Leg */
+    .field1 { top: 45.55px; left: 120px; }  /* Head (Max 9%) */
+    .field2 { top: 185px; left: 123px; } /* Chest/Trunk (Max 36%) */
+    .field3 { top: 352px; left: 126px; } /* Groin (Max 1%) */
+    .field4 { top: 245px; left: 6px; }  /* Right Arm (Max 9%) */
+    .field5 { top: 245px; left: 236px; } /* Left Arm (Max 9%) */
+    .field6 { top: 511px; left: 75px; } /* Right Leg (Max 18%) */
+    .field7 { top: 511px; left: 185px; } /* Left Leg (Max 18%) */
 
     /* Hidden Position Display */
     .footer {
@@ -96,26 +96,32 @@
     <img src="https://raw.githubusercontent.com/concussed8/IOS-test/main/images/rule_of_9_adult.jpg" alt="Rule of 9 Adult">
 
     <!-- Fillable Fields (Inputs) -->
-    <input type="tel" class="input-field field1" placeholder="0%" maxlength="3">
-    <input type="tel" class="input-field field2" placeholder="0%" maxlength="3">
-    <input type="tel" class="input-field field3" placeholder="0%" maxlength="3">
-    <input type="tel" class="input-field field4" placeholder="0%" maxlength="3">
-    <input type="tel" class="input-field field5" placeholder="0%" maxlength="3">
-    <input type="tel" class="input-field field6" placeholder="0%" maxlength="3">
-    <input type="tel" class="input-field field7" placeholder="0%" maxlength="3">
+    <input type="tel" class="input-field field1" data-max="9" placeholder="0%" maxlength="3">
+    <input type="tel" class="input-field field2" data-max="36" placeholder="0%" maxlength="3">
+    <input type="tel" class="input-field field3" data-max="1" placeholder="0%" maxlength="2">
+    <input type="tel" class="input-field field4" data-max="9" placeholder="0%" maxlength="3">
+    <input type="tel" class="input-field field5" data-max="9" placeholder="0%" maxlength="3">
+    <input type="tel" class="input-field field6" data-max="18" placeholder="0%" maxlength="3">
+    <input type="tel" class="input-field field7" data-max="18" placeholder="0%" maxlength="3">
   </div>
 
   <script>
-    // Function to format input as numbers only and add % after each number
     document.querySelectorAll(".input-field").forEach(input => {
       input.addEventListener("input", function () {
         let value = this.value.replace(/\D/g, ""); // Remove non-numeric characters
-        value = value.slice(0, 3); // Limit to 3 characters max
+        let maxVal = parseInt(this.dataset.max); // Get max allowed % from data attribute
+
         if (value.length > 0) {
-          this.value = value + "%"; // Append %
+          if (parseInt(value) > maxVal) {
+            alert(`Value cannot exceed ${maxVal}%.`);
+            this.value = maxVal + "%"; // Set max allowed %
+          } else {
+            this.value = value + "%"; // Append %
+          }
         } else {
           this.value = "0%"; // Default value when empty
         }
+
         this.style.color = "red"; // Change color to bright red
         this.style.fontWeight = "bold"; // Make text bold
       });
