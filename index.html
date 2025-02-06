@@ -65,15 +65,15 @@
       max-width: 488px; /* Keep max size same as image */
       aspect-ratio: 488 / 985; /* Maintain image aspect ratio */
       z-index: 1; /* Ensure it's behind the header */
-      border: 6px solid black; /* Border added */
-      border-radius: 8px; /* Optional: Adds rounded corners */
     }
 
-    /* Style the image */
+    /* Style the image with border */
     .image-container img {
       width: 100%;
       height: auto;
       display: block;
+      border: 6px solid black; /* Keep only the image border */
+      border-radius: 8px; /* Optional: Adds rounded corners */
     }
 
     /* Positioning for fillable fields */
@@ -82,7 +82,7 @@
       width: 26%;  /* Relative to image width */
       height: 7%; /* Relative to image height */
       background: white;
-      border: 6px solid black;
+      border: none; /* No extra borders */
       text-align: center;
       font-size: 1em;
       font-weight: bold;
@@ -132,6 +132,19 @@
   </div>
 
   <script>
+    // JavaScript to prevent landscape mode
+    window.addEventListener("orientationchange", function() {
+      if (window.orientation === 90 || window.orientation === -90) {
+        document.querySelector(".landscape-warning").style.display = "block";
+        document.querySelector(".image-container").style.display = "none";
+        document.querySelector(".header").style.display = "none";
+      } else {
+        document.querySelector(".landscape-warning").style.display = "none";
+        document.querySelector(".image-container").style.display = "block";
+        document.querySelector(".header").style.display = "block";
+      }
+    });
+
     document.querySelectorAll(".input-field").forEach(input => {
       input.addEventListener("focus", function () {
         if (this.value === "0%") {
@@ -182,28 +195,7 @@
           }
         }
       });
-
-      // Automatically select all text when clicked
-      input.addEventListener("focus", function () {
-        setTimeout(() => {
-          this.setSelectionRange(0, this.value.length - 1); // Select only the numbers
-        }, 50);
-      });
     });
-
-    // JavaScript to prevent landscape mode
-    window.addEventListener("orientationchange", function() {
-      if (window.orientation === 90 || window.orientation === -90) {
-        document.querySelector(".landscape-warning").style.display = "block";
-        document.querySelector(".image-container").style.display = "none";
-        document.querySelector(".header").style.display = "none";
-      } else {
-        document.querySelector(".landscape-warning").style.display = "none";
-        document.querySelector(".image-container").style.display = "block";
-        document.querySelector(".header").style.display = "block";
-      }
-    });
-
   </script>
 
 </body>
