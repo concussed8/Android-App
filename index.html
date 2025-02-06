@@ -2,32 +2,38 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <!-- This meta tag makes sure the page scales correctly on mobile devices -->
+  <!-- Ensure the page scales correctly on mobile devices -->
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Responsive Image Display</title>
   <style>
-    /* Basic reset for body margin and padding */
-    body {
+    /* Ensure the HTML and body take up the full viewport and hide overflow */
+    html, body {
       margin: 0;
       padding: 0;
-      display: flex;              /* Center the image horizontally and vertically */
+      height: 100%;
+      width: 100%;
+      overflow: hidden;
+    }
+    
+    /* Center the image and set a background for contrast */
+    body {
+      display: flex;
       justify-content: center;
       align-items: center;
-      min-height: 100vh;
-      background-color: #f8f8f8;  /* Light background for contrast */
+      background-color: #f8f8f8;
     }
-
-    /* Make the image responsive */
+    
+    /* Scale the image to fit within the viewport */
     img {
-      max-width: 100%; /* Ensures the image does not exceed the width of its container */
-      height: auto;    /* Maintains the aspect ratio */
-      display: block;  /* Removes any extra space below the image */
+      max-width: 100%;
+      max-height: 100%;
+      object-fit: contain;  /* Ensures the entire image is visible without distortion */
+      display: block;
     }
   </style>
 </head>
 <body>
-  <!-- Replace "your-image.jpg" with the path or URL to your image -->
-  <img src="https://raw.githubusercontent.com/concussed8/IOS-test/main/images/rule_of_9_adult.jpg
-">
+  <!-- Use the raw URL to the image so it displays correctly -->
+  <img src="https://raw.githubusercontent.com/concussed8/IOS-test/main/images/rule_of_9_adult.jpg" alt="Rule of 9 Adult">
 </body>
 </html>
