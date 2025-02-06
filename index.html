@@ -56,6 +56,8 @@
       border: 6px solid black;
       text-align: center;
       font-size: 1em;
+      font-weight: bold;
+      color: black;
       cursor: default;
       user-select: none;
       z-index: 10; /* Above the image but below the header */
@@ -87,71 +89,63 @@
 <body>
 
   <!-- Fixed Header -->
-  <div class="header" id="draggableHeader">Total Body Surface Area Burned</div>
-
-  <!-- Hidden Position Display (Commented Out) -->
-  <!-- <div class="footer" id="headerPositionDisplay">Header Position: top: 31px; left: 18px;</div> -->
+  <div class="header">Total Body Surface Area Burned</div>
 
   <div class="image-container">
     <!-- Background Image from GitHub -->
     <img src="https://raw.githubusercontent.com/concussed8/IOS-test/main/images/rule_of_9_adult.jpg" alt="Rule of 9 Adult">
 
     <!-- Fillable Fields (Inputs) -->
-    <input type="text" class="input-field field1" placeholder="Head">
-    <input type="text" class="input-field field2" placeholder="Chest">
-    <input type="text" class="input-field field3" placeholder="Abdomen">
-    <input type="text" class="input-field field4" placeholder="Right Arm">
-    <input type="text" class="input-field field5" placeholder="Left Arm">
-    <input type="text" class="input-field field6" placeholder="Right Leg">
-    <input type="text" class="input-field field7" placeholder="Left Leg">
+    <input type="tel" class="input-field field1" placeholder="0%" maxlength="3">
+    <input type="tel" class="input-field field2" placeholder="0%" maxlength="3">
+    <input type="tel" class="input-field field3" placeholder="0%" maxlength="3">
+    <input type="tel" class="input-field field4" placeholder="0%" maxlength="3">
+    <input type="tel" class="input-field field5" placeholder="0%" maxlength="3">
+    <input type="tel" class="input-field field6" placeholder="0%" maxlength="3">
+    <input type="tel" class="input-field field7" placeholder="0%" maxlength="3">
   </div>
 
   <script>
-    /*
-    // Dragging functionality is commented out, but can be re-enabled when needed
-    const header = document.getElementById('draggableHeader');
-    const headerPositionDisplay = document.getElementById('headerPositionDisplay');
-    
-    header.addEventListener("mousedown", startDraggingHeader);
-    header.addEventListener("touchstart", startDraggingHeader, { passive: false });
+    // Function to format input as numbers only and add % after each number
+    document.querySelectorAll(".input-field").forEach(input => {
+      input.addEventListener("input", function () {
+        let value = this.value.replace(/\D/g, ""); // Remove non-numeric characters
+        value = value.slice(0, 3); // Limit to 3 characters max
+        if (value.length > 0) {
+          this.value = value + "%"; // Append %
+        } else {
+          this.value = "0%"; // Default value when empty
+        }
+        this.style.color = "red"; // Change color to bright red
+        this.style.fontWeight = "bold"; // Make text bold
+      });
 
-    function startDraggingHeader(e) {
-      e.preventDefault();
-      isDraggingHeader = true;
-      const rect = header.getBoundingClientRect();
-      offsetXHeader = (e.clientX || e.touches[0].clientX) - rect.left;
-      offsetYHeader = (e.clientY || e.touches[0].clientY) - rect.top;
+      // Prevent typing non-numeric characters
+      input.addEventListener("keypress", function (e) {
+        if (!/[0-9]/.test(e.key)) {
+          e.preventDefault(); // Block non-numeric input
+        }
+      });
 
-      document.addEventListener("mousemove", dragHeader);
-      document.addEventListener("mouseup", stopDraggingHeader);
-      document.addEventListener("touchmove", dragHeader, { passive: false });
-      document.addEventListener("touchend", stopDraggingHeader);
-    }
+      // Prevent manual deletion of the `%`
+      input.addEventListener("keydown", function (e) {
+        if (e.key === "Backspace") {
+          if (this.value.length <= 2) {
+            e.preventDefault(); // Prevent deleting to empty state
+            this.value = "0%"; // Reset to 0% if backspace is pressed
+          } else {
+            this.value = this.value.slice(0, -2) + "%"; // Remove last digit but keep %
+          }
+        }
+      });
 
-    function dragHeader(e) {
-      if (!isDraggingHeader) return;
-      e.preventDefault();
-
-      let x = (e.clientX || e.touches[0].clientX) - offsetXHeader;
-      let y = (e.clientY || e.touches[0].clientY) - offsetYHeader;
-
-      x = Math.max(0, Math.min(x, window.innerWidth - header.clientWidth));
-      y = Math.max(0, Math.min(y, window.innerHeight - header.clientHeight));
-
-      header.style.left = `${x}px`;
-      header.style.top = `${y}px`;
-
-      headerPositionDisplay.textContent = `Header Position: top: ${Math.round(y)}px; left: ${Math.round(x)}px;`;
-    }
-
-    function stopDraggingHeader() {
-      isDraggingHeader = false;
-      document.removeEventListener("mousemove", dragHeader);
-      document.removeEventListener("mouseup", stopDraggingHeader);
-      document.removeEventListener("touchmove", dragHeader);
-      document.removeEventListener("touchend", stopDraggingHeader);
-    }
-    */
+      // Automatically select all text when clicked
+      input.addEventListener("focus", function () {
+        setTimeout(() => {
+          this.setSelectionRange(0, this.value.length - 1); // Select only the numbers
+        }, 50);
+      });
+    });
   </script>
 
 </body>
