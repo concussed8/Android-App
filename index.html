@@ -1,58 +1,32 @@
- <!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>ZXing QR Code Scanner</title>
-    <script src="https://cdn.jsdelivr.net/npm/@zxing/browser@0.0.11"></script>
+  <meta charset="UTF-8">
+  <!-- This meta tag makes sure the page scales correctly on mobile devices -->
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Responsive Image Display</title>
+  <style>
+    /* Basic reset for body margin and padding */
+    body {
+      margin: 0;
+      padding: 0;
+      display: flex;              /* Center the image horizontally and vertically */
+      justify-content: center;
+      align-items: center;
+      min-height: 100vh;
+      background-color: #f8f8f8;  /* Light background for contrast */
+    }
+
+    /* Make the image responsive */
+    img {
+      max-width: 100%; /* Ensures the image does not exceed the width of its container */
+      height: auto;    /* Maintains the aspect ratio */
+      display: block;  /* Removes any extra space below the image */
+    }
+  </style>
 </head>
 <body>
-    <h1>QR Code yo yo Scanner</h1>
-    <video id="video" autoplay></video>
-    <p id="status">Status: Waiting for camera...</p>
-    <script>
-        const videoElement = document.getElementById('video');
-        const statusElement = document.getElementById('status');
-
-        async function startScanner() {
-            try {
-                // Initialize the ZXing QR Code Reader
-                const { BrowserQRCodeReader } = window.ZXingBrowser;
-                const codeReader = new BrowserQRCodeReader();
-
-                // List available video input devices (cameras)
-                const devices = await codeReader.listVideoInputDevices();
-
-                if (devices.length === 0) {
-                    statusElement.textContent = 'Error: No cameras found.';
-                    return;
-                }
-
-                // Use the first available camera (default to rear-facing on most devices)
-                const firstDeviceId = devices[0].deviceId;
-
-                // Start scanning for QR codes
-                codeReader.decodeFromVideoDevice(firstDeviceId, videoElement, (result, error) => {
-                    if (result) {
-                        // Display the scanned QR code result
-                        statusElement.textContent = `QR Code detected: ${result.text}`;
-                        codeReader.reset(); // Stop scanning after a successful scan
-                    }
-
-                    if (error && !(error instanceof window.ZXingBrowser.NotFoundException)) {
-                        console.warn('QR scanning error:', error.message);
-                    }
-                });
-
-                statusElement.textContent = 'Scanning for QR codes...';
-            } catch (error) {
-                console.error('Error initializing scanner:', error);
-                statusElement.textContent = `Error: ${error.message}`;
-            }
-        }
-
-        // Start the scanner on page load
-        window.addEventListener('load', startScanner);
-    </script>
+  <!-- Replace "your-image.jpg" with the path or URL to your image -->
+  <img src="https://nurseresourceapp.s3.us-east-2.amazonaws.com/images/rule_of_9_adult.jpg">
 </body>
 </html>
