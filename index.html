@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
   <title>Fixed Header & Fillable Fields</title>
   <style>
     /* Ensure the body fills the viewport */
@@ -15,18 +15,13 @@
       justify-content: center;
       height: 100vh;
       background-color: #800000;
-      overflow: hidden;
+      overflow-y: auto; /* Allows pull-to-refresh */
     }
 
     /* Prevent landscape mode */
     @media screen and (orientation: landscape) {
-      html, body {
-        transform: rotate(-90deg);
-        transform-origin: center;
-        width: 100vh;
-        height: 100vw;
-        overflow: hidden;
-        position: fixed;
+      body {
+        display: none; /* Hides everything in landscape mode */
       }
     }
 
@@ -186,14 +181,21 @@
       });
     });
 
-    // Prevent landscape mode
-    window.addEventListener("orientationchange", function() {
-      if (window.orientation === 90 || window.orientation === -90) {
-        document.documentElement.style.display = "none"; // Hide content in landscape
+    // Hide everything in landscape mode, but allow pull-to-refresh in portrait
+    function checkOrientation() {
+      if (window.matchMedia("(orientation: landscape)").matches) {
+        document.body.style.display = "none";
       } else {
-        document.documentElement.style.display = "block"; // Restore content in portrait
+        document.body.style.display = "flex";
       }
-    });
+    }
+
+    // Listen for orientation changes
+    window.addEventListener("resize", checkOrientation);
+    window.addEventListener("orientationchange", checkOrientation);
+
+    // Run on load
+    checkOrientation();
 
   </script>
 
