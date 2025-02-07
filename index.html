@@ -29,7 +29,7 @@
     /* Fixed Header Styling (No Resizing) */
     .header {
       position: absolute;
-      width: 300px; /* Fixed width */
+      width: 320px; /* Fixed width */
       height: 50px; /* Fixed height */
       top: 20px;
       left: 50%;
@@ -39,7 +39,7 @@
       font-family: "Courier New", Courier, monospace;
       color: black;
       padding: 10px;
-      border: 0px solid black;
+      border: 4px solid black;
       border-radius: 8px;
       cursor: grab;
       background: white;
@@ -56,14 +56,15 @@
       margin-top: 60px; /* Adjust spacing below header */
     }
 
-    /* Common Image Styling (Fixed Sizes) */
+    /* Common Image Styling */
     .draggable {
       position: absolute;
       cursor: grab;
       user-select: none;
+      touch-action: none; /* Prevents weird behavior on touch devices */
     }
 
-    /* Individual Image Styling (Fixed Sizes + No Resizing) */
+    /* Individual Image Styling */
     .thermal {
       width: 120px;
       height: 120px;
@@ -167,8 +168,8 @@
         const rect = element.getBoundingClientRect();
         startX = e.clientX || e.touches[0].clientX;
         startY = e.clientY || e.touches[0].clientY;
-        elementX = rect.left;
-        elementY = rect.top;
+        elementX = rect.left - window.scrollX;
+        elementY = rect.top - window.scrollY;
 
         document.addEventListener("mousemove", drag);
         document.addEventListener("mouseup", stopDragging);
