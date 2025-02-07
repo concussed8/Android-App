@@ -2,19 +2,19 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=488, height=985, initial-scale=1.0, user-scalable=yes">
+  <meta name="viewport" content="width=488, height=985, initial-scale=1.0, user-scalable=no">
   <title>Burn Management Checklist</title>
   <style>
-    /* 🔴 RED BORDER FOR ALIGNMENT TESTING */
-    body {
+    /* Fix viewport size */
+    html, body {
       margin: 0;
       padding: 0;
-      width: 488px; /* Fixed viewport width */
-      height: 985px; /* Fixed viewport height */
-      background-color: black;
-      overflow: auto; /* Allows scrolling if needed */
+      width: 488px;
+      height: 985px;
+      background-color: #fff;
+      overflow: hidden; /* Prevents unwanted scrolling */
       position: relative;
-      border: 4px solid red; /* Alignment testing */
+      border: 4px solid red; /* For alignment check */
       display: flex;
       flex-direction: column;
       align-items: center;
@@ -28,23 +28,22 @@
       }
     }
 
-    /* 🔥 Flames GIF as background */
+    /* Flames GIF as Background */
     .viewport-container {
-      position: fixed;
-      top: 0;
-      left: 0;
+      position: absolute;
       width: 100%;
       height: 100%;
-      z-index: -1;
+      top: 0;
+      left: 0;
+      z-index: -1; /* Keeps it behind all other elements */
     }
-
     .viewport-container img {
       width: 100%;
       height: 100%;
-      object-fit: cover; /* Makes the flames fit the viewport */
+      object-fit: cover;
     }
 
-    /* 🏷️ Fixed Header Styling */
+    /* Fixed Header Styling */
     .header {
       position: absolute;
       width: 100%;
@@ -57,7 +56,6 @@
       font-weight: bold;
       font-family: "Courier New", Courier, monospace;
       color: white;
-      border: 0px solid white;
       background: none;
       user-select: none;
       z-index: 1000;
@@ -66,7 +64,7 @@
       overflow: hidden;
     }
 
-    /* 🖼️ Image Container */
+    /* Container for images */
     .image-container {
       position: relative;
       width: 100%;
@@ -75,7 +73,7 @@
       max-height: 985px;
     }
 
-    /* 📍 Common Settings for Icons */
+    /* Common Size for Icons */
     .thermal, .electrical, .chemical {
       position: absolute;
       width: 150px !important;
@@ -87,73 +85,34 @@
       z-index: 1000;
     }
 
-    /* 🎯 Individual Image Positions & Opacity */
-    .thermal { 
-      border: 4px solid red; 
-      border-radius: 27px; 
-      top: 134px; 
-      left: 60px; 
-      opacity: 0.9;
-    }
+    /* Individual Image Styling */
+    .thermal { border: 4px solid red; border-radius: 27px; top: 134px; left: 60px; }
+    .electrical { border: 4px solid blue; border-radius: 27px; top: 134px; left: 274px; }
+    .chemical { border: 4px solid green; border-radius: 27px; top: 332px; left: 170px; }
 
-    .electrical { 
-      border: 4px solid blue; 
-      border-radius: 27px; 
-      top: 134px; 
-      left: 274px;
-      opacity: 0.9;
-    }
-
-    .chemical { 
-      border: 4px solid green; 
-      border-radius: 27px; 
-      top: 332px; 
-      left: 170px;
-      opacity: 0.9;
-    }
-
-    /* ℹ️ CCSO Disclaimer */
+    /* CCSO Disclaimer */
     .ccso {
       position: absolute;
       width: 480px !important;
       height: 50px !important;
-      max-height: 75px;
       border: 0px solid black;
-      top: 695px; 
-      left: 2px; 
+      top: 695px; left: 2px;
       user-select: none;
       z-index: 1000;
       opacity: 1;
     }
-
-    /* 🟢 Position Display (Hidden) */
-    .position-display {
-      position: absolute;
-      bottom: 10px;
-      left: 50%;
-      transform: translateX(-50%);
-      background: rgba(0, 0, 0, 0.7);
-      color: white;
-      font-size: 14px;
-      padding: 10px;
-      border-radius: 5px;
-      z-index: 1000;
-      display: none;
-    }
-
   </style>
 </head>
 <body>
-
-  <!-- 🔥 Flames GIF Background -->
+  <!-- Flames GIF Background -->
   <div class="viewport-container">
     <img src="https://raw.githubusercontent.com/concussed8/Android-App/main/images/flames.gif" alt="Flames Background">
   </div>
 
-  <!-- 🏷️ Fixed Header -->
+  <!-- Fixed Header -->
   <div class="header">Burn Management Checklist</div>
 
-  <!-- 🖼️ Image Container -->
+  <!-- Image Container -->
   <div class="image-container">
     <a href="https://github-thermal" target="_blank">
       <img src="https://raw.githubusercontent.com/concussed8/Android-App/main/images/thermal.jpg" class="thermal" id="thermal" alt="Thermal">
@@ -167,19 +126,8 @@
     <img src="https://raw.githubusercontent.com/concussed8/Android-App/main/images/CCSO_disclaimer.jpg" class="ccso" id="ccso" alt="CCSO Disclaimer">
   </div>
 
-  <!-- 🟢 Position Display -->
-  <div class="position-display" id="positionDisplay"></div>
-
   <script>
-    // 🔄 Enable Pull-to-Refresh in Portrait Mode
-    let lastY = 0;
-    document.addEventListener("touchstart", (e) => { lastY = e.touches[0].clientY; });
-    document.addEventListener("touchend", (e) => {
-      let currentY = e.changedTouches[0].clientY;
-      if (currentY - lastY > 100) location.reload(); // Pull-down refresh
-    });
-
-    // 🔄 Prevent Landscape Mode
+    // Prevent landscape mode but allow refresh
     function checkOrientation() {
       if (window.matchMedia("(orientation: landscape)").matches) {
         document.body.innerHTML = "<div style='display:flex;justify-content:center;align-items:center;height:100vh;font-size:24px;color:red;'>Return to Portrait Mode</div>";
@@ -191,17 +139,23 @@
     window.addEventListener("resize", checkOrientation);
     window.addEventListener("orientationchange", checkOrientation);
 
-    // 🖱️ Image Click Animation Effect
+    // Enable Pull-to-Refresh in Portrait Mode
+    let lastY = 0;
+    document.addEventListener("touchstart", (e) => { lastY = e.touches[0].clientY; });
+    document.addEventListener("touchend", (e) => {
+      let currentY = e.changedTouches[0].clientY;
+      if (currentY - lastY > 100) location.reload();
+    });
+
+    // Image Click Animation Effect
     document.querySelectorAll(".thermal, .electrical, .chemical").forEach(img => {
       img.addEventListener("click", () => {
-        img.style.transform = "scale(1.1)"; // Expand slightly
+        img.style.transform = "scale(1.1)";
         setTimeout(() => {
           img.style.transform = "scale(1)";
         }, 200);
       });
     });
-
   </script>
-
 </body>
 </html>
