@@ -45,7 +45,8 @@
       display: flex;
       flex-direction: column;
       align-items: center;
-      justify-content: center;
+      justify-content: flex-start;
+      padding-top: 10vh; /* Add spacing to prevent overlap */
       gap: 5vh;
     }
 
@@ -79,14 +80,15 @@
       opacity: 0.9;
     }
 
-    /* CCSO Disclaimer (Independent Size & Styling) */
+    /* CCSO Disclaimer */
     .ccso {
       width: 80vw;
       max-width: 400px;
       position: absolute;
-      bottom: 5%;
+      bottom: 3%;
       border: 2px solid black;
       opacity: 1;
+      display: block; /* Ensures it's visible */
     }
 
     /* Tap Effect on Icons */
@@ -106,4 +108,15 @@
       <img src="https://raw.githubusercontent.com/concussed8/Android-App/main/images/thermal.jpg" class="thermal" id="thermal" alt="Thermal">
     </a>
     <a href="https://github-electrical" target="_blank">
-      <img src="https://raw.github
+      <img src="https://raw.githubusercontent.com/concussed8/Android-App/main/images/electrical.jpg" class="electrical" id="electrical" alt="Electrical">
+    </a>
+    <a href="https://github-chemical" target="_blank">
+      <img src="https://raw.githubusercontent.com/concussed8/Android-App/main/images/chemical.jpg" class="chemical" id="chemical" alt="Chemical">
+    </a>
+  </div>
+
+  <!-- CCSO Disclaimer (Now Visible) -->
+  <img src="https://raw.githubusercontent.com/concussed8/Android-App/main/images/CCSO_disclaimer.jpg" class="ccso" id="ccso" alt="CCSO Disclaimer">
+
+</body>
+</html>
