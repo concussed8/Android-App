@@ -5,7 +5,7 @@
   <meta name="viewport" content="width=device-width, height=device-height, initial-scale=1, maximum-scale=1, user-scalable=no">
   <title>Burn Management Checklist</title>
   <style>
-    /* Ensure the body fills the screen without cutting off elements */
+    /* Fullscreen viewport container to maintain exact size */
     html, body {
       margin: 0;
       padding: 0;
@@ -18,12 +18,14 @@
       overflow: hidden;
     }
 
-    /* Viewport container to ensure perfect scaling */
+    /* Viewport box to force 488x985 scaling without cutting off */
     .viewport-wrapper {
       position: relative;
       width: 488px;
       height: 985px;
-      border: 4px solid red; /* RED BORDER for alignment */
+      max-width: 100%;
+      max-height: 100%;
+      border: 4px solid red; /* 🔴 RED BORDER for alignment testing */
       overflow: hidden;
       display: flex;
       align-items: center;
