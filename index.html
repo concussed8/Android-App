@@ -5,7 +5,7 @@
   <meta name="viewport" content="width=device-width, height=device-height, initial-scale=1.0, user-scalable=no">
   <title>Burn Management Checklist</title>
   <style>
-    /* Set Fullscreen Viewport */
+    /* Fullscreen Viewport */
     html, body {
       margin: 0;
       padding: 0;
@@ -30,7 +30,7 @@
       width: 100%;
       top: 2%;
       text-align: center;
-      font-size: 4vw; /* Scales with viewport */
+      font-size: 4vw; /* Responsive scaling */
       font-weight: bold;
       font-family: "Courier New", Courier, monospace;
       color: white;
@@ -49,23 +49,47 @@
       gap: 5vh;
     }
 
-    /* Icons */
+    /* Common Image Styling */
     .thermal, .electrical, .chemical {
       width: 20vw;  /* Resize relative to screen */
       height: auto; /* Maintain aspect ratio */
       max-width: 150px;
       cursor: pointer;
       transition: transform 0.2s ease;
+      touch-action: none;
+      user-select: none;
     }
 
+    /* Individual Image Styling with Borders & Opacity */
+    .thermal {
+      border: 4px solid red;
+      border-radius: 27px;
+      opacity: 0.9;
+    }
+
+    .electrical {
+      border: 4px solid blue;
+      border-radius: 27px;
+      opacity: 0.9;
+    }
+
+    .chemical {
+      border: 4px solid green;
+      border-radius: 27px;
+      opacity: 0.9;
+    }
+
+    /* CCSO Disclaimer (Independent Size & Styling) */
     .ccso {
       width: 80vw;
       max-width: 400px;
       position: absolute;
       bottom: 5%;
+      border: 2px solid black;
+      opacity: 1;
     }
 
-    /* Icon Expansion on Click */
+    /* Tap Effect on Icons */
     .thermal:active, .electrical:active, .chemical:active {
       transform: scale(1.1);
     }
@@ -82,13 +106,4 @@
       <img src="https://raw.githubusercontent.com/concussed8/Android-App/main/images/thermal.jpg" class="thermal" id="thermal" alt="Thermal">
     </a>
     <a href="https://github-electrical" target="_blank">
-      <img src="https://raw.githubusercontent.com/concussed8/Android-App/main/images/electrical.jpg" class="electrical" id="electrical" alt="Electrical">
-    </a>
-    <a href="https://github-chemical" target="_blank">
-      <img src="https://raw.githubusercontent.com/concussed8/Android-App/main/images/chemical.jpg" class="chemical" id="chemical" alt="Chemical">
-    </a>
-    <img src="https://raw.githubusercontent.com/concussed8/Android-App/main/images/CCSO_disclaimer.jpg" class="ccso" id="ccso" alt="CCSO Disclaimer">
-  </div>
-
-</body>
-</html>
+      <img src="https://raw.github
