@@ -122,37 +122,5 @@
     </a>
     <img src="https://raw.githubusercontent.com/concussed8/Android-App/main/images/CCSO_disclaimer.jpg" class="ccso" id="ccso" alt="CCSO Disclaimer">
   </div>
-
-  <script>
-    // Prevent landscape mode but allow refresh
-    function checkOrientation() {
-      if (window.matchMedia("(orientation: landscape)").matches) {
-        document.body.innerHTML = "<div style='display:flex;justify-content:center;align-items:center;height:100vh;font-size:24px;color:red;'>Return to Portrait Mode</div>";
-      } else {
-        location.reload();
-      }
-    }
-
-    window.addEventListener("resize", checkOrientation);
-    window.addEventListener("orientationchange", checkOrientation);
-
-    // Enable Pull-to-Refresh in Portrait Mode
-    let lastY = 0;
-    document.addEventListener("touchstart", (e) => { lastY = e.touches[0].clientY; });
-    document.addEventListener("touchend", (e) => {
-      let currentY = e.changedTouches[0].clientY;
-      if (currentY - lastY > 100) location.reload();
-    });
-
-    // Image Click Animation Effect
-    document.querySelectorAll(".thermal, .electrical, .chemical").forEach(img => {
-      img.addEventListener("click", () => {
-        img.style.transform = "scale(1.1)";
-        setTimeout(() => {
-          img.style.transform = "scale(1)";
-        }, 200);
-      });
-    });
-  </script>
 </body>
 </html>
