@@ -5,28 +5,25 @@
   <meta name="viewport" content="width=device-width, height=device-height, initial-scale=1, maximum-scale=1, user-scalable=no">
   <title>Burn Management Checklist</title>
   <style>
-    /* Ensure the body fills the viewport */
-    body {
+    /* Ensure the body fills the screen without cutting off elements */
+    html, body {
       margin: 0;
       padding: 0;
       width: 100vw;
       height: 100vh;
-      background-color: #fff;
-      overflow-y: auto; /* Allows pull-to-refresh */
       display: flex;
-      flex-direction: column;
       align-items: center;
       justify-content: center;
+      background-color: black;
+      overflow: hidden;
     }
 
-    /* Force a 488x985 aspect ratio */
+    /* Viewport container to ensure perfect scaling */
     .viewport-wrapper {
       position: relative;
       width: 488px;
       height: 985px;
-      max-width: 100vw;
-      max-height: 100vh;
-      border: 4px solid red; /* Red border for positioning */
+      border: 4px solid red; /* RED BORDER for alignment */
       overflow: hidden;
       display: flex;
       align-items: center;
@@ -36,7 +33,7 @@
     /* Prevent landscape mode */
     @media screen and (orientation: landscape) {
       body {
-        display: none; /* Hides everything in landscape mode */
+        display: none; /* Hide everything in landscape mode */
       }
     }
 
