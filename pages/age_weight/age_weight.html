@@ -54,19 +54,22 @@
       z-index: 1000;
     }
 
-   .input-section {
-  position: absolute; 
-  top: calc(8vw + 5px); /* Places it 5px below the header */
-  left: 50%;
-  transform: translateX(-50%);
-  width: 300px;
-  padding: 5px;
-  border: 6px solid red;
-  border-radius: 8px;
-  background-color: rgba(255, 255, 255, 1); /* White background with opacity */
-  opacity: 0.9; /* Adjust this to control transparency (0 = invisible, 1 = fully visible) */
-  z-index: 1000;
-}
+
+    /* Input Section */
+    .input-section {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      width: 300px;
+      padding: 15px;
+      border: 6px solid red;
+      border-radius: 8px;
+background-color: rgba(255, 255, 255, 1); /* White background with opacity */
+  opacity: .9; /* Adjust this to control transparency (0 = invisible, 1 = fully visible) */
+      margin: 10px;
+      z-index: 1000;
+    }
 
 
     /* Label Styling */
