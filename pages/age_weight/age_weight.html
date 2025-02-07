@@ -41,7 +41,7 @@
       object-fit: cover;
     }
 
-      /* Fixed Header */
+    /* Fixed Header */
     .header {
       position: absolute;
       width: 100%;
@@ -52,6 +52,19 @@
       font-family: "Courier New", Courier, monospace;
       color: white;
       z-index: 1000;
+    }
+
+    /* Input Container (Moves entire column) */
+    .input-container {
+      position: absolute;
+      top: calc(8vw + 10px); /* Moves the entire input section */
+      left: 50%;
+      transform: translateX(-50%);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 15px; /* Keeps equal spacing between elements */
     }
 
     /* Input Section */
@@ -65,23 +78,22 @@
       border: 6px solid red;
       border-radius: 8px;
       background-color: rgba(255, 255, 255, 1); /* White background with opacity */
-      opacity: .9; /* Adjust this to control transparency (0 = invisible, 1 = fully visible) */
-      margin: 10px;
+      opacity: 0.9; /* Adjust this to control transparency (0 = invisible, 1 = fully visible) */
       z-index: 1000;
     }
+
     /* Label Styling */
     .label {
-  font-family: "Courier New", Courier, monospace;
-  font-size: 24px;
-  font-weight: bold;
-  color: black;
-  background-color: rgba(255, 255, 255, 1); /* White background with opacity */
-  padding: 5px; /* Adds padding for spacing */
-  border-radius: 5px; /* Optional: Rounds corners */
-  opacity: 1; /* Adjust this to control transparency (0 = invisible, 1 = fully visible) */
-  margin-bottom: 8px;
-}
-
+      font-family: "Courier New", Courier, monospace;
+      font-size: 24px;
+      font-weight: bold;
+      color: black;
+      background-color: rgba(255, 255, 255, 1); /* White background with opacity */
+      padding: 5px;
+      border-radius: 5px; /* Optional: Rounds corners */
+      opacity: 1;
+      margin-bottom: 8px;
+    }
 
     /* Input Fields & Select Boxes */
     .input-box, .select-box {
@@ -104,20 +116,18 @@
       font-weight: normal;
     }
 
-/* CCSO Disclaimer */
     /* Disclaimer Section */
     .disclaimer-container {
       position: absolute;
       bottom: 20px;
-      width: 480px;
-      height: 80px;
+      width: 80vw;
+      max-width: 450px;
       display: flex;
       justify-content: center;
       align-items: center;
-      padding: 55px;
+      padding: 10px;
       z-index: 1000;
     }
-
 
     .disclaimer-container img {
       width: 100%;
@@ -136,24 +146,26 @@
   <!-- Fixed Header -->
   <div class="header">Burn Management Checklist</div>
 
-  <!-- Input Section -->
-  <div class="input-section">
-    <label class="label" for="sex">Sex:</label>
-    <select id="sex" class="select-box">
-      <option value="" selected disabled>Select</option>
-      <option value="Male">Male</option>
-      <option value="Female">Female</option>
-    </select>
-  </div>
+  <!-- Input Container -->
+  <div class="input-container">
+    <div class="input-section">
+      <label class="label" for="sex">Sex:</label>
+      <select id="sex" class="select-box">
+        <option value="" selected disabled>Select</option>
+        <option value="Male">Male</option>
+        <option value="Female">Female</option>
+      </select>
+    </div>
 
-  <div class="input-section">
-    <label class="label" for="age">Age:</label>
-    <input type="tel" id="age" class="input-box" placeholder="YEARS" maxlength="3">
-  </div>
+    <div class="input-section">
+      <label class="label" for="age">Age:</label>
+      <input type="tel" id="age" class="input-box" placeholder="YEARS" maxlength="3">
+    </div>
 
-  <div class="input-section">
-    <label class="label" for="weight">Weight:</label>
-    <input type="tel" id="weight" class="input-box" placeholder="Kg" maxlength="3">
+    <div class="input-section">
+      <label class="label" for="weight">Weight:</label>
+      <input type="tel" id="weight" class="input-box" placeholder="Kg" maxlength="3">
+    </div>
   </div>
 
   <!-- Disclaimer Section -->
