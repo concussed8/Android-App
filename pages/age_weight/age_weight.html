@@ -172,41 +172,42 @@
     <img src="https://raw.githubusercontent.com/concussed8/Android-App/main/images/CCSO_disclaimer.jpg" alt="CCSO Disclaimer">
   </div>
 
-  <script>
-    // Restrict Age and Weight Fields to Numbers Only
-    document.querySelectorAll(".input-box").forEach(input => {
-      input.addEventListener("input", function () {
-        this.value = this.value.replace(/\D/g, ''); // Remove non-numeric characters
-      });
-
-      // Prevent non-numeric key presses
-      input.addEventListener("keypress", function (e) {
-        if (!/[0-9]/.test(e.key)) {
-          e.preventDefault();
-        }
-      });
+ <script>
+  // Restrict Age and Weight Fields to Numbers Only
+  document.querySelectorAll(".input-box").forEach(input => {
+    input.addEventListener("input", function () {
+      this.value = this.value.replace(/\D/g, ''); // Remove non-numeric characters
     });
 
-    // Enable Pull-to-Refresh in Portrait Mode
-    let lastY = 0;
-    document.addEventListener("touchstart", (e) => { lastY = e.touches[0].clientY; });
-    document.addEventListener("touchend", (e) => {
-      let currentY = e.changedTouches[0].clientY;
-      if (currentY - lastY > 100) location.reload(); // Pull-down refresh
-    });
-
-    // Prevent landscape mode but allow refresh
-    function checkOrientation() {
-      if (window.matchMedia("(orientation: landscape)").matches) {
-        document.body.innerHTML = "<div style='display:flex;justify-content:center;align-items:center;height:100vh;font-size:24px;color:red;'>Return to Portrait Mode</div>";
-      } else {
-        location.reload();
+    // Prevent non-numeric key presses
+    input.addEventListener("keypress", function (e) {
+      if (!/[0-9]/.test(e.key)) {
+        e.preventDefault();
       }
-    }
+    });
+  });
 
-    window.addEventListener("resize", checkOrientation);
-    window.addEventListener("orientationchange", checkOrientation);
-  </script>
+  // Enable Pull-to-Refresh in Portrait Mode
+  let lastY = 0;
+  document.addEventListener("touchstart", (e) => { lastY = e.touches[0].clientY; });
+  document.addEventListener("touchend", (e) => {
+    let currentY = e.changedTouches[0].clientY;
+    if (currentY - lastY > 100) location.reload(); // Pull-down refresh
+  });
+
+  // Prevent landscape mode but DO NOT reload the page
+  function checkOrientation() {
+    if (window.matchMedia("(orientation: landscape)").matches) {
+      document.body.innerHTML = "<div style='display:flex;justify-content:center;align-items:center;height:100vh;font-size:24px;color:red;'>Return to Portrait Mode</div>";
+    }
+  }
+
+  // Listen for orientation changes but do NOT reload
+  window.addEventListener("resize", checkOrientation);
+  window.addEventListener("orientationchange", checkOrientation);
+
+</script>
+
 
 </body>
 </html>
