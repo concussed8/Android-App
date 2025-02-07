@@ -5,20 +5,16 @@
   <meta name="viewport" content="width=device-width, height=device-height, initial-scale=1.0, user-scalable=no">
   <title>Burn Management Checklist</title>
   <style>
-    /* Ensure the body fills the viewport */
+    /* Set Fullscreen Viewport */
     html, body {
       margin: 0;
       padding: 0;
       width: 100vw;
       height: 100vh;
-      background-color: #fff;
-      overflow: hidden; /* Prevents unwanted scrolling */
+      overflow: hidden; /* Prevents scrolling */
       position: relative;
-      border: 4px solid red; /* For alignment check */
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
+      background: url('https://raw.githubusercontent.com/concussed8/Android-App/main/images/flames.gif') no-repeat center center;
+      background-size: cover;
     }
 
     /* Prevent landscape mode */
@@ -28,83 +24,54 @@
       }
     }
 
-    /* Flames GIF as Background */
-    .viewport-container {
-      position: absolute;
-      width: 100vw;
-      height: 100vh;
-      top: 0;
-      left: 0;
-      z-index: -1; /* Keeps it behind all other elements */
-    }
-    .viewport-container img {
-      width: 100%;
-      height: 100%;
-      object-fit: cover;
-    }
-
-    /* Fixed Header Styling */
+    /* Fixed Header */
     .header {
       position: absolute;
       width: 100%;
-      max-width: 488px;
-      height: 35px;
-      top: 20px;
-      left: 50%;
-      transform: translateX(-50%);
-      font-size: 30px;
+      top: 2%;
+      text-align: center;
+      font-size: 4vw; /* Scales with viewport */
       font-weight: bold;
       font-family: "Courier New", Courier, monospace;
       color: white;
-      text-align: center;
-      user-select: none;
       z-index: 1000;
-      white-space: nowrap;
-      overflow: hidden;
     }
 
-    /* Container for images */
+    /* Image Container */
     .image-container {
-      position: relative;
+      position: absolute;
       width: 100vw;
       height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 5vh;
     }
 
-    /* Common Size for Icons */
+    /* Icons */
     .thermal, .electrical, .chemical {
-      position: absolute;
-      width: 150px !important;
-      height: 150px !important;
+      width: 20vw;  /* Resize relative to screen */
+      height: auto; /* Maintain aspect ratio */
+      max-width: 150px;
       cursor: pointer;
-      user-select: none;
-      touch-action: none;
       transition: transform 0.2s ease;
-      z-index: 1000;
     }
 
-    /* Individual Image Styling */
-    .thermal { border: 4px solid red; border-radius: 27px; top: 134px; left: 60px; }
-    .electrical { border: 4px solid blue; border-radius: 27px; top: 134px; left: 274px; }
-    .chemical { border: 4px solid green; border-radius: 27px; top: 332px; left: 170px; }
-
-    /* CCSO Disclaimer */
     .ccso {
+      width: 80vw;
+      max-width: 400px;
       position: absolute;
-      width: 480px !important;
-      height: 50px !important;
-      border: 0px solid black;
-      top: 695px; left: 2px;
-      user-select: none;
-      z-index: 1000;
-      opacity: 1;
+      bottom: 5%;
+    }
+
+    /* Icon Expansion on Click */
+    .thermal:active, .electrical:active, .chemical:active {
+      transform: scale(1.1);
     }
   </style>
 </head>
 <body>
-  <!-- Flames GIF Background -->
-  <div class="viewport-container">
-    <img src="https://raw.githubusercontent.com/concussed8/Android-App/main/images/flames.gif" alt="Flames Background">
-  </div>
 
   <!-- Fixed Header -->
   <div class="header">Burn Management Checklist</div>
@@ -122,5 +89,6 @@
     </a>
     <img src="https://raw.githubusercontent.com/concussed8/Android-App/main/images/CCSO_disclaimer.jpg" class="ccso" id="ccso" alt="CCSO Disclaimer">
   </div>
+
 </body>
 </html>
