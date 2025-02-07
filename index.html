@@ -2,15 +2,15 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=488, height=985, initial-scale=1.0, user-scalable=no">
+  <meta name="viewport" content="width=device-width, height=device-height, initial-scale=1.0, user-scalable=no">
   <title>Burn Management Checklist</title>
   <style>
     /* Fix viewport size */
     html, body {
       margin: 0;
       padding: 0;
-      width: 488px;
-      height: 985px;
+      width: 100vw;
+      height: 100vh;
       background-color: #fff;
       overflow: hidden; /* Prevents unwanted scrolling */
       position: relative;
@@ -31,8 +31,8 @@
     /* Flames GIF as Background */
     .viewport-container {
       position: absolute;
-      width: 100%;
-      height: 100%;
+      width: 100vw;
+      height: 100vh;
       top: 0;
       left: 0;
       z-index: -1; /* Keeps it behind all other elements */
@@ -47,7 +47,6 @@
     .header {
       position: absolute;
       width: 100%;
-      max-width: 488px;
       height: 35px;
       top: 20px;
       left: 50%;
@@ -67,10 +66,8 @@
     /* Container for images */
     .image-container {
       position: relative;
-      width: 100%;
-      height: 100%;
-      max-width: 488px;
-      max-height: 985px;
+      width: 100vw;
+      height: 100vh;
     }
 
     /* Common Size for Icons */
@@ -86,9 +83,9 @@
     }
 
     /* Individual Image Styling */
-    .thermal { border: 4px solid red; border-radius: 27px; /* top: 134px; left: 60px; */ }
-    .electrical { border: 4px solid blue; border-radius: 27px; /* top: 134px; left: 274px; */ }
-    .chemical { border: 4px solid green; border-radius: 27px; /* top: 332px; left: 170px; */ }
+    .thermal { border: 4px solid red; border-radius: 27px; top: 134px; left: 60px; }
+    .electrical { border: 4px solid blue; border-radius: 27px; top: 134px; left: 274px; }
+    .chemical { border: 4px solid green; border-radius: 27px; top: 332px; left: 170px; }
 
     /* CCSO Disclaimer */
     .ccso {
@@ -96,7 +93,7 @@
       width: 480px !important;
       height: 50px !important;
       border: 0px solid black;
-      /* top: 695px; left: 2px; */
+      top: 695px; left: 2px;
       user-select: none;
       z-index: 1000;
       opacity: 1;
