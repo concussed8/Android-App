@@ -5,16 +5,20 @@
   <meta name="viewport" content="width=device-width, height=device-height, initial-scale=1.0, user-scalable=no">
   <title>Burn Management Checklist</title>
   <style>
-    /* Fullscreen Viewport */
+    /* Ensure the body fills the viewport */
     html, body {
       margin: 0;
       padding: 0;
       width: 100vw;
       height: 100vh;
+      background-color: #fff;
       overflow: hidden; /* Prevents scrolling */
       position: relative;
-      background: url('https://raw.githubusercontent.com/concussed8/Android-App/main/images/flames.gif') no-repeat center center;
-      background-size: cover;
+      border: 4px solid red; /* For alignment check */
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
     }
 
     /* Prevent landscape mode */
@@ -24,80 +28,106 @@
       }
     }
 
-    /* Fixed Header */
-    .header {
-      position: absolute;
-      width: 100%;
-      top: 2%;
-      text-align: center;
-      font-size: 4vw; /* Responsive scaling */
-      font-weight: bold;
-      font-family: "Courier New", Courier, monospace;
-      color: white;
-      z-index: 1000;
-    }
-
-    /* Image Container */
-    .image-container {
+    /* Flames GIF Background */
+    .viewport-container {
       position: absolute;
       width: 100vw;
       height: 100vh;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: flex-start;
-      padding-top: 10vh; /* Add spacing to prevent overlap */
-      gap: 5vh;
+      top: 0;
+      left: 0;
+      z-index: -1; /* Keeps it behind all other elements */
     }
 
-    /* Common Image Styling */
-    .thermal, .electrical, .chemical {
-      width: 20vw;  /* Resize relative to screen */
-      height: auto; /* Maintain aspect ratio */
-      max-width: 150px;
-      cursor: pointer;
-      transition: transform 0.2s ease;
-      touch-action: none;
+    .viewport-container img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+
+    /* Fixed Header Styling */
+    .header {
+      position: absolute;
+      width: 100%;
+      max-width: 488px;
+      height: 40px;
+      top: 5%;
+      left: 50%;
+      transform: translateX(-50%);
+      font-size: 28px;
+      font-weight: bold;
+      font-family: "Courier New", Courier, monospace;
+      color: white;
+      text-align: center;
       user-select: none;
+      z-index: 1000;
+      white-space: nowrap;
+      overflow: hidden;
     }
 
-    /* Individual Image Styling with Borders & Opacity */
+    /* Container for images */
+    .image-container {
+      position: relative;
+      width: 100vw;
+      height: 100vh;
+    }
+
+    /* Common Size for Icons */
+    .thermal, .electrical, .chemical {
+      position: absolute;
+      width: 150px;
+      height: 150px;
+      cursor: pointer;
+      user-select: none;
+      touch-action: none;
+      transition: transform 0.2s ease;
+      z-index: 1000;
+    }
+
+    /* Individual Image Styling */
     .thermal {
       border: 4px solid red;
       border-radius: 27px;
-      opacity: 0.9;
+      top: 134px;
+      left: 60px;
     }
 
     .electrical {
       border: 4px solid blue;
       border-radius: 27px;
-      opacity: 0.9;
+      top: 134px;
+      left: 274px;
     }
 
     .chemical {
       border: 4px solid green;
       border-radius: 27px;
-      opacity: 0.9;
+      top: 332px;
+      left: 170px;
     }
 
     /* CCSO Disclaimer */
     .ccso {
       width: 80vw;
-      max-width: 400px;
+      max-width: 450px;
       position: absolute;
       bottom: 3%;
+      left: 50%;
+      transform: translateX(-50%);
       border: 2px solid black;
       opacity: 1;
-      display: block; /* Ensures it's visible */
+      display: block;
+      padding: 10px;
+      margin-bottom: 20px;
     }
 
-    /* Tap Effect on Icons */
-    .thermal:active, .electrical:active, .chemical:active {
-      transform: scale(1.1);
-    }
   </style>
 </head>
 <body>
+
+  <!-- Flames GIF Background -->
+  <div class="viewport-container">
+    <img src="https://raw.githubusercontent.com/concussed8/Android-App/main/images/flames.gif" alt="Flames Background">
+  </div>
 
   <!-- Fixed Header -->
   <div class="header">Burn Management Checklist</div>
@@ -113,10 +143,41 @@
     <a href="https://github-chemical" target="_blank">
       <img src="https://raw.githubusercontent.com/concussed8/Android-App/main/images/chemical.jpg" class="chemical" id="chemical" alt="Chemical">
     </a>
+    <img src="https://raw.githubusercontent.com/concussed8/Android-App/main/images/CCSO_disclaimer.jpg" class="ccso" id="ccso" alt="CCSO Disclaimer">
   </div>
 
-  <!-- CCSO Disclaimer (Now Visible) -->
-  <img src="https://raw.githubusercontent.com/concussed8/Android-App/main/images/CCSO_disclaimer.jpg" class="ccso" id="ccso" alt="CCSO Disclaimer">
+  <script>
+    // Enable Pull-to-Refresh in Portrait Mode
+    let lastY = 0;
+    document.addEventListener("touchstart", (e) => { lastY = e.touches[0].clientY; });
+    document.addEventListener("touchend", (e) => {
+      let currentY = e.changedTouches[0].clientY;
+      if (currentY - lastY > 100) location.reload(); // Pull-down refresh
+    });
+
+    // Prevent landscape mode but allow refresh
+    function checkOrientation() {
+      if (window.matchMedia("(orientation: landscape)").matches) {
+        document.body.innerHTML = "<div style='display:flex;justify-content:center;align-items:center;height:100vh;font-size:24px;color:red;'>Return to Portrait Mode</div>";
+      } else {
+        location.reload();
+      }
+    }
+
+    window.addEventListener("resize", checkOrientation);
+    window.addEventListener("orientationchange", checkOrientation);
+
+    // Image Click Animation Effect
+    document.querySelectorAll(".thermal, .electrical, .chemical").forEach(img => {
+      img.addEventListener("click", () => {
+        img.style.transform = "scale(1.1)"; // Expand slightly
+        setTimeout(() => {
+          img.style.transform = "scale(1)";
+        }, 200);
+      });
+    });
+
+  </script>
 
 </body>
 </html>
