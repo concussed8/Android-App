@@ -26,9 +26,11 @@
       }
     }
 
-    /* Header Styling */
+    /* Fixed Header Styling (No Resizing) */
     .header {
       position: absolute;
+      width: 300px; /* Fixed width */
+      height: 50px; /* Fixed height */
       top: 20px;
       left: 50%;
       transform: translateX(-50%);
@@ -54,17 +56,17 @@
       margin-top: 60px; /* Adjust spacing below header */
     }
 
-    /* Common Image Styling (Ensures no manual resizing) */
+    /* Common Image Styling (Fixed Sizes) */
     .draggable {
       position: absolute;
       cursor: grab;
       user-select: none;
     }
 
-    /* Individual Image Styling (Fixed Sizes) */
+    /* Individual Image Styling (Fixed Sizes + No Resizing) */
     .thermal {
-      width: 120px !important;
-      height: 120px !important;
+      width: 120px;
+      height: 120px;
       border: 4px solid red;
       border-radius: 10px;
       top: 100px;
@@ -72,8 +74,8 @@
     }
 
     .electrical {
-      width: 140px !important;
-      height: 140px !important;
+      width: 140px;
+      height: 140px;
       border: 4px solid blue;
       border-radius: 12px;
       top: 250px;
@@ -81,8 +83,8 @@
     }
 
     .chemical {
-      width: 160px !important;
-      height: 160px !important;
+      width: 160px;
+      height: 160px;
       border: 4px solid green;
       border-radius: 15px;
       top: 400px;
@@ -90,8 +92,8 @@
     }
 
     .ccso {
-      width: 180px !important;
-      height: 180px !important;
+      width: 180px;
+      height: 180px;
       border: 4px solid black;
       border-radius: 20px;
       top: 550px;
@@ -152,7 +154,7 @@
     // Make elements draggable
     document.querySelectorAll(".draggable").forEach(element => {
       let isDragging = false;
-      let offsetX, offsetY;
+      let startX, startY, elementX, elementY;
 
       element.addEventListener("mousedown", startDragging);
       element.addEventListener("touchstart", startDragging, { passive: false });
@@ -161,9 +163,12 @@
         e.preventDefault();
         isDragging = true;
 
+        // Get current position
         const rect = element.getBoundingClientRect();
-        offsetX = (e.clientX || e.touches[0].clientX) - rect.left;
-        offsetY = (e.clientY || e.touches[0].clientY) - rect.top;
+        startX = e.clientX || e.touches[0].clientX;
+        startY = e.clientY || e.touches[0].clientY;
+        elementX = rect.left;
+        elementY = rect.top;
 
         document.addEventListener("mousemove", drag);
         document.addEventListener("mouseup", stopDragging);
@@ -175,19 +180,22 @@
         if (!isDragging) return;
         e.preventDefault();
 
-        let x = (e.clientX || e.touches[0].clientX) - offsetX;
-        let y = (e.clientY || e.touches[0].clientY) - offsetY;
+        let moveX = (e.clientX || e.touches[0].clientX) - startX;
+        let moveY = (e.clientY || e.touches[0].clientY) - startY;
 
-        // Ensure it stays within the viewport
-        x = Math.max(0, Math.min(window.innerWidth - element.clientWidth, x));
-        y = Math.max(0, Math.min(window.innerHeight - element.clientHeight, y));
+        let newX = elementX + moveX;
+        let newY = elementY + moveY;
 
-        element.style.left = `${x}px`;
-        element.style.top = `${y}px`;
+        // Prevent dragging outside viewport
+        newX = Math.max(0, Math.min(window.innerWidth - element.clientWidth, newX));
+        newY = Math.max(0, Math.min(window.innerHeight - element.clientHeight, newY));
+
+        element.style.left = `${newX}px`;
+        element.style.top = `${newY}px`;
 
         // Update position display
         document.getElementById("positionDisplay").textContent = 
-          `${element.id}: top: ${Math.round(y)}px; left: ${Math.round(x)}px;`;
+          `${element.id}: top: ${Math.round(newY)}px; left: ${Math.round(newX)}px;`;
       }
 
       function stopDragging() {
