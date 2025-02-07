@@ -60,15 +60,16 @@
       display: flex;
       flex-direction: column;
       align-items: center;
-      justify-content: center;
+      justify-content: flex-start;
       width: 300px;
       padding: 15px;
       border: 6px solid red;
       border-radius: 8px;
 background-color: rgba(255, 255, 255, 1); /* White background with opacity */
   opacity: .9; /* Adjust this to control transparency (0 = invisible, 1 = fully visible) */
-      margin: 0px;
-      margin-top: 20px;
+    padding-top: 10vh; /* Add spacing to prevent overlap */
+      gap: 5vh;
+      margin-top: 25px; /* Increase this value as needed */
       z-index: 1000;
     }
 
