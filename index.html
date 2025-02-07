@@ -2,21 +2,33 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=488, height=985, initial-scale=1.0, user-scalable=yes">
+  <meta name="viewport" content="width=device-width, height=device-height, initial-scale=1, maximum-scale=1, user-scalable=no">
   <title>Burn Management Checklist</title>
   <style>
     /* Ensure the body fills the viewport */
     body {
       margin: 0;
       padding: 0;
-      width: 488px; /* Fixed Width */
-      height: 985px; /* Fixed Height */
+      width: 100vw;
+      height: 100vh;
       background-color: #fff;
       overflow-y: auto; /* Allows pull-to-refresh */
-      position: relative;
-      border: 4px solid red; /* RED BORDER for Positioning */
       display: flex;
       flex-direction: column;
+      align-items: center;
+      justify-content: center;
+    }
+
+    /* Force a 488x985 aspect ratio */
+    .viewport-wrapper {
+      position: relative;
+      width: 488px;
+      height: 985px;
+      max-width: 100vw;
+      max-height: 100vh;
+      border: 4px solid red; /* Red border for positioning */
+      overflow: hidden;
+      display: flex;
       align-items: center;
       justify-content: center;
     }
@@ -58,7 +70,6 @@
       font-family: "Courier New", Courier, monospace;
       color: white;
       border: 0px solid white;
-      border-radius: 8px;
       background: none;
       user-select: none;
       z-index: 1000;
@@ -146,30 +157,32 @@
 </head>
 <body>
 
-  <!-- Flames GIF Background -->
-  <div class="viewport-container">
-    <img src="https://raw.githubusercontent.com/concussed8/Android-App/main/images/flames.gif" alt="Flames Background">
+  <div class="viewport-wrapper">
+    <!-- Flames GIF Background -->
+    <div class="viewport-container">
+      <img src="https://raw.githubusercontent.com/concussed8/Android-App/main/images/flames.gif" alt="Flames Background">
+    </div>
+
+    <!-- Fixed Header -->
+    <div class="header">Burn Management Checklist</div>
+
+    <!-- Image Container -->
+    <div class="image-container">
+      <a href="https://github-thermal" target="_blank">
+        <img src="https://raw.githubusercontent.com/concussed8/Android-App/main/images/thermal.jpg" class="thermal" id="thermal" alt="Thermal">
+      </a>
+      <a href="https://github-electrical" target="_blank">
+        <img src="https://raw.githubusercontent.com/concussed8/Android-App/main/images/electrical.jpg" class="electrical" id="electrical" alt="Electrical">
+      </a>
+      <a href="https://github-chemical" target="_blank">
+        <img src="https://raw.githubusercontent.com/concussed8/Android-App/main/images/chemical.jpg" class="chemical" id="chemical" alt="Chemical">
+      </a>
+      <img src="https://raw.githubusercontent.com/concussed8/Android-App/main/images/CCSO_disclaimer.jpg" class="ccso" id="ccso" alt="CCSO Disclaimer">
+    </div>
+
+    <!-- Position Display -->
+    <div class="position-display" id="positionDisplay"></div>
   </div>
-
-  <!-- Fixed Header -->
-  <div class="header">Burn Management Checklist</div>
-
-  <!-- Image Container -->
-  <div class="image-container">
-    <a href="https://github-thermal" target="_blank">
-      <img src="https://raw.githubusercontent.com/concussed8/Android-App/main/images/thermal.jpg" class="thermal" id="thermal" alt="Thermal">
-    </a>
-    <a href="https://github-electrical" target="_blank">
-      <img src="https://raw.githubusercontent.com/concussed8/Android-App/main/images/electrical.jpg" class="electrical" id="electrical" alt="Electrical">
-    </a>
-    <a href="https://github-chemical" target="_blank">
-      <img src="https://raw.githubusercontent.com/concussed8/Android-App/main/images/chemical.jpg" class="chemical" id="chemical" alt="Chemical">
-    </a>
-    <img src="https://raw.githubusercontent.com/concussed8/Android-App/main/images/CCSO_disclaimer.jpg" class="ccso" id="ccso" alt="CCSO Disclaimer">
-  </div>
-
-  <!-- Position Display -->
-  <div class="position-display" id="positionDisplay"></div>
 
   <script>
     // Enable Pull-to-Refresh in Portrait Mode
