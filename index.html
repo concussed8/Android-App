@@ -80,21 +80,21 @@
       border-radius: 27px;
       opacity: 0.9;
     }
-/* CCSO Disclaimer */
-.ccso {
-  width: 80vw; /* Scales with screen */
-  max-width: 450px; /* Prevents oversized display */
-  position: absolute;
-  bottom: 3%; /* Adjust this to move it up or down */
-  left: 50%;
-  transform: translateX(-50%);
-  border: 0px solid black;
-  opacity: .9; /* Fully visible */
-  display: block; /* Ensures it remains visible */
-  padding: 10px; /* Adds space inside */
-  margin-bottom: 85px; /* Adjust this to move it up */
-}
 
+    /* CCSO Disclaimer */
+    .ccso {
+      width: 80vw; /* Scales with screen */
+      max-width: 450px; /* Prevents oversized display */
+      position: absolute;
+      bottom: 3%; /* Adjust this to move it up or down */
+      left: 50%;
+      transform: translateX(-50%);
+      border: 0px solid black;
+      opacity: .9; /* Fully visible */
+      display: block; /* Ensures it remains visible */
+      padding: 10px; /* Adds space inside */
+      margin-bottom: 85px; /* Adjust this to move it up */
+    }
 
     /* Tap Effect on Icons */
     .thermal:active, .electrical:active, .chemical:active {
@@ -109,22 +109,41 @@
 
   <!-- Image Container -->
   <div class="image-container">
-    <a href="https://github-thermal" target="_blank">
-      <img src="https://raw.githubusercontent.com/concussed8/Android-App/main/pages/age_weight/age_weight.html
-" class="thermal" id="thermal" alt="Thermal">
-    </a>
-    <a href="https://github-electrical" target="_blank">
-      <img src="https://raw.githubusercontent.com/concussed8/Android-App/main/pages/age_weight/age_weight.html
-" class="electrical" id="electrical" alt="Electrical">
-    </a>
-    <a href="https://github-chemical" target="_blank">
-      <img src="https://raw.githubusercontent.com/concussed8/Android-App/main/pages/age_weight/age_weight.html
-" class="chemical" id="chemical" alt="Chemical">
-    </a>
+    <img src="https://raw.githubusercontent.com/concussed8/Android-App/main/images/thermal.jpg" 
+         class="thermal" id="thermal" alt="Thermal" onclick="redirectToPage('thermal')">
+
+    <img src="https://raw.githubusercontent.com/concussed8/Android-App/main/images/electrical.jpg" 
+         class="electrical" id="electrical" alt="Electrical" onclick="redirectToPage('electrical')">
+
+    <img src="https://raw.githubusercontent.com/concussed8/Android-App/main/images/chemical.jpg" 
+         class="chemical" id="chemical" alt="Chemical" onclick="redirectToPage('chemical')">
   </div>
 
   <!-- CCSO Disclaimer (Now Visible) -->
-  <img src="https://raw.githubusercontent.com/concussed8/Android-App/main/images/CCSO_disclaimer.jpg" class="ccso" id="ccso" alt="CCSO Disclaimer">
+  <img src="https://raw.githubusercontent.com/concussed8/Android-App/main/images/CCSO_disclaimer.jpg" 
+       class="ccso" id="ccso" alt="CCSO Disclaimer">
+
+  <script>
+    // Function to set session cookie and redirect
+    function redirectToPage(iconType) {
+      document.cookie = `selectedIcon=${iconType}; path=/; samesite=strict; max-age=3600`; // 1-hour session
+      window.location.href = "https://raw.githubusercontent.com/concussed8/Android-App/main/pages/age_weight/age_weight.html";
+    }
+
+    // Retrieve selected icon from cookies (Optional Debugging)
+    function getSession() {
+      const cookies = document.cookie.split('; ').reduce((acc, cookie) => {
+        const [key, value] = cookie.split('=');
+        acc[key] = value;
+        return acc;
+      }, {});
+
+      return cookies.selectedIcon || null;
+    }
+
+    // Debug: Show selected icon in console
+    console.log("Selected Icon:", getSession());
+  </script>
 
 </body>
 </html>
