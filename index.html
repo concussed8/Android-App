@@ -14,7 +14,7 @@
       align-items: center;
       justify-content: center;
       height: 100vh;
-      background-color: #fff; /* Light Green Background */
+      background-color: #fff; /* White Background */
       overflow-y: auto; /* Allows pull-to-refresh */
       position: relative;
     }
@@ -54,17 +54,17 @@
       margin-top: 60px; /* Adjust spacing below header */
     }
 
-    /* Common Image Styling */
+    /* Common Image Styling (Ensures no manual resizing) */
     .draggable {
       position: absolute;
       cursor: grab;
       user-select: none;
     }
 
-    /* Individual Image Styling */
+    /* Individual Image Styling (Fixed Sizes) */
     .thermal {
-      width: 120px;
-      height: 120px;
+      width: 120px !important;
+      height: 120px !important;
       border: 4px solid red;
       border-radius: 10px;
       top: 100px;
@@ -72,8 +72,8 @@
     }
 
     .electrical {
-      width: 140px;
-      height: 140px;
+      width: 140px !important;
+      height: 140px !important;
       border: 4px solid blue;
       border-radius: 12px;
       top: 250px;
@@ -81,8 +81,8 @@
     }
 
     .chemical {
-      width: 160px;
-      height: 160px;
+      width: 160px !important;
+      height: 160px !important;
       border: 4px solid green;
       border-radius: 15px;
       top: 400px;
@@ -90,8 +90,8 @@
     }
 
     .ccso {
-      width: 180px;
-      height: 180px;
+      width: 180px !important;
+      height: 180px !important;
       border: 4px solid black;
       border-radius: 20px;
       top: 550px;
@@ -175,13 +175,12 @@
         if (!isDragging) return;
         e.preventDefault();
 
-        const parentRect = element.parentElement.getBoundingClientRect();
-        let x = (e.clientX || e.touches[0].clientX) - offsetX - parentRect.left;
-        let y = (e.clientY || e.touches[0].clientY) - offsetY - parentRect.top;
+        let x = (e.clientX || e.touches[0].clientX) - offsetX;
+        let y = (e.clientY || e.touches[0].clientY) - offsetY;
 
-        // Prevent dragging outside parent container
-        x = Math.max(0, Math.min(x, parentRect.width - element.clientWidth));
-        y = Math.max(0, Math.min(y, parentRect.height - element.clientHeight));
+        // Ensure it stays within the viewport
+        x = Math.max(0, Math.min(window.innerWidth - element.clientWidth, x));
+        y = Math.max(0, Math.min(window.innerHeight - element.clientHeight, y));
 
         element.style.left = `${x}px`;
         element.style.top = `${y}px`;
