@@ -2,15 +2,15 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=488, height=985, initial-scale=1.0, user-scalable=yes">
+  <meta name="viewport" content="width=device-width, height=device-height, initial-scale=1, maximum-scale=1, user-scalable=no">
   <title>Burn Management Checklist</title>
   <style>
     /* Ensure the body fills the viewport */
     body {
       margin: 0;
       padding: 0;
-      width: 488px; /* Fixed Width */
-      height: 985px; /* Fixed Height */
+      width: 100vw; /* Ensures it fits the device width */
+      height: 100vh; /* Ensures it fits the device height */
       background-color: #fff;
       overflow-y: auto; /* Allows pull-to-refresh */
       position: relative;
@@ -31,8 +31,8 @@
     /* Flames GIF inside viewport */
     .viewport-container {
       position: absolute;
-      width: 100%;
-      height: 100%;
+      width: 100vw;
+      height: 100vh;
       top: 0;
       left: 0;
       z-index: -1; /* Keeps it behind all other elements */
