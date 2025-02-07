@@ -1,0 +1,202 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, height=device-height, initial-scale=1.0, user-scalable=no">
+  <title>Burn Management Checklist</title>
+  <style>
+    /* Ensure the body fills the viewport */
+    html, body {
+      margin: 0;
+      padding: 0;
+      width: 100vw;
+      height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      overflow: hidden;
+    }
+
+    /* Prevent landscape mode */
+    @media screen and (orientation: landscape) {
+      body {
+        display: none;
+      }
+    }
+
+    /* Background GIF */
+    .viewport-container {
+      position: absolute;
+      width: 100vw;
+      height: 100vh;
+      top: 0;
+      left: 0;
+      z-index: -1;
+    }
+
+    .viewport-container img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+
+      /* Fixed Header */
+    .header {
+      position: absolute;
+      width: 100%;
+      top: 2%;
+      text-align: center;
+      font-size: 8vw; /* Responsive scaling */
+      font-weight: bold;
+      font-family: "Courier New", Courier, monospace;
+      color: white;
+      z-index: 1000;
+    }
+
+    /* Input Section */
+    .input-section {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      width: 300px;
+      padding: 15px;
+      border: 6px solid red;
+      border-radius: 8px;
+background-color: rgba(255, 255, 255, 1); /* White background with opacity */
+  opacity: .9; /* Adjust this to control transparency (0 = invisible, 1 = fully visible) */
+      margin: 10px;
+      z-index: 1000;
+    }
+
+    /* Label Styling */
+    .label {
+  font-family: "Courier New", Courier, monospace;
+  font-size: 24px;
+  font-weight: bold;
+  color: black;
+  background-color: rgba(255, 255, 255, 1); /* White background with opacity */
+  padding: 5px; /* Adds padding for spacing */
+  border-radius: 5px; /* Optional: Rounds corners */
+  opacity: 1; /* Adjust this to control transparency (0 = invisible, 1 = fully visible) */
+  margin-bottom: 8px;
+}
+
+
+    /* Input Fields & Select Boxes */
+    .input-box, .select-box {
+      font-family: "Courier New", Courier, monospace;
+      font-size: 24px;
+      font-weight: bold;
+      color: black;
+      text-align: center;
+      width: 100%;
+      padding: 10px;
+      border: 3px solid black;
+      border-radius: 5px;
+      background-color: transparent;
+      outline: none;
+    }
+
+    /* Placeholder Styling */
+    .input-box::placeholder {
+      color: grey;
+      font-weight: normal;
+    }
+
+/* CCSO Disclaimer */
+    /* Disclaimer Section */
+    .disclaimer-container {
+      position: absolute;
+      bottom: 20px;
+      width: 480px;
+      height: 80px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      padding: 55px;
+      z-index: 1000;
+    }
+
+
+    .disclaimer-container img {
+      width: 100%;
+      height: auto;
+    }
+
+  </style>
+</head>
+<body>
+
+  <!-- Flames GIF Background -->
+  <div class="viewport-container">
+    <img src="https://raw.githubusercontent.com/concussed8/Android-App/main/images/flames.gif" alt="Flames Background">
+  </div>
+
+  <!-- Fixed Header -->
+  <div class="header">Burn Management Checklist</div>
+
+  <!-- Input Section -->
+  <div class="input-section">
+    <label class="label" for="sex">Sex:</label>
+    <select id="sex" class="select-box">
+      <option value="" selected disabled>Select</option>
+      <option value="Male">Male</option>
+      <option value="Female">Female</option>
+    </select>
+  </div>
+
+  <div class="input-section">
+    <label class="label" for="age">Age:</label>
+    <input type="tel" id="age" class="input-box" placeholder="YEARS" maxlength="3">
+  </div>
+
+  <div class="input-section">
+    <label class="label" for="weight">Weight:</label>
+    <input type="tel" id="weight" class="input-box" placeholder="Kg" maxlength="3">
+  </div>
+
+  <!-- Disclaimer Section -->
+  <div class="disclaimer-container">
+    <img src="https://raw.githubusercontent.com/concussed8/Android-App/main/images/CCSO_disclaimer.jpg" alt="CCSO Disclaimer">
+  </div>
+
+  <script>
+    // Restrict Age and Weight Fields to Numbers Only
+    document.querySelectorAll(".input-box").forEach(input => {
+      input.addEventListener("input", function () {
+        this.value = this.value.replace(/\D/g, ''); // Remove non-numeric characters
+      });
+
+      // Prevent non-numeric key presses
+      input.addEventListener("keypress", function (e) {
+        if (!/[0-9]/.test(e.key)) {
+          e.preventDefault();
+        }
+      });
+    });
+
+    // Enable Pull-to-Refresh in Portrait Mode
+    let lastY = 0;
+    document.addEventListener("touchstart", (e) => { lastY = e.touches[0].clientY; });
+    document.addEventListener("touchend", (e) => {
+      let currentY = e.changedTouches[0].clientY;
+      if (currentY - lastY > 100) location.reload(); // Pull-down refresh
+    });
+
+    // Prevent landscape mode but allow refresh
+    function checkOrientation() {
+      if (window.matchMedia("(orientation: landscape)").matches) {
+        document.body.innerHTML = "<div style='display:flex;justify-content:center;align-items:center;height:100vh;font-size:24px;color:red;'>Return to Portrait Mode</div>";
+      } else {
+        location.reload();
+      }
+    }
+
+    window.addEventListener("resize", checkOrientation);
+    window.addEventListener("orientationchange", checkOrientation);
+  </script>
+
+</body>
+</html>
