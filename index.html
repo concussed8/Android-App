@@ -79,17 +79,21 @@
       border-radius: 27px;
       opacity: 0.9;
     }
+/* CCSO Disclaimer */
+.ccso {
+  width: 80vw; /* Scales with screen */
+  max-width: 450px; /* Prevents oversized display */
+  position: absolute;
+  bottom: 3%; /* Adjust this to move it up or down */
+  left: 50%;
+  transform: translateX(-50%);
+  border: 2px solid black;
+  opacity: 1; /* Fully visible */
+  display: block; /* Ensures it remains visible */
+  padding: 10px; /* Adds space inside */
+  margin-bottom: 20px; /* Adjust this to move it up */
+}
 
-    /* CCSO Disclaimer */
-    .ccso {
-      width: 80vw;
-      max-width: 400px;
-      position: absolute;
-      bottom: 3%;
-      border: 2px solid black;
-      opacity: 1;
-      display: block; /* Ensures it's visible */
-    }
 
     /* Tap Effect on Icons */
     .thermal:active, .electrical:active, .chemical:active {
