@@ -2,10 +2,10 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, height=100vh, initial-scale=1.0, user-scalable=no">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
   <title>Burn Management Checklist</title>
   <style>
-    /* Ensure the body fills the full screen without zoom issues */
+    /* Ensure the body fills the viewport */
     body {
       margin: 0;
       padding: 0;
@@ -29,27 +29,35 @@
       }
     }
 
-    /* Flames GIF Background */
+    /* Flames GIF inside viewport (Now Fits All Mobile Screens) */
     .viewport-container {
       position: absolute;
-      width: 100vw;
-      height: 100vh;
+      width: 100vw;  /* Full screen width */
+      height: 100vh; /* Full screen height */
       top: 0;
       left: 0;
-      z-index: -1;
+      z-index: -1; /* Keeps it behind all other elements */
     }
 
     .viewport-container img {
       width: 100%;
       height: 100%;
-      object-fit: cover;
+      object-fit: cover; /* Ensures the flames cover the entire viewport */
+    }
+
+    /* Bring all elements to the front */
+    .header, .image-container, .position-display {
+      position: relative;
+      z-index: 1000; /* Ensures everything is above the flames background */
     }
 
     /* Fixed Header Styling */
     .header {
       position: absolute;
-      width: 90%;
+      width: 100%;
       max-width: 488px;
+      min-width: 450px;
+      max-height: 35px;
       height: 35px;
       top: 20px;
       left: 50%;
@@ -58,9 +66,11 @@
       font-weight: bold;
       font-family: "Courier New", Courier, monospace;
       color: white;
+      padding: 0px;
       border: 4px solid white;
       border-radius: 8px;
-      background: none;
+      cursor: grab;
+      background: none; /* Removed background */
       user-select: none;
       z-index: 1000;
       text-align: center;
@@ -80,46 +90,44 @@
     /* Common Size for Thermal, Electrical, and Chemical */
     .thermal, .electrical, .chemical {
       position: absolute;
-      width: 150px;
-      height: 150px;
+      width: 150px !important;
+      height: 150px !important;
+      cursor: pointer;
       user-select: none;
       touch-action: none;
+      transition: transform 0.2s ease; /* Smooth highlight effect */
       z-index: 1000;
-      cursor: pointer;
-      transition: transform 0.2s, box-shadow 0.2s;
     }
 
-    /* Individual Image Styling */
-    .thermal { border: 4px solid red; border-radius: 27px; top: 134px; left: 60px; opacity: .9; }
+    /* Individual Image Styling with Opacity Control */
+    .thermal { border: 4px solid red; border-radius: 27px; top: 134px; left: 60px; opacity: 0.9; }
     .electrical { border: 4px solid blue; border-radius: 27px; top: 134px; left: 274px; opacity: 0.9; }
     .chemical { border: 4px solid green; border-radius: 27px; top: 332px; left: 170px; opacity: 0.9; }
 
-    /* CCSO Disclaimer */
+    /* Highlight Effect When Clicked */
+    .thermal:active, .electrical:active, .chemical:active {
+      transform: scale(1.1); /* Slightly enlarges the image */
+    }
+
+    /* CCSO Disclaimer (Independent Size & Styling) */
     .ccso {
       position: absolute;
-      width: 90%;
-      max-width: 480px;
-      height: 50px;
+      width: 480px !important;
+      height: 50px !important;
       max-height: 75px;
       border: 0px solid black;
       border-radius: 0px;
       top: 695px;
-      left: 50%;
-      transform: translateX(-50%);
+      left: 2px;
+      cursor: grab;
       user-select: none;
       touch-action: none;
       z-index: 1000;
       opacity: 1;
     }
 
-    /* Click Effect */
-    .clicked {
-      transform: scale(1.1);
-      box-shadow: 0 0 10px 5px white;
-    }
-
-    /* Position Display (Commented Out) */
-    /* .position-display {
+    /* Position Display */
+    .position-display {
       position: absolute;
       bottom: 10px;
       left: 50%;
@@ -130,8 +138,7 @@
       padding: 10px;
       border-radius: 5px;
       z-index: 1000;
-    } */
-
+    }
   </style>
 </head>
 <body>
@@ -142,57 +149,28 @@
   </div>
 
   <!-- Fixed Header -->
-  <div class="header" id="header">Burn Management Checklist</div>
+  <div class="header draggable" id="header">Burn Management Checklist</div>
 
   <!-- Image Container -->
   <div class="image-container">
     <a href="https://github-thermal" target="_blank">
-      <img src="https://raw.githubusercontent.com/concussed8/Android-App/main/images/thermal.jpg" class="thermal click-effect" id="thermal" alt="Thermal">
+      <img src="https://raw.githubusercontent.com/concussed8/Android-App/main/images/thermal.jpg" class="thermal" id="thermal" alt="Thermal">
     </a>
     <a href="https://github-electrical" target="_blank">
-      <img src="https://raw.githubusercontent.com/concussed8/Android-App/main/images/electrical.jpg" class="electrical click-effect" id="electrical" alt="Electrical">
+      <img src="https://raw.githubusercontent.com/concussed8/Android-App/main/images/electrical.jpg" class="electrical" id="electrical" alt="Electrical">
     </a>
     <a href="https://github-chemical" target="_blank">
-      <img src="https://raw.githubusercontent.com/concussed8/Android-App/main/images/chemical.jpg" class="chemical click-effect" id="chemical" alt="Chemical">
+      <img src="https://raw.githubusercontent.com/concussed8/Android-App/main/images/chemical.jpg" class="chemical" id="chemical" alt="Chemical">
     </a>
     <img src="https://raw.githubusercontent.com/concussed8/Android-App/main/images/CCSO_disclaimer.jpg" class="ccso" id="ccso" alt="CCSO Disclaimer">
   </div>
 
-  <!-- Position Display (Commented Out) -->
-  <!-- <div class="position-display" id="positionDisplay">Move an element to see its position</div> -->
+  <!-- Position Display -->
+  <div class="position-display" id="positionDisplay">Move an element to see its position</div>
 
   <script>
-    // Click effect for images
-    document.querySelectorAll(".click-effect").forEach(img => {
-      img.addEventListener("click", function() {
-        this.classList.add("clicked");
-        setTimeout(() => {
-          this.classList.remove("clicked");
-        }, 200);
-      });
-    });
-
-    // Enable Pull-to-Refresh in Portrait Mode
-    let lastY = 0;
-    document.addEventListener("touchstart", (e) => { lastY = e.touches[0].clientY; });
-    document.addEventListener("touchend", (e) => {
-      let currentY = e.changedTouches[0].clientY;
-      if (currentY - lastY > 100) location.reload(); // Pull-down refresh
-    });
-
-    // Prevent landscape mode but allow refresh
-    function checkOrientation() {
-      if (window.matchMedia("(orientation: landscape)").matches) {
-        document.body.innerHTML = "<div style='display:flex;justify-content:center;align-items:center;height:100vh;font-size:24px;color:red;'>Return to Portrait Mode</div>";
-      } else {
-        location.reload();
-      }
-    }
-
-    window.addEventListener("resize", checkOrientation);
-    window.addEventListener("orientationchange", checkOrientation);
-
-    /* COMMENTED OUT: Code for dragging (Enable when needed)
+    /*
+    // Make elements draggable (Commented out per request)
     document.querySelectorAll(".draggable").forEach(element => {
       let isDragging = false;
       let offsetX, offsetY;
@@ -212,9 +190,30 @@
         document.addEventListener("touchmove", drag, { passive: false });
         document.addEventListener("touchend", stopDragging);
       }
+
+      function drag(e) {
+        if (!isDragging) return;
+        e.preventDefault();
+
+        let x = (e.clientX || e.touches[0].clientX) - offsetX;
+        let y = (e.clientY || e.touches[0].clientY) - offsetY;
+
+        x = Math.max(0, Math.min(488 - element.clientWidth, x));
+        y = Math.max(0, Math.min(985 - element.clientHeight, y));
+
+        element.style.left = `${x}px`;
+        element.style.top = `${y}px`;
+      }
+
+      function stopDragging() {
+        isDragging = false;
+        document.removeEventListener("mousemove", drag);
+        document.removeEventListener("mouseup", stopDragging);
+        document.removeEventListener("touchmove", drag);
+        document.removeEventListener("touchend", stopDragging);
+      }
     });
     */
-
   </script>
 
 </body>
