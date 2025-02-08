@@ -243,7 +243,7 @@
     document.getElementById("weight").value = getSessionCookie("weight") || "";
   }
 
-  // Display validation message
+  // Function to show validation message
   function showMessage(message) {
     let msgBox = document.getElementById("messageBox");
     msgBox.innerText = message;
@@ -253,15 +253,15 @@
 
   // Handle Next Button Click (Checks if all fields are filled)
   document.getElementById("nextBtn").addEventListener("click", function () {
-    let sex = getSessionCookie("sex");
-    let age = getSessionCookie("age");
-    let weight = getSessionCookie("weight");
+    let sex = document.getElementById("sex").value.trim();
+    let age = document.getElementById("age").value.trim();
+    let weight = document.getElementById("weight").value.trim();
 
     if (!sex || !age || !weight) {
       showMessage("Please complete Sex, Age, and Weight to continue!");
     } else {
       console.log("All fields completed. Proceeding to the next step...");
-      // Insert your redirection logic here
+      // Insert redirection logic here (e.g., window.location.href = "nextPage.html";)
     }
   });
 
@@ -313,6 +313,8 @@
   // Restore values on page load
   document.addEventListener("DOMContentLoaded", restoreSessionData);
 </script>
+
+
 
 </body>
 </html>
