@@ -39,7 +39,7 @@
 
     /* Image Container */
     .image-container {
-      margin-top: 25px; /* Increase this value as needed */
+      margin-top: 25px; /* Adjust spacing */
       position: absolute;
       width: 100vw;
       height: 100vh;
@@ -47,8 +47,8 @@
       flex-direction: column;
       align-items: center;
       justify-content: flex-start;
-      padding-top: 10vh; /* Add spacing to prevent overlap */
-      gap: 5vh;
+      padding-top: 10vh; /* Prevents overlap */
+      gap: 5vh; /* Space between images */
     }
 
     /* Common Image Styling */
@@ -62,41 +62,26 @@
       user-select: none;
     }
 
-    /* Individual Image Styling with Borders & Opacity */
-    .thermal {
-      border: 4px solid red;
-      border-radius: 27px;
-      opacity: 0.9;
-    }
-
-    .electrical {
-      border: 4px solid blue;
-      border-radius: 27px;
-      opacity: 0.9;
-    }
-
-    .chemical {
-      border: 4px solid green;
-      border-radius: 27px;
-      opacity: 0.9;
-    }
+    /* Individual Image Styling */
+    .thermal { border: 4px solid red; border-radius: 27px; opacity: 0.9; }
+    .electrical { border: 4px solid blue; border-radius: 27px; opacity: 0.9; }
+    .chemical { border: 4px solid green; border-radius: 27px; opacity: 0.9; }
 
     /* CCSO Disclaimer */
     .ccso {
-      width: 80vw; /* Scales with screen */
-      max-width: 375px; /* Prevents oversized display */
+      width: 80vw;
+      max-width: 375px;
       position: absolute;
-      bottom: 3%; /* Adjust this to move it up or down */
+      bottom: 3%;
       left: 50%;
       transform: translateX(-50%);
-      border: 0px solid black;
-      opacity: .9; /* Fully visible */
-      display: block; /* Ensures it remains visible */
-      padding: 10px; /* Adds space inside */
-      margin-bottom: 65px; /* Adjust this to move it up */
+      opacity: 0.9;
+      display: block;
+      padding: 10px;
+      margin-bottom: 65px;
     }
 
-    /* Tap Effect on Icons */
+    /* Tap Effect */
     .thermal:active, .electrical:active, .chemical:active {
       transform: scale(1.1);
     }
@@ -110,40 +95,51 @@
   <!-- Image Container -->
   <div class="image-container">
     <img src="https://raw.githubusercontent.com/concussed8/Android-App/main/images/thermal.jpg" 
-         class="thermal" id="thermal" alt="Thermal" onclick="redirectToPage('thermal')">
+         class="thermal" id="thermal" alt="Thermal" onclick="setCookieAndRedirect('thermal')">
 
     <img src="https://raw.githubusercontent.com/concussed8/Android-App/main/images/electrical.jpg" 
-         class="electrical" id="electrical" alt="Electrical" onclick="redirectToPage('electrical')">
+         class="electrical" id="electrical" alt="Electrical" onclick="setCookieAndRedirect('electrical')">
 
     <img src="https://raw.githubusercontent.com/concussed8/Android-App/main/images/chemical.jpg" 
-         class="chemical" id="chemical" alt="Chemical" onclick="redirectToPage('chemical')">
+         class="chemical" id="chemical" alt="Chemical" onclick="setCookieAndRedirect('chemical')">
   </div>
 
-  <!-- CCSO Disclaimer (Now Visible) -->
+  <!-- CCSO Disclaimer -->
   <img src="https://raw.githubusercontent.com/concussed8/Android-App/main/images/CCSO_disclaimer.jpg" 
        class="ccso" id="ccso" alt="CCSO Disclaimer">
 
   <script>
-    // Function to set session cookie and redirect
-    function redirectToPage(iconType) {
-      document.cookie = `selectedIcon=${iconType}; path=/; samesite=strict; max-age=3600`; // 1-hour session
-      window.location.href =  "https://concussed8.github.io/Android-App/pages/age_weight/age_weight.html";
+    /**
+     * Sets a session cookie and redirects the user.
+     * @param {string} iconType - The selected icon type (thermal, electrical, chemical).
+     */
+    function setCookieAndRedirect(iconType) {
+      // Store the selected icon type as a cookie
+      document.cookie = `selectedIcon=${encodeURIComponent(iconType)}; path=/; SameSite=Lax; max-age=3600; Secure`;
 
+      // Debugging: Check if the cookie was properly set
+      console.log("Stored Cookie:", document.cookie);
+
+      // Redirect to the next page
+      window.location.href = "https://concussed8.github.io/Android-App/pages/age_weight/age_weight.html";
     }
 
-    // Retrieve selected icon from cookies (Optional Debugging)
-    function getSession() {
-      const cookies = document.cookie.split('; ').reduce((acc, cookie) => {
-        const [key, value] = cookie.split('=');
-        acc[key] = value;
+    /**
+     * Retrieves the stored session cookie.
+     * @returns {string|null} The stored icon type or null if not set.
+     */
+    function getSelectedIcon() {
+      let cookies = document.cookie.split('; ').reduce((acc, cookie) => {
+        let [key, value] = cookie.split('=');
+        acc[key] = decodeURIComponent(value);
         return acc;
       }, {});
 
       return cookies.selectedIcon || null;
     }
 
-    // Debug: Show selected icon in console
-    console.log("Selected Icon:", getSession());
+    // Debug: Log the selected icon (if any) when the page loads
+    console.log("Selected Icon:", getSelectedIcon());
   </script>
 
 </body>
