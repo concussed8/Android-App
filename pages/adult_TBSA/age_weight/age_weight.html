@@ -162,41 +162,109 @@ background-color: rgba(255, 255, 255, 1); /* White background with opacity */
     <img src="https://raw.githubusercontent.com/concussed8/Android-App/main/images/CCSO_disclaimer.jpg" alt="CCSO Disclaimer">
   </div>
 
-  <script>
-    // Restrict Age and Weight Fields to Numbers Only
-    document.querySelectorAll(".input-box").forEach(input => {
-      input.addEventListener("input", function () {
-        this.value = this.value.replace(/\D/g, ''); // Remove non-numeric characters
-      });
+ <script>
+  // Function to set a session cookie
+  function setSessionCookie(name, value) {
+    document.cookie = `${name}=${value}; path=/; samesite=strict; max-age=3600`; // 1-hour session cookie
+  }
 
-      // Prevent non-numeric key presses
-      input.addEventListener("keypress", function (e) {
-        if (!/[0-9]/.test(e.key)) {
-          e.preventDefault();
-        }
-      });
-    });
-
-    // Enable Pull-to-Refresh in Portrait Mode
-    let lastY = 0;
-    document.addEventListener("touchstart", (e) => { lastY = e.touches[0].clientY; });
-    document.addEventListener("touchend", (e) => {
-      let currentY = e.changedTouches[0].clientY;
-      if (currentY - lastY > 100) location.reload(); // Pull-down refresh
-    });
-
-    // Prevent landscape mode but allow refresh
-    function checkOrientation() {
-      if (window.matchMedia("(orientation: landscape)").matches) {
-        document.body.innerHTML = "<div style='display:flex;justify-content:center;align-items:center;height:100vh;font-size:24px;color:red;'>Return to Portrait Mode</div>";
-      } else {
-        location.reload();
+  // Function to get a session cookie value
+  function getSessionCookie(name) {
+    let cookies = document.cookie.split("; ");
+    for (let cookie of cookies) {
+      let [cookieName, cookieValue] = cookie.split("=");
+      if (cookieName === name) {
+        return cookieValue;
       }
     }
+    return null; // Return null if cookie is not found
+  }
 
-    window.addEventListener("resize", checkOrientation);
-    window.addEventListener("orientationchange", checkOrientation);
-  </script>
+  // Store input changes in session cookies
+  document.getElementById("sex").addEventListener("change", function () {
+    setSessionCookie("sex", this.value);
+  });
+
+  document.getElementById("age").addEventListener("input", function () {
+    setSessionCookie("age", this.value);
+  });
+
+  document.getElementById("weight").addEventListener("input", function () {
+    setSessionCookie("weight", this.value);
+  });
+
+  // Function to show a warning message if required fields are not filled
+  function showMessage() {
+    alert("Please complete Sex, Age, and Weight to continue!");
+  }
+
+  // Handle clicks for Next button
+  document.getElementById("nextBtn").addEventListener("click", function () {
+    let selectedIcon = getSessionCookie("selectedIcon"); // Get selected icon (thermal/electrical/chemical)
+    let age = getSessionCookie("age");
+    let sex = getSessionCookie("sex");
+    let weight = getSessionCookie("weight");
+
+    // Ensure all fields are filled
+    if (!sex || !age || !weight) {
+      showMessage(); // Show alert if fields are missing
+      return;
+    }
+
+    let ageValue = age ? parseInt(age, 10) : 0; // Convert age to number
+
+    // Check if age is 16 or older and redirect accordingly
+    if (ageValue >= 16) {
+      if (selectedIcon === "thermal") {
+        window.location.href = "https://concussed8.github.io/Android-App/pages/adult_thermal_tbsa.html";
+      } else if (selectedIcon === "electrical") {
+        window.location.href = "https://concussed8.github.io/Android-App/pages/adult_electrical_tbsa.html";
+      } else if (selectedIcon === "chemical") {
+        window.location.href = "https://concussed8.github.io/Android-App/pages/adult_chemical_tbsa.html";
+      }
+    } else {
+      console.log("User is under 16. No action taken.");
+      // You can add additional logic here for users under 16 if needed
+    }
+  });
+
+  // Handle clicks for Previous button (navigates back to last page)
+  document.getElementById("prevBtn").addEventListener("click", function () {
+    window.history.back(); // Navigates back to previous page
+  });
+
+  // Restrict Age and Weight Fields to Numbers Only
+  document.querySelectorAll(".input-box").forEach(input => {
+    input.addEventListener("input", function () {
+      this.value = this.value.replace(/\D/g, ''); // Remove non-numeric characters
+    });
+
+    input.addEventListener("keypress", function (e) {
+      if (!/[0-9]/.test(e.key)) {
+        e.preventDefault(); // Prevent non-numeric key presses
+      }
+    });
+  });
+
+  // Enable Pull-to-Refresh in Portrait Mode
+  let lastY = 0;
+  document.addEventListener("touchstart", (e) => { lastY = e.touches[0].clientY; });
+  document.addEventListener("touchend", (e) => {
+    let currentY = e.changedTouches[0].clientY;
+    if (currentY - lastY > 100) location.reload(); // Pull-down refresh
+  });
+
+  // Prevent landscape mode
+  function checkOrientation() {
+    if (window.matchMedia("(orientation: landscape)").matches) {
+      document.body.innerHTML = "<div style='display:flex;justify-content:center;align-items:center;height:100vh;font-size:24px;color:red;'>Return to Portrait Mode</div>";
+    }
+  }
+
+  window.addEventListener("resize", checkOrientation);
+  window.addEventListener("orientationchange", checkOrientation);
+
+</script>
 
 </body>
 </html>
