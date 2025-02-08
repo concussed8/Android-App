@@ -205,7 +205,7 @@
     <img src="https://raw.githubusercontent.com/concussed8/Android-App/main/images/CCSO_disclaimer.jpg" alt="CCSO Disclaimer">
   </div>
 
- <script>
+<script>
   // Function to set session cookies for a given key-value pair
   function setSessionCookie(name, value) {
     document.cookie = `${name}=${value}; path=/; SameSite=Lax; max-age=3600`; // 1-hour session
@@ -243,10 +243,26 @@
     document.getElementById("weight").value = getSessionCookie("weight") || "";
   }
 
-  // Handle Next Button Click (Redirection logic will be added later)
+  // Display validation message
+  function showMessage(message) {
+    let msgBox = document.getElementById("messageBox");
+    msgBox.innerText = message;
+    msgBox.style.display = "block";
+    setTimeout(() => { msgBox.style.display = "none"; }, 3000); // Hide after 3 seconds
+  }
+
+  // Handle Next Button Click (Checks if all fields are filled)
   document.getElementById("nextBtn").addEventListener("click", function () {
-    console.log("Next button clicked");
-    // You will add your redirection IF statements here based on stored cookies
+    let sex = getSessionCookie("sex");
+    let age = getSessionCookie("age");
+    let weight = getSessionCookie("weight");
+
+    if (!sex || !age || !weight) {
+      showMessage("Please complete Sex, Age, and Weight to continue!");
+    } else {
+      console.log("All fields completed. Proceeding to the next step...");
+      // Insert your redirection logic here
+    }
   });
 
   // Store Previous Page URL & Handle Back Navigation
@@ -259,7 +275,7 @@
     if (prevPage) {
       window.location.href = prevPage; // Redirect to previous page
     } else {
-      console.log("No previous page found in cookies.");
+      showMessage("No previous page found.");
     }
   });
 
