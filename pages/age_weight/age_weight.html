@@ -246,8 +246,29 @@
   // Function to show validation message
   function showMessage(message) {
     let msgBox = document.getElementById("messageBox");
+    if (!msgBox) {
+      msgBox = document.createElement("div");
+      msgBox.id = "messageBox";
+      msgBox.style.position = "absolute";
+      msgBox.style.top = "15%";
+      msgBox.style.left = "50%";
+      msgBox.style.transform = "translateX(-50%)";
+      msgBox.style.padding = "10px";
+      msgBox.style.background = "rgba(255, 0, 0, 0.8)";
+      msgBox.style.color = "white";
+      msgBox.style.fontFamily = "Courier New, Courier, monospace";
+      msgBox.style.fontSize = "18px";
+      msgBox.style.fontWeight = "bold";
+      msgBox.style.borderRadius = "5px";
+      msgBox.style.zIndex = "10000";
+      msgBox.style.textAlign = "center";
+      document.body.appendChild(msgBox);
+    }
     msgBox.innerText = message;
     msgBox.style.display = "block";
+    
+    console.log("Validation Message Shown:", message); // Debugging Log
+
     setTimeout(() => { msgBox.style.display = "none"; }, 3000); // Hide after 3 seconds
   }
 
@@ -257,11 +278,14 @@
     let age = document.getElementById("age").value.trim();
     let weight = document.getElementById("weight").value.trim();
 
+    console.log("Validation Check - Sex:", sex, "Age:", age, "Weight:", weight); // Debugging Log
+
     if (!sex || !age || !weight) {
       showMessage("Please complete Sex, Age, and Weight to continue!");
     } else {
       console.log("All fields completed. Proceeding to the next step...");
-      // Insert redirection logic here (e.g., window.location.href = "nextPage.html";)
+      // Insert redirection logic here
+      window.location.href = "nextPage.html"; // Change this to the actual next page
     }
   });
 
@@ -313,6 +337,7 @@
   // Restore values on page load
   document.addEventListener("DOMContentLoaded", restoreSessionData);
 </script>
+
 
 
 
