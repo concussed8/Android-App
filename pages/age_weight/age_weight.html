@@ -113,19 +113,19 @@
       font-weight: normal;
     }
 
-  /* Positioning for Next and Prev Icons */
-.next-prev-container {
-  position: absolute; /* Positions the container relative to the nearest positioned ancestor */
-  bottom: calc(80px + 20px); /* Places it above the disclaimer; increase value to create more space */
-  width: auto; /* Shrinks container to fit the icons instead of spanning the full width */
-  left: 50%; /* Positions container at the center of the screen */
-  transform: translateX(-50%); /* Ensures container is perfectly centered */
-  display: flex; /* Enables flexbox for icon layout */
-  align-items: center; /* Ensures the icons are vertically aligned */
-  justify-content: center; /* Centers the icons horizontally */
-  gap: 40px; /* Adds spacing between the icons */
-  z-index: 1000; /* Ensures the icons appear above other elements */
+.nav-buttons {
+  position: absolute;
+  bottom: 90px; /* Adjust distance from the disclaimer */
+  display: flex;
+  justify-content: space-between; /* Keeps buttons at max spacing */
+  width: 60vw; /* Controls overall button placement */
+  max-width: 400px;
+  gap: 20px; /* Adjust this to increase or decrease the space between buttons */
+  z-index: 1000;
 }
+
+
+
 
 /* Individual Icon Styling */
 .next-icon, .prev-icon {
