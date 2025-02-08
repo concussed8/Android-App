@@ -207,135 +207,145 @@
 
 <script>
   // Function to set session cookies for a given key-value pair
-  function setSessionCookie(name, value) {
+function setSessionCookie(name, value) {
     document.cookie = `${name}=${value}; path=/; SameSite=Lax; max-age=3600`; // 1-hour session
-  }
+}
 
-  // Function to get a session cookie value
-  function getSessionCookie(name) {
+// Function to get a session cookie value
+function getSessionCookie(name) {
     let cookies = document.cookie.split('; ');
     for (let cookie of cookies) {
-      let [cookieName, cookieValue] = cookie.split('=');
-      if (cookieName === name) {
-        return cookieValue;
-      }
+        let [cookieName, cookieValue] = cookie.split('=');
+        if (cookieName === name) {
+            return cookieValue;
+        }
     }
     return "";
-  }
+}
 
-  // Store input changes in session cookies
-  document.getElementById("sex").addEventListener("change", function () {
+// Store input changes in session cookies
+document.getElementById("sex").addEventListener("change", function () {
     setSessionCookie("sex", this.value);
-  });
+});
 
-  document.getElementById("age").addEventListener("input", function () {
+document.getElementById("age").addEventListener("input", function () {
     setSessionCookie("age", this.value);
-  });
+});
 
-  document.getElementById("weight").addEventListener("input", function () {
+document.getElementById("weight").addEventListener("input", function () {
     setSessionCookie("weight", this.value);
-  });
+});
 
-  // Restore input values from session cookies when the page loads
-  function restoreSessionData() {
+// Restore input values from session cookies when the page loads
+function restoreSessionData() {
     document.getElementById("sex").value = getSessionCookie("sex") || "";
     document.getElementById("age").value = getSessionCookie("age") || "";
     document.getElementById("weight").value = getSessionCookie("weight") || "";
-  }
+}
 
-  // Function to show validation message
-  function showMessage(message) {
+// Function to show validation message
+function showMessage(message) {
     let msgBox = document.getElementById("messageBox");
     if (!msgBox) {
-      msgBox = document.createElement("div");
-      msgBox.id = "messageBox";
-      msgBox.style.position = "absolute";
-      msgBox.style.top = "15%";
-      msgBox.style.left = "50%";
-      msgBox.style.transform = "translateX(-50%)";
-      msgBox.style.padding = "10px";
-      msgBox.style.background = "rgba(255, 0, 0, 0.8)";
-      msgBox.style.color = "white";
-      msgBox.style.fontFamily = "Courier New, Courier, monospace";
-      msgBox.style.fontSize = "28px";
-      msgBox.style.fontWeight = "bold";
-      msgBox.style.borderRadius = "5px";
-      msgBox.style.zIndex = "10000";
-      msgBox.style.textAlign = "center";
-      document.body.appendChild(msgBox);
+        msgBox = document.createElement("div");
+        msgBox.id = "messageBox";
+        msgBox.style.position = "absolute";
+        msgBox.style.top = "15%";
+        msgBox.style.left = "50%";
+        msgBox.style.transform = "translateX(-50%)";
+        msgBox.style.padding = "10px";
+        msgBox.style.background = "rgba(255, 0, 0, 0.8)";
+        msgBox.style.color = "white";
+        msgBox.style.fontFamily = "Courier New, Courier, monospace";
+        msgBox.style.fontSize = "28px";
+        msgBox.style.fontWeight = "bold";
+        msgBox.style.borderRadius = "5px";
+        msgBox.style.zIndex = "10000";
+        msgBox.style.textAlign = "center";
+        document.body.appendChild(msgBox);
     }
     msgBox.innerText = message;
     msgBox.style.display = "block";
-    
+
     console.log("Validation Message Shown:", message); // Debugging Log
 
     setTimeout(() => { msgBox.style.display = "none"; }, 3000); // Hide after 3 seconds
-  }
+}
 
-  // Handle Next Button Click (Checks if all fields are filled)
-  document.getElementById("nextBtn").addEventListener("click", function () {
+// Handle Next Button Click (Checks if all fields are filled & Redirects)
+document.getElementById("nextBtn").addEventListener("click", function () {
     let sex = document.getElementById("sex").value.trim();
-    let age = document.getElementById("age").value.trim();
+    let age = parseInt(document.getElementById("age").value.trim(), 10);
     let weight = document.getElementById("weight").value.trim();
+    let selectedIcon = getSessionCookie("selectedIcon");
 
-    console.log("Validation Check - Sex:", sex, "Age:", age, "Weight:", weight); // Debugging Log
+    console.log("Validation Check - Sex:", sex, "Age:", age, "Weight:", weight, "Selected Icon:", selectedIcon); // Debugging Log
 
-    if (!sex || !age || !weight) {
-      showMessage("Please complete Sex, Age, and Weight to continue!");
-    } else {
-      console.log("All fields completed. Proceeding to the next step...");
-      // Insert redirection logic here
-      window.location.href = "nextPage.html"; // Change this to the actual next page
+    if (!sex || !age || !weight || !selectedIcon) {
+        showMessage("Please complete Sex, Age, and Weight to continue!");
+        return;
     }
-  });
 
-  // Store Previous Page URL & Handle Back Navigation
-  if (document.referrer) {
+    // Construct Next Page URL
+    let nextPage = "";
+    if (age >= 16) {
+        nextPage = `https://concussed8.github.io/Android-App/pages/adult_TBSA/adult_${selectedIcon}_tbsa.html`;
+    } else {
+        nextPage = `https://concussed8.github.io/Android-App/pages/pediatric_TBSA/pediatric_${selectedIcon}_tbsa.html`;
+    }
+
+    console.log("Redirecting to:", nextPage);
+    window.location.href = nextPage;
+});
+
+// Store Previous Page URL & Handle Back Navigation
+if (document.referrer) {
     setSessionCookie("previousPage", document.referrer);
-  }
+}
 
-  document.getElementById("prevBtn").addEventListener("click", function () {
+document.getElementById("prevBtn").addEventListener("click", function () {
     let prevPage = getSessionCookie("previousPage");
     if (prevPage) {
-      window.location.href = prevPage; // Redirect to previous page
+        window.location.href = prevPage;
     } else {
-      showMessage("No previous page found.");
+        showMessage("No previous page found.");
     }
-  });
+});
 
-  // Restrict Age and Weight Fields to Numbers Only
-  document.querySelectorAll(".input-box").forEach(input => {
+// Restrict Age and Weight Fields to Numbers Only
+document.querySelectorAll(".input-box").forEach(input => {
     input.addEventListener("input", function () {
-      this.value = this.value.replace(/\D/g, '');
+        this.value = this.value.replace(/\D/g, '');
     });
 
     input.addEventListener("keypress", function (e) {
-      if (!/[0-9]/.test(e.key)) {
-        e.preventDefault();
-      }
+        if (!/[0-9]/.test(e.key)) {
+            e.preventDefault();
+        }
     });
-  });
+});
 
-  // Enable Pull-to-Refresh in Portrait Mode
-  let lastY = 0;
-  document.addEventListener("touchstart", (e) => { lastY = e.touches[0].clientY; });
-  document.addEventListener("touchend", (e) => {
+// Enable Pull-to-Refresh in Portrait Mode
+let lastY = 0;
+document.addEventListener("touchstart", (e) => { lastY = e.touches[0].clientY; });
+document.addEventListener("touchend", (e) => {
     let currentY = e.changedTouches[0].clientY;
     if (currentY - lastY > 100) location.reload();
-  });
+});
 
-  // Prevent landscape mode
-  function checkOrientation() {
+// Prevent landscape mode
+function checkOrientation() {
     if (window.matchMedia("(orientation: landscape)").matches) {
-      document.body.innerHTML = "<div style='display:flex;justify-content:center;align-items:center;height:100vh;font-size:24px;color:red;'>Return to Portrait Mode</div>";
+        document.body.innerHTML = "<div style='display:flex;justify-content:center;align-items:center;height:100vh;font-size:24px;color:red;'>Return to Portrait Mode</div>";
     }
-  }
+}
 
-  window.addEventListener("resize", checkOrientation);
-  window.addEventListener("orientationchange", checkOrientation);
+window.addEventListener("resize", checkOrientation);
+window.addEventListener("orientationchange", checkOrientation);
 
-  // Restore values on page load
-  document.addEventListener("DOMContentLoaded", restoreSessionData);
+// Restore values on page load
+document.addEventListener("DOMContentLoaded", restoreSessionData);
+
 </script>
 
 
