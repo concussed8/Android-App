@@ -172,7 +172,44 @@
     <img src="https://raw.githubusercontent.com/concussed8/Android-App/main/images/CCSO_disclaimer.jpg" alt="CCSO Disclaimer">
   </div>
 
- <script>
+<script>
+  // Function to set a session cookie
+  function setSessionCookie(name, value) {
+    document.cookie = `${name}=${value}; path=/;`;
+  }
+
+  // Function to get a session cookie value
+  function getSessionCookie(name) {
+    let cookies = document.cookie.split('; ');
+    for (let cookie of cookies) {
+      let [cookieName, cookieValue] = cookie.split('=');
+      if (cookieName === name) {
+        return cookieValue;
+      }
+    }
+    return "";
+  }
+
+  // Restore input values from session cookies when the page loads
+  function restoreSessionData() {
+    document.getElementById("sex").value = getSessionCookie("sex") || "";
+    document.getElementById("age").value = getSessionCookie("age") || "";
+    document.getElementById("weight").value = getSessionCookie("weight") || "";
+  }
+
+  // Store input changes in session cookies
+  document.getElementById("sex").addEventListener("change", function () {
+    setSessionCookie("sex", this.value);
+  });
+
+  document.getElementById("age").addEventListener("input", function () {
+    setSessionCookie("age", this.value);
+  });
+
+  document.getElementById("weight").addEventListener("input", function () {
+    setSessionCookie("weight", this.value);
+  });
+
   // Restrict Age and Weight Fields to Numbers Only
   document.querySelectorAll(".input-box").forEach(input => {
     input.addEventListener("input", function () {
@@ -206,7 +243,11 @@
   window.addEventListener("resize", checkOrientation);
   window.addEventListener("orientationchange", checkOrientation);
 
+  // Restore values on page load
+  document.addEventListener("DOMContentLoaded", restoreSessionData);
+
 </script>
+
 
 
 </body>
