@@ -113,35 +113,30 @@
       font-weight: normal;
     }
 
-./* Positioning for Next and Prev Icons */
-.next-prev-container {
-  position: absolute;
-  bottom: 90px; /* Adjust distance from the disclaimer */
-  display: flex;
-  justify-content: space-between; /* Keeps buttons at max spacing */
-  width: 60vw; /* Controls overall button placement */
-  max-width: 400px;
-  gap: 20px; /* Adjust this to increase or decrease the space between buttons */
-  z-index: 1000;
-}
+    /* Next & Prev Buttons */
+    .nav-buttons {
+      position: absolute;
+      bottom: 90px; /* Places above the disclaimer */
+      display: flex;
+      justify-content: space-between;
+      width: 60vw; /* Adjust width */
+      max-width: 400px;
+      z-index: 1000;
+    }
 
+    .nav-buttons img {
+      width: 50px; /* Control Size */
+      height: 50px;
+      cursor: pointer;
+      border: 2px solid black;
+      border-radius: 10px;
+      opacity: 0.9;
+      transition: transform 0.2s ease;
+    }
 
-
-
-/* Individual Icon Styling */
-.next-icon, .prev-icon {
-  width: 50px; /* Sets a fixed width for the icons */
-  height: 50px; /* Sets a fixed height for the icons */
-  cursor: pointer; /* Changes cursor to indicate interactivity */
-  transition: transform 0.2s ease; /* Adds a smooth scaling effect on click */
-}
-
-/* Click Effect */
-.next-icon:active, .prev-icon:active {
-  transform: scale(1.1); /* Slightly enlarges the icon when clicked */
-}
-
-
+    .nav-buttons img:active {
+      transform: scale(1.1);
+    }
 
     /* Disclaimer Section */
     .disclaimer-container {
@@ -198,8 +193,8 @@
 
   <!-- Next & Prev Buttons -->
   <div class="nav-buttons">
-    <img src="https://raw.githubusercontent.com/concussed8/Android-App/main/images/prev.png" id="prevBtn" alt="Previous">
-    <img src="https://raw.githubusercontent.com/concussed8/Android-App/main/images/next.png" id="nextBtn" alt="Next">
+    <img src="https://raw.githubusercontent.com/concussed8/Android-App/main/images/prev.jpg" id="prevBtn" alt="Previous">
+    <img src="https://raw.githubusercontent.com/concussed8/Android-App/main/images/next.jpg" id="nextBtn" alt="Next">
   </div>
 
   <!-- Disclaimer Section -->
