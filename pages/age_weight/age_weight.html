@@ -113,31 +113,30 @@
       font-weight: normal;
     }
 
-    /* Next & Prev Buttons */
-    .nav-buttons {
-      position: absolute;
-      bottom: 75px; /* Places above the disclaimer */
-      display: flex;
-      justify-content: space-between;
-      width: 60vw; /* Adjust width */
-      max-width: 400px;
-      gap: 45px; /* Adjust this to increase or decrease the space between buttons */
-      z-index: 1000;
-    }
+   /* Positioning for Next and Prev Icons */
+.next-prev-container {
+  position: absolute; /* Positions the container relative to the nearest positioned ancestor */
+  bottom: calc(80px + 20px); /* Places it above the disclaimer; increase value to create more space */
+  width: 100%; /* Ensures the container spans the full width of the viewport */
+  display: flex; /* Enables flexbox for layout */
+  justify-content: center; /* Centers the icons horizontally */
+  gap: 20px; /* Adds spacing between the icons */
+  z-index: 1000; /* Ensures the icons appear above other elements */
+}
 
-    .nav-buttons img {
-      width: 85px; /* Control Size */
-      height: 75px;
-      cursor: pointer;
-      border: 0px solid black;
-      border-radius: 10px;
-      opacity: 0.9;
-      transition: transform 0.2s ease;
-    }
+/* Individual Icon Styling */
+.next-icon, .prev-icon {
+  width: 50px; /* Sets a fixed width for the icons */
+  height: 50px; /* Sets a fixed height for the icons */
+  cursor: pointer; /* Changes cursor to indicate interactivity */
+  transition: transform 0.2s ease; /* Adds a smooth scaling effect on click */
+}
 
-    .nav-buttons img:active {
-      transform: scale(1.1);
-    }
+/* Click Effect */
+.next-icon:active, .prev-icon:active {
+  transform: scale(1.1); /* Slightly enlarges the icon when clicked */
+}
+
 
     /* Disclaimer Section */
     .disclaimer-container {
