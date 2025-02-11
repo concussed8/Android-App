@@ -365,9 +365,11 @@ function showMessage(message) {
         closeButton.style.marginTop = "20px"; // ✅ Add space above button
         closeButton.style.alignSelf = "center"; // ✅ Centers the button in flexbox
 
-        closeButton.addEventListener("click", function () {
-            msgBox.style.display = "none";
-        });
+      closeButton.addEventListener("click", function () {
+    msgBox.style.display = "none"; // Close the message box
+    animateBulletPoints(); // ✅ Trigger bullet point animation AFTER closing
+});
+
     }
 
     msgBox.appendChild(closeButton); // ✅ Append button only after setting message
