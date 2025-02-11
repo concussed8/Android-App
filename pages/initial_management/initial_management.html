@@ -192,7 +192,7 @@ html, body {
 
 
 <script>
-// Function to animate bullet points one by one
+// Function to animate bullet points one by one (Triggered AFTER Acknowledge)
 function animateBulletPoints() {
     let bulletPoints = document.querySelectorAll(".bullet-list li");
 
@@ -202,7 +202,6 @@ function animateBulletPoints() {
         }, index * 400);
     });
 }
-
 
 // Function to set session cookies
 function setSessionCookie(name, value) {
@@ -250,13 +249,13 @@ function updateBackgroundColor() {
         if (burnType) {
             switch (burnType) {
                 case "thermal":
-                    document.body.style.backgroundColor = "#800000";
+                    document.body.style.backgroundColor = "#800000"; // Dark red
                     break;
                 case "chemical":
-                    document.body.style.backgroundColor = "#90EE90";
+                    document.body.style.backgroundColor = "#90EE90"; // Light green
                     break;
                 case "electrical":
-                    document.body.style.backgroundColor = "#ADD8E6";
+                    document.body.style.backgroundColor = "#ADD8E6"; // Light blue
                     break;
                 default:
                     console.warn("Unexpected burn type:", burnType);
@@ -309,7 +308,6 @@ function updateFluidRateBox() {
 
     console.log("Updated Fluid Rate Box:", fluidRateBox.innerHTML);
 }
-
 // Function to show validation message with "ACKNOWLEDGE" button
 function showMessage(message) {
     let msgBox = document.getElementById("messageBox");
@@ -323,23 +321,23 @@ function showMessage(message) {
         msgBox.style.transform = "translateX(-50%)";
         msgBox.style.width = "82%"; // ✅ Match .content-container width
         msgBox.style.maxWidth = "488px"; // ✅ Match .content-container max-width
-        msgBox.style.height = document.querySelector(".content-container").offsetHeight + "px"; // ✅ Match content-container height
+        msgBox.style.height = document.querySelector(".content-container").offsetHeight + "px"; // ✅ Match height
         msgBox.style.background = "rgba(255, 0, 0, 1)";
         msgBox.style.color = "white";
         msgBox.style.fontFamily = "Courier New, Courier, monospace";
         msgBox.style.fontSize = "26px"; // ✅ Adjust font for readability
         msgBox.style.fontWeight = "bold";
         msgBox.style.border = "6px solid black"; // ✅ Match .content-container border
-        msgBox.style.borderRadius = "8px"; // ✅ Match .content-container rounded edges
+        msgBox.style.borderRadius = "8px"; // ✅ Match rounded edges
         msgBox.style.zIndex = "10000";
         msgBox.style.textAlign = "left"; // ✅ Left-align text
         msgBox.style.display = "flex";
         msgBox.style.flexDirection = "column"; // ✅ Stack text and button vertically
-        msgBox.style.justifyContent = "center"; // ✅ Center contents vertically
-        msgBox.style.alignItems = "center"; // ✅ Center contents horizontally
+        msgBox.style.justifyContent = "center"; // ✅ Center vertically
+        msgBox.style.alignItems = "center"; // ✅ Center horizontally
         msgBox.style.lineHeight = "1.5"; // ✅ Improve readability
         msgBox.style.padding = "20px"; // ✅ Match .content-container padding
-        msgBox.style.boxShadow = "0px 4px 10px rgba(0,0,0,0.5)"; // ✅ Add slight shadow for visibility
+        msgBox.style.boxShadow = "0px 4px 10px rgba(0,0,0,0.5)"; // ✅ Add slight shadow
 
         document.body.appendChild(msgBox);
     }
@@ -365,19 +363,18 @@ function showMessage(message) {
         closeButton.style.marginTop = "20px"; // ✅ Add space above button
         closeButton.style.alignSelf = "center"; // ✅ Centers the button in flexbox
 
-      closeButton.addEventListener("click", function () {
-    msgBox.style.display = "none"; // Close the message box
-    animateBulletPoints(); // ✅ Trigger bullet point animation AFTER closing
-});
+        closeButton.addEventListener("click", function () {
+            msgBox.style.display = "none"; // Close the message box
+            animateBulletPoints(); // ✅ Trigger bullet point animation AFTER closing
+        });
 
+        msgBox.appendChild(closeButton);
     }
 
-    msgBox.appendChild(closeButton); // ✅ Append button only after setting message
     msgBox.style.display = "block"; // ✅ Show message box
 
     console.log("Validation Message Shown:", message);
 }
-
 
 // Function to get current page filename
 function getCurrentPage() {
@@ -388,10 +385,252 @@ function getCurrentPage() {
 document.addEventListener("DOMContentLoaded", function () {
     updateBackgroundColor();
     updateHeaderTitle(); // Update the header title dynamically
-    animateBulletPoints(); // Start the bullet animation
     updateFluidRateBox(); // Apply the fluid rate changes based on age
 
     // ✅ Display the warning message when the page loads
+    showMessage("ATTENTION!! DO NOT DELAY TREATMENT! Initial management may occur before TBSA calculation or burn centre consultation.");
+
+    let prevBtn = document.getElementById("prevBtn");
+
+    if (prevBtn) {
+        prevBtn.style.cursor = "pointer";
+        prevBtn.style.pointerEvents = "auto";
+
+        prevBtn.addEventListener("click", function () {
+            let currentPage = getCurrentPage();
+            console.log("Previous Button Clicked on:", currentPage);
+
+            let prevPage = "https://concussed8.github.io/Android-App/";
+
+            if (currentPage === "initial_management.html") {
+                prevPage = "https://concussed8.github.io/Android-App/pages/age_weight/age_weight.html";
+            } else if (currentPage === "age_weight.html") {
+                prevPage = "https://concussed8.github.io/Android-App/";
+            }
+
+            console.log("Navigating to:", prevPage);
+            window.location.href = prevPage;
+        });
+
+        console.log("Previous button event listener attached.");
+    } else {
+        console.error("Previous button not found in DOM.");
+    }
+});
+// Function to update fluid rate box based on age
+function updateFluidRateBox() {
+    let age = parseInt(getSessionCookie("age"), 10); // Retrieve age from cookies and convert to number
+    let fluidRateBox = document.querySelector(".fluid-rate-box");
+    let contentContainer = document.querySelector(".content-container");
+
+    if (!fluidRateBox || !contentContainer) {
+        console.error("Fluid rate box or content container not found.");
+        return;
+    }
+
+    if (age >= 16) {
+        fluidRateBox.innerHTML = "Adults (≥16 years) <br> <strong>500 cc/hr Ringers</strong>";
+        contentContainer.style.border = "3px solid black"; // Default black border
+    } else if (age >= 6 && age <= 15) {
+        fluidRateBox.innerHTML = "Child (6-15 years) <br> <strong>250 cc/hr Ringers</strong>";
+        contentContainer.style.border = "9px solid #ffc0cb"; // Change border to pink
+    } else if (age >= 2 && age <= 5) {
+        fluidRateBox.innerHTML = "Child (2-5 years) <br> <strong>125 cc/hr Ringers</strong>";
+        contentContainer.style.border = "9px solid #ffc0cb"; // Change border to pink
+    } else {
+        fluidRateBox.innerHTML = "Adults (≥16 years) <br> <strong>500 cc/hr Ringers</strong>"; // Fallback
+        contentContainer.style.border = "9px solid black"; // Default black border
+    }
+
+    console.log("Updated Fluid Rate Box:", fluidRateBox.innerHTML);
+}
+
+// Function to store session cookies
+function setSessionCookie(name, value) {
+    document.cookie = `${name}=${encodeURIComponent(value)}; path=/; SameSite=Lax; max-age=3600`;
+    console.log(`Cookie Set: ${name}=${value}`);
+}
+
+// Function to get a session cookie value
+function getSessionCookie(name) {
+    let cookies = document.cookie.split('; ');
+    console.log("All Cookies:", document.cookie);
+    for (let cookie of cookies) {
+        let [cookieName, cookieValue] = cookie.split('=');
+        if (cookieName === name) {
+            return decodeURIComponent(cookieValue);
+        }
+    }
+    return "";
+}
+
+// Ensure burnType always matches selectedIcon
+function syncBurnTypeWithSelectedIcon() {
+    let burnType = getSessionCookie("burnType");
+    let selectedIcon = getSessionCookie("selectedIcon");
+
+    console.log("Syncing Burn Type with Selected Icon...");
+    console.log("Current Burn Type:", burnType);
+    console.log("Selected Icon:", selectedIcon);
+
+    if (!burnType || burnType !== selectedIcon) {
+        setSessionCookie("burnType", selectedIcon);
+        console.log("Updated Burn Type to:", selectedIcon);
+        return selectedIcon;
+    }
+
+    return burnType;
+}
+
+// Function to update the header based on selected burn type
+function updateHeaderTitle() {
+    let selectedIcon = getSessionCookie("selectedIcon");
+
+    if (selectedIcon) {
+        // Capitalize the first letter
+        selectedIcon = selectedIcon.charAt(0).toUpperCase() + selectedIcon.slice(1);
+
+        // Update header text
+        document.querySelector(".header").innerHTML = `${selectedIcon} Burn <br> Initial Management <br> No Consult`;
+
+        console.log("Header Updated:", document.querySelector(".header").innerHTML);
+    } else {
+        console.warn("No selectedIcon found in cookies.");
+    }
+}
+
+// Change background color based on stored burn type
+function updateBackgroundColor() {
+    setTimeout(() => {  
+        let burnType = syncBurnTypeWithSelectedIcon();
+        console.log("Final Burn Type Retrieved:", burnType);
+
+        if (burnType) {
+            switch (burnType) {
+                case "thermal":
+                    document.body.style.backgroundColor = "#800000";
+                    break;
+                case "chemical":
+                    document.body.style.backgroundColor = "#90EE90";
+                    break;
+                case "electrical":
+                    document.body.style.backgroundColor = "#ADD8E6";
+                    break;
+                default:
+                    console.warn("Unexpected burn type:", burnType);
+            }
+        }
+    }, 200);
+}
+
+// Function to animate bullet points after the message box is closed
+function animateBulletPoints() {
+    let bulletPoints = document.querySelectorAll(".bullet-list li");
+
+    bulletPoints.forEach((item, index) => {
+        setTimeout(() => {
+            item.classList.add("wipe-in"); // ✅ Apply animation class dynamically
+        }, index * 400);
+    });
+}
+
+// Function to enable pull-to-refresh in portrait mode
+let lastY = 0;
+document.addEventListener("touchstart", (e) => { lastY = e.touches[0].clientY; });
+document.addEventListener("touchend", (e) => {
+    let currentY = e.changedTouches[0].clientY;
+    if (currentY - lastY > 100) location.reload();
+});
+
+// Prevent landscape mode
+function checkOrientation() {
+    if (window.matchMedia("(orientation: landscape)").matches) {
+        document.body.innerHTML = "<div style='display:flex;justify-content:center;align-items:center;height:100vh;font-size:24px;color:red;'>Return to Portrait Mode</div>";
+    }
+}
+
+window.addEventListener("resize", checkOrientation);
+window.addEventListener("orientationchange", checkOrientation);
+// Function to show validation message with "ACKNOWLEDGE" button
+function showMessage(message) {
+    let msgBox = document.getElementById("messageBox");
+
+    if (!msgBox) {
+        msgBox = document.createElement("div");
+        msgBox.id = "messageBox";
+        msgBox.style.position = "absolute";
+        msgBox.style.top = "16%";
+        msgBox.style.left = "50%";
+        msgBox.style.transform = "translateX(-50%)";
+        msgBox.style.width = "82%"; // Match .content-container width
+        msgBox.style.maxWidth = "488px"; // Match .content-container max-width
+        msgBox.style.height = document.querySelector(".content-container").offsetHeight + "px"; // Match .content-container height
+        msgBox.style.background = "rgba(255, 0, 0, 1)";
+        msgBox.style.color = "white";
+        msgBox.style.fontFamily = "Courier New, Courier, monospace";
+        msgBox.style.fontSize = "26px";
+        msgBox.style.fontWeight = "bold";
+        msgBox.style.border = "6px solid black"; // Match .content-container border
+        msgBox.style.borderRadius = "8px"; // Match .content-container rounded edges
+        msgBox.style.zIndex = "10000";
+        msgBox.style.textAlign = "left"; // Left-align text
+        msgBox.style.display = "flex";
+        msgBox.style.flexDirection = "column"; // Stack text and button vertically
+        msgBox.style.justifyContent = "center"; // Center contents vertically
+        msgBox.style.alignItems = "center"; // Center contents horizontally
+        msgBox.style.lineHeight = "1.5"; // Improve readability
+        msgBox.style.padding = "20px"; // Match .content-container padding
+        msgBox.style.boxShadow = "0px 4px 10px rgba(0,0,0,0.5)"; // Add slight shadow for visibility
+
+        document.body.appendChild(msgBox);
+    }
+
+    // Set the message content inside msgBox before appending the button
+    msgBox.innerHTML = `<p>${message}</p>`;
+
+    // Ensure the close button is created only once
+    let closeButton = document.getElementById("ackButton");
+    if (!closeButton) {
+        closeButton = document.createElement("button");
+        closeButton.id = "ackButton";
+        closeButton.innerText = "ACKNOWLEDGE";
+        closeButton.style.padding = "10px 20px"; // Better padding for button size
+        closeButton.style.fontSize = "18px";
+        closeButton.style.fontWeight = "bold";
+        closeButton.style.border = "none";
+        closeButton.style.borderRadius = "5px";
+        closeButton.style.cursor = "pointer";
+        closeButton.style.background = "white"; // Match styling for contrast
+        closeButton.style.color = "black";
+        closeButton.style.boxShadow = "0px 2px 5px rgba(0,0,0,0.3)"; // Button shadow
+        closeButton.style.marginTop = "20px"; // Add space above button
+        closeButton.style.alignSelf = "center"; // Centers the button in flexbox
+
+        closeButton.addEventListener("click", function () {
+            msgBox.style.display = "none"; // Close the message box
+            animateBulletPoints(); // ✅ Trigger bullet point animation AFTER closing
+        });
+
+        msgBox.appendChild(closeButton);
+    }
+
+    msgBox.style.display = "block"; // Show message box
+
+    console.log("Validation Message Shown:", message);
+}
+
+// Function to get current page filename
+function getCurrentPage() {
+    return window.location.pathname.split("/").pop();
+}
+
+// Ensure the Previous Button Works with Absolute Navigation
+document.addEventListener("DOMContentLoaded", function () {
+    updateBackgroundColor();
+    updateHeaderTitle(); // Update the header title dynamically
+    updateFluidRateBox(); // Apply the fluid rate changes based on age
+
+    // Display the warning message when the page loads
     showMessage("ATTENTION!! DO NOT DELAY TREATMENT! Initial management may occur before TBSA calculation or burn centre consultation.");
 
     let prevBtn = document.getElementById("prevBtn");
