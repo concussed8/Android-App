@@ -78,27 +78,51 @@
   </div>
 
 <script>
+// Function to set session cookies
+function setSessionCookie(name, value) {
+    document.cookie = `${name}=${encodeURIComponent(value)}; path=/; SameSite=Lax; max-age=3600`;
+    console.log(`Cookie Set: ${name}=${value}`);
+}
+
 // Function to get a session cookie value
 function getSessionCookie(name) {
     let cookies = document.cookie.split('; ');
+    console.log("All Cookies:", document.cookie); // Debugging log
     for (let cookie of cookies) {
         let [cookieName, cookieValue] = cookie.split('=');
         if (cookieName === name) {
-            return decodeURIComponent(cookieValue); // Ensure proper decoding
+            return decodeURIComponent(cookieValue);
         }
     }
     return "";
 }
 
+// Ensure burnType is set before using it
+function ensureBurnTypeExists() {
+    let burnType = getSessionCookie("burnType");
+
+    // If burnType is not set, retrieve selectedIcon as a fallback
+    if (!burnType) {
+        let selectedIcon = getSessionCookie("selectedIcon"); // Fallback from selectedIcon
+        if (selectedIcon === "thermal" || selectedIcon === "chemical" || selectedIcon === "electrical") {
+            setSessionCookie("burnType", selectedIcon);
+            console.log("Burn Type was missing. Set to:", selectedIcon);
+            burnType = selectedIcon;
+        } else {
+            console.warn("No valid burnType or selectedIcon found. Cannot set background color.");
+        }
+    }
+
+    return burnType;
+}
+
 // Change background color based on stored burn type
 function updateBackgroundColor() {
     setTimeout(() => {  
-        let burnType = getSessionCookie("burnType");
-        console.log("Burn Type Retrieved:", burnType); // Debugging log
+        let burnType = ensureBurnTypeExists();
+        console.log("Final Burn Type Retrieved:", burnType); // Debugging log
 
-        if (!burnType) {
-            console.warn("No valid burn type found in cookies.");
-        } else {
+        if (burnType) {
             switch (burnType) {
                 case "thermal":
                     document.body.style.backgroundColor = "#800000"; // Dark red
@@ -113,28 +137,78 @@ function updateBackgroundColor() {
                     console.warn("Unexpected burn type:", burnType);
             }
         }
-    }, 200); // Slightly increased delay to ensure cookies load
-}
-
-// Debugging function to check all cookies
-function checkCookies() {
-    console.log("All Cookies:", document.cookie);
+    }, 200); // Slight delay to ensure cookies are properly set
 }
 
 // Run function on page load
 document.addEventListener("DOMContentLoaded", () => {
-    checkCookies();  // Log all cookies
     updateBackgroundColor();
 });
+// Function to set session cookies
+function setSessionCookie(name, value) {
+    document.cookie = `${name}=${encodeURIComponent(value)}; path=/; SameSite=Lax; max-age=3600`;
+    console.log(`Cookie Set: ${name}=${value}`);
+}
 
-// Handle Next Button Click
-document.getElementById("nextBtn").addEventListener("click", function () {
-    window.location.href = "nextPage.html"; 
-});
+// Function to get a session cookie value
+function getSessionCookie(name) {
+    let cookies = document.cookie.split('; ');
+    console.log("All Cookies:", document.cookie); // Debugging log
+    for (let cookie of cookies) {
+        let [cookieName, cookieValue] = cookie.split('=');
+        if (cookieName === name) {
+            return decodeURIComponent(cookieValue);
+        }
+    }
+    return "";
+}
 
-// Handle Previous Button Click
-document.getElementById("prevBtn").addEventListener("click", function () {
-    window.history.back();
+// Ensure burnType is set before using it
+function ensureBurnTypeExists() {
+    let burnType = getSessionCookie("burnType");
+
+    // If burnType is not set, retrieve selectedIcon as a fallback
+    if (!burnType) {
+        let selectedIcon = getSessionCookie("selectedIcon"); // Fallback from selectedIcon
+        if (selectedIcon === "thermal" || selectedIcon === "chemical" || selectedIcon === "electrical") {
+            setSessionCookie("burnType", selectedIcon);
+            console.log("Burn Type was missing. Set to:", selectedIcon);
+            burnType = selectedIcon;
+        } else {
+            console.warn("No valid burnType or selectedIcon found. Cannot set background color.");
+        }
+    }
+
+    return burnType;
+}
+
+// Change background color based on stored burn type
+function updateBackgroundColor() {
+    setTimeout(() => {  
+        let burnType = ensureBurnTypeExists();
+        console.log("Final Burn Type Retrieved:", burnType); // Debugging log
+
+        if (burnType) {
+            switch (burnType) {
+                case "thermal":
+                    document.body.style.backgroundColor = "#800000"; // Dark red
+                    break;
+                case "chemical":
+                    document.body.style.backgroundColor = "#90EE90"; // Light green
+                    break;
+                case "electrical":
+                    document.body.style.backgroundColor = "#ADD8E6"; // Light blue
+                    break;
+                default:
+                    console.warn("Unexpected burn type:", burnType);
+            }
+        }
+    }, 200); // Slight delay to ensure cookies are properly set
+}
+
+// Run function on page load
+document.addEventListener("DOMContentLoaded", () => {
+    updateBackgroundColor();
 });
 
 
