@@ -206,18 +206,20 @@
   </div>
 
 <script>
-  // Function to set session cookies for a given key-value pair
+ // Function to set session cookies
 function setSessionCookie(name, value) {
-    document.cookie = `${name}=${value}; path=/; SameSite=Lax; max-age=3600`; // 1-hour session
+    document.cookie = `${name}=${encodeURIComponent(value)}; path=/; SameSite=Lax; max-age=3600`;
+    console.log(`Cookie Set: ${name}=${value}`);
 }
 
 // Function to get a session cookie value
 function getSessionCookie(name) {
     let cookies = document.cookie.split('; ');
+    console.log("All Cookies:", document.cookie);
     for (let cookie of cookies) {
         let [cookieName, cookieValue] = cookie.split('=');
         if (cookieName === name) {
-            return cookieValue;
+            return decodeURIComponent(cookieValue);
         }
     }
     return "";
@@ -272,31 +274,29 @@ function showMessage(message) {
     setTimeout(() => { msgBox.style.display = "none"; }, 3000); // Hide after 3 seconds
 }
 
-// Handle Next Button Click (Checks if all fields are filled & Redirects)
+// Handle Next Button Click (Redirects ALL users to initial_management.html)
 document.getElementById("nextBtn").addEventListener("click", function () {
     let sex = document.getElementById("sex").value.trim();
     let age = parseInt(document.getElementById("age").value.trim(), 10);
     let weight = document.getElementById("weight").value.trim();
     let selectedIcon = getSessionCookie("selectedIcon");
 
-    console.log("Validation Check - Sex:", sex, "Age:", age, "Weight:", weight, "Selected Icon:", selectedIcon); // Debugging Log
+    console.log("Validation Check - Sex:", sex, "Age:", age, "Weight:", weight, "Selected Icon:", selectedIcon);
 
     if (!sex || !age || !weight || !selectedIcon) {
         showMessage("Please complete Sex, Age, and Weight to continue!");
         return;
     }
 
-   // Construct Next Page URL
-let nextPage = "";
-if (age >= 16) {
-    nextPage = "https://concussed8.github.io/Android-App/pages/initial_management/initial_management.html";
-} else {
-    nextPage = `https://concussed8.github.io/Android-App/pages/pediatric_TBSA/pediatric_${selectedIcon}_tbsa.html`;
-}
+    // Store all session data before redirection
+    setSessionCookie("sex", sex);
+    setSessionCookie("age", age);
+    setSessionCookie("weight", weight);
 
-console.log("Redirecting to:", nextPage);
-window.location.href = nextPage;
+    let nextPage = "https://concussed8.github.io/Android-App/pages/initial_management/initial_management.html";
 
+    console.log("Redirecting to:", nextPage);
+    window.location.href = nextPage;
 });
 
 // Store Previous Page URL & Handle Back Navigation
@@ -304,16 +304,15 @@ document.getElementById("prevBtn").addEventListener("click", function () {
     window.location.href = "https://concussed8.github.io/Android-App/";
 });
 
-
 // Restrict Age and Weight Fields to Numbers Only
 document.querySelectorAll(".input-box").forEach(input => {
     input.addEventListener("input", function () {
-        this.value = this.value.replace(/\D/g, '');
+        this.value = this.value.replace(/\D/g, ''); // Remove non-numeric characters
     });
 
     input.addEventListener("keypress", function (e) {
         if (!/[0-9]/.test(e.key)) {
-            e.preventDefault();
+            e.preventDefault(); // Prevent invalid input
         }
     });
 });
