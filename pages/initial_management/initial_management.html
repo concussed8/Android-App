@@ -297,21 +297,26 @@ function updateFluidRateBox() {
         return;
     }
 
-    if (age >= 16) {
-        fluidRateBox.innerHTML = "Adults (≥16 years) <br> <strong>500 cc/hr Ringers</strong>";
-        contentContainer.style.border = "3px solid black"; // Default black border
-    } else if (age >= 6 && age <= 15) {
-        fluidRateBox.innerHTML = "Child (6-15 years) <br> <strong>250 cc/hr Ringers</strong>";
-        contentContainer.style.border = "6px solid #ffc0cb"; // Change border to pink
-    } else if (age >= 2 && age <= 5) {
-        fluidRateBox.innerHTML = "Child (2-5 years) <br> <strong>125 cc/hr Ringers</strong>";
-        contentContainer.style.border = "6px solid #ffc0cb"; // Change border to pink
-    } else {
-        fluidRateBox.innerHTML = "Adults (≥16 years) <br> <strong>500 cc/hr Ringers</strong>"; // Fallback
-        contentContainer.style.border = "3px solid black"; // Default black border
-    }
+   if (age >= 16) {
+    fluidRateBox.innerHTML = "Adults (≥16 years) <br> <strong>500 cc/hr Ringers</strong>";
+    contentContainer.style.border = "3px solid black"; // Default black border
+} else if (age >= 6 && age <= 15) {
+    fluidRateBox.innerHTML = "Child (6-15 years) <br> <strong>250 cc/hr Ringers</strong>";
+    contentContainer.style.border = "9px solid #ffc0cb"; // Change border to pink
+} else if (age >= 2 && age <= 5) {
+    fluidRateBox.innerHTML = "Child (2-5 years) <br> <strong>125 cc/hr Ringers</strong>";
+    contentContainer.style.border = "9px solid #ffc0cb"; // Change border to pink
+} 
+// else if (age >= 16) { 
+//     fluidRateBox.innerHTML = "Adults (≥16 years) <br> <strong>500 cc/hr Ringers</strong>"; 
+//     contentContainer.style.border = "9px solid #ffc0cb"; // Default black border (Commented out for now)
+else {
+    fluidRateBox.innerHTML = "Adults (≥16 years) <br> <strong>500 cc/hr Ringers</strong>"; // Fallback
+    contentContainer.style.border = "9px solid black"; // Default black border
+}
 
-    console.log("Updated Fluid Rate Box:", fluidRateBox.innerHTML);
+console.log("Updated Fluid Rate Box:", fluidRateBox.innerHTML);
+
 }
 
 // Function to get current page filename
