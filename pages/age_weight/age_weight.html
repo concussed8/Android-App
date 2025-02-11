@@ -300,18 +300,10 @@ window.location.href = nextPage;
 });
 
 // Store Previous Page URL & Handle Back Navigation
-if (document.referrer) {
-    setSessionCookie("previousPage", document.referrer);
-}
-
 document.getElementById("prevBtn").addEventListener("click", function () {
-    let prevPage = getSessionCookie("previousPage");
-    if (prevPage) {
-        window.location.href = prevPage;
-    } else {
-        showMessage("No previous page found.");
-    }
+    window.location.href = "https://concussed8.github.io/Android-App/";
 });
+
 
 // Restrict Age and Weight Fields to Numbers Only
 document.querySelectorAll(".input-box").forEach(input => {
