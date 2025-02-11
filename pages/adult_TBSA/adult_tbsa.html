@@ -139,30 +139,42 @@ function setSessionCookie(name, value) {
     document.cookie = `${name}=${encodeURIComponent(value)}; path=/; SameSite=Lax; max-age=3600`; // 1-hour expiry
 }
 
-// Function to update background color based on selected burn type
+// Function to update background color based on selected burn type (also updates header color)
 function updateBackgroundColor() {
     setTimeout(() => {  
         let burnType = getSessionCookie("selectedIcon"); // Retrieve stored burn type
 
         console.log("Applying Background Color for:", burnType);
 
+        let backgroundColor = ""; // Default empty
+        let headerColor = ""; // Default empty
+
         if (burnType) {
             switch (burnType) {
                 case "thermal":
-                    document.body.style.backgroundColor = "#800000"; // Dark red for Thermal
+                    backgroundColor = "#800000"; // Dark red for Thermal
+                    headerColor = "#800000"; // Gold for contrast
                     break;
                 case "chemical":
-                    document.body.style.backgroundColor = "#90EE90"; // Light green for Chemical
+                    backgroundColor = "#90EE90"; // Light green for Chemical
+                    headerColor = "#90EE90"; // Dark green for contrast
                     break;
                 case "electrical":
-                    document.body.style.backgroundColor = "#ADD8E6"; // Light blue for Electrical
+                    backgroundColor = "#ADD8E6"; // Light blue for Electrical
+                    headerColor = "#ADD8E6"; // Dark blue for contrast
                     break;
                 default:
                     console.warn("Unexpected burn type:", burnType);
+                    return;
             }
+
+            // Apply colors to both the background and the header
+            document.body.style.backgroundColor = backgroundColor;
+            document.querySelector(".header").style.color = headerColor;
         }
     }, 200);
 }
+
 
 // Function to handle input validation for TBSA percentage
 document.querySelectorAll(".input-field").forEach(input => {
