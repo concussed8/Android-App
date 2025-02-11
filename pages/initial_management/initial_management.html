@@ -379,6 +379,9 @@ document.addEventListener("DOMContentLoaded", function () {
     animateBulletPoints(); // Start the bullet animation
     updateFluidRateBox(); // Apply the fluid rate changes based on age
 
+    // ✅ Display the warning message when the page loads
+    showMessage("ATTENTION!! DO NOT DELAY TREATMENT! Initial management may occur before TBSA calculation or consult.");
+
     let prevBtn = document.getElementById("prevBtn");
 
     if (prevBtn) {
@@ -406,9 +409,6 @@ document.addEventListener("DOMContentLoaded", function () {
         console.error("Previous button not found in DOM.");
     }
 });
-
-
-
 
 </script>
 
