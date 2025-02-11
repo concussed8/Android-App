@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, height=device-height, initial-scale=1.0, user-scalable=no">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
   <title>Burn Management Checklist</title>
   <style>
     /* Ensure the body fills the viewport */
@@ -39,6 +39,25 @@
       z-index: 1000;
     }
 
+    /* Image container (Newly added, same size as Electrical TBSA) */
+    .image-container {
+      position: relative;
+      width: 90vw; /* Responsive width */
+      max-width: 488px; /* Keep max size same as image */
+      aspect-ratio: 488 / 985; /* Maintain image aspect ratio */
+      z-index: 1; /* Ensure it's behind the header */
+      margin-bottom: 20px; /* Adds spacing before nav buttons */
+    }
+
+    /* Style the image */
+    .image-container img {
+      width: 100%;
+      height: auto;
+      display: block;
+      outline: 6px solid black; /* Adjust size & color */
+      border-radius: 8px; /* Optional: Rounds corners */
+    }
+
     /* Next & Prev Buttons */
     .nav-buttons {
       position: absolute;
@@ -70,6 +89,11 @@
 <body>
   <!-- Fixed Header -->
   <div class="header">Burn Management Checklist</div>
+
+  <!-- Image Container (Newly Added) -->
+  <div class="image-container">
+    <img src="https://raw.githubusercontent.com/concussed8/IOS-test/main/images/rule_of_9_adult.jpg" alt="Rule of 9 Adult">
+  </div>
 
   <!-- Next & Prev Buttons -->
   <div class="nav-buttons">
@@ -176,9 +200,6 @@ document.addEventListener("DOMContentLoaded", function () {
         console.error("Previous button not found in DOM.");
     }
 });
-
-
-
 </script>
 
 </body>
