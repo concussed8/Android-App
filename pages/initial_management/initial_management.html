@@ -5,7 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
   <title>Burn Management Checklist</title>
   <style>
-    /* Ensure the body fills the viewport */
+/* Ensure the body fills the viewport */
 html, body {
   margin: 0;
   padding: 0;
@@ -14,7 +14,7 @@ html, body {
   display: flex;
   flex-direction: column;
   align-items: center;
-  background-color: white; /* Keep plain white background */
+  background-color: white;
 }
 
 /* Prevent landscape mode */
@@ -28,31 +28,48 @@ html, body {
 .header {
   width: 100%;
   text-align: center;
-  font-size: 8vw; /* Responsive scaling */
+  font-size: 8vw;
   font-weight: bold;
   font-family: "Courier New", Courier, monospace;
-  color: white; /* Changed to black for visibility */
+  color: black;
   z-index: 1000;
-  padding-top: 20px; /* Adds spacing inside the header */
-  padding-bottom: 20px; /* Space between header and container */
+  padding-top: 20px;
+  padding-bottom: 20px;
 }
 
 /* Main Container (Adjustable Height & Spacing Below Header) */
 .content-container {
-  width: 70vw; /* Responsive width */
-  max-width: 488px; /* Keep max width same */
-  height: 500px; /* Adjustable height */
-  background-color: white; /* Ensure it's just a blank space */
-  border: 3px solid black; /* Main container border */
-  border-radius: 8px; /* Optional: Rounds corners */
-  margin-top: 0px; /* Space below the header */
-  padding: 20px; /* Padding inside the container */
+  width: 70vw;
+  max-width: 488px;
+  height: auto; /* Adjust height based on content */
+  background-color: white;
+  border: 3px solid black;
+  border-radius: 8px;
+  margin-top: 30px;
+  padding: 20px;
+}
+
+/* Bullet List Styling */
+.bullet-list {
+  font-size: 18px;
+  font-family: Arial, sans-serif;
+  line-height: 1.5;
+  padding-left: 20px;
+}
+
+.bullet-list li {
+  margin-bottom: 10px;
+}
+
+.bullet-list ul {
+  padding-left: 20px; /* Indentation for sub-items */
+  font-size: 16px;
 }
 
 /* Next & Prev Buttons */
 .nav-buttons {
   position: absolute;
-  bottom: 5px;
+  bottom: 20px;
   display: flex;
   justify-content: center;
   width: 60vw;
@@ -74,6 +91,7 @@ html, body {
 .nav-buttons img:active {
   transform: scale(1.1);
 }
+
 
   </style>
 </head>
