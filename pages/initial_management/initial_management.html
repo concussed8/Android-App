@@ -234,6 +234,23 @@ function updateBackgroundColor() {
     }, 200);
 }
 
+// Function to update the header based on selected burn type
+function updateHeaderTitle() {
+    let selectedIcon = getSessionCookie("selectedIcon");
+
+    if (selectedIcon) {
+        // Capitalize the first letter
+        selectedIcon = selectedIcon.charAt(0).toUpperCase() + selectedIcon.slice(1);
+
+        // Update header text
+        document.querySelector(".header").innerHTML = `${selectedIcon} Burn <br> Initial Management <br> No Consult`;
+
+        console.log("Header Updated:", document.querySelector(".header").innerHTML); // Debugging log
+    } else {
+        console.warn("No selectedIcon found in cookies.");
+    }
+}
+
 // Function to get current page filename
 function getCurrentPage() {
     return window.location.pathname.split("/").pop();
@@ -242,6 +259,7 @@ function getCurrentPage() {
 // Ensure the Previous Button Works with Absolute Navigation
 document.addEventListener("DOMContentLoaded", function () {
     updateBackgroundColor();
+    updateHeaderTitle(); // Update the header title dynamically
 
     let prevBtn = document.getElementById("prevBtn");
 
@@ -270,6 +288,7 @@ document.addEventListener("DOMContentLoaded", function () {
         console.error("Previous button not found in DOM.");
     }
 });
+
 </script>
 
 </body>
