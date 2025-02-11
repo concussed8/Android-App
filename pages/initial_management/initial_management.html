@@ -78,42 +78,49 @@
   </div>
 
 <script>
-  // Function to get a session cookie value
-  function getSessionCookie(name) {
+// Function to get a session cookie value
+function getSessionCookie(name) {
     let cookies = document.cookie.split('; ');
     for (let cookie of cookies) {
-      let [cookieName, cookieValue] = cookie.split('=');
-      if (cookieName === name) {
-        return cookieValue;
-      }
+        let [cookieName, cookieValue] = cookie.split('=');
+        if (cookieName === name) {
+            return cookieValue;
+        }
     }
     return "";
-  }
+}
 
-  // Change background color based on stored burn type
-  function updateBackgroundColor() {
-    let burnType = getSessionCookie("burnType");
-    if (burnType === "thermal") {
-      document.body.style.backgroundColor = "#800000"; // Dark red
-    } else if (burnType === "chemical") {
-      document.body.style.backgroundColor = "#90EE90"; // Light green
-    } else if (burnType === "electrical") {
-      document.body.style.backgroundColor = "#ADD8E6"; // Light blue
-    }
-  }
+// Change background color based on stored burn type
+function updateBackgroundColor() {
+    setTimeout(() => {  // Ensures cookies are fully loaded before applying the background
+        let burnType = getSessionCookie("burnType");
+        console.log("Burn Type Retrieved:", burnType); // Debugging log
 
-  // Run function on page load
-  document.addEventListener("DOMContentLoaded", updateBackgroundColor);
+        if (burnType === "thermal") {
+            document.body.style.backgroundColor = "#800000"; // Dark red
+        } else if (burnType === "chemical") {
+            document.body.style.backgroundColor = "#90EE90"; // Light green
+        } else if (burnType === "electrical") {
+            document.body.style.backgroundColor = "#ADD8E6"; // Light blue
+        } else {
+            console.warn("No valid burn type found in cookies.");
+        }
+    }, 100); // Small delay to ensure cookie retrieval
+}
 
-  // Handle Next Button Click
-  document.getElementById("nextBtn").addEventListener("click", function () {
+// Run function on page load
+document.addEventListener("DOMContentLoaded", updateBackgroundColor);
+
+// Handle Next Button Click
+document.getElementById("nextBtn").addEventListener("click", function () {
     window.location.href = "nextPage.html"; // Change this to the actual next page
-  });
+});
 
-  // Handle Previous Button Click
-  document.getElementById("prevBtn").addEventListener("click", function () {
+// Handle Previous Button Click
+document.getElementById("prevBtn").addEventListener("click", function () {
     window.history.back();
-  });
+});
+
 </script>
 
 </body>
