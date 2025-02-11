@@ -314,71 +314,68 @@ function updateFluidRateBox() {
 function showMessage(message) {
     let msgBox = document.getElementById("messageBox");
 
-if (!msgBox) {
-    msgBox = document.createElement("div");
-    msgBox.id = "messageBox";
-    msgBox.style.position = "absolute";
-    msgBox.style.top = "15%";
-    msgBox.style.left = "50%";
-    msgBox.style.transform = "translateX(-50%)";
-    msgBox.style.width = "80%"; // ✅ Match .content-container width
-    msgBox.style.maxWidth = "488px"; // ✅ Match .content-container max-width
-    msgBox.style.height = document.querySelector(".content-container").offsetHeight + "px"; // ✅ Match content-container height
-    msgBox.style.background = "rgba(255, 0, 0, 0.8)";
-    msgBox.style.color = "white";
-    msgBox.style.fontFamily = "Courier New, Courier, monospace";
-    msgBox.style.fontSize = "26px"; // ✅ Adjust font for readability
-    msgBox.style.fontWeight = "bold";
-    msgBox.style.border = "3px solid black"; // ✅ Match .content-container border
-    msgBox.style.borderRadius = "8px"; // ✅ Match .content-container rounded edges
-    msgBox.style.zIndex = "10000";
-    msgBox.style.textAlign = "left"; // ✅ Left-align text
-    msgBox.style.display = "block";
-    msgBox.style.lineHeight = "1.5"; // ✅ Improve readability
-    msgBox.style.padding = "20px"; // ✅ Match .content-container padding
-    msgBox.style.boxShadow = "0px 4px 10px rgba(0,0,0,0.5)"; // ✅ Add slight shadow for visibility
+    if (!msgBox) {
+        msgBox = document.createElement("div");
+        msgBox.id = "messageBox";
+        msgBox.style.position = "absolute";
+        msgBox.style.top = "15%";
+        msgBox.style.left = "50%";
+        msgBox.style.transform = "translateX(-50%)";
+        msgBox.style.width = "80%"; // ✅ Match .content-container width
+        msgBox.style.maxWidth = "488px"; // ✅ Match .content-container max-width
+        msgBox.style.height = document.querySelector(".content-container").offsetHeight + "px"; // ✅ Match content-container height
+        msgBox.style.background = "rgba(255, 0, 0, 0.8)";
+        msgBox.style.color = "white";
+        msgBox.style.fontFamily = "Courier New, Courier, monospace";
+        msgBox.style.fontSize = "26px"; // ✅ Adjust font for readability
+        msgBox.style.fontWeight = "bold";
+        msgBox.style.border = "3px solid black"; // ✅ Match .content-container border
+        msgBox.style.borderRadius = "8px"; // ✅ Match .content-container rounded edges
+        msgBox.style.zIndex = "10000";
+        msgBox.style.textAlign = "left"; // ✅ Left-align text
+        msgBox.style.display = "flex";
+        msgBox.style.flexDirection = "column"; // ✅ Stack text and button vertically
+        msgBox.style.justifyContent = "center"; // ✅ Center contents vertically
+        msgBox.style.alignItems = "center"; // ✅ Center contents horizontally
+        msgBox.style.lineHeight = "1.5"; // ✅ Improve readability
+        msgBox.style.padding = "20px"; // ✅ Match .content-container padding
+        msgBox.style.boxShadow = "0px 4px 10px rgba(0,0,0,0.5)"; // ✅ Add slight shadow for visibility
 
-    document.body.appendChild(msgBox);
-}
-
-
-// Ensure the close button is created only once
-let closeButton = document.getElementById("ackButton");
-if (!closeButton) {
-    closeButton = document.createElement("button");
-    closeButton.id = "ackButton";
-    closeButton.innerText = "ACKNOWLEDGE";
-    closeButton.style.padding = "10px 20px"; // ✅ Better padding for button size
-    closeButton.style.fontSize = "18px";
-    closeButton.style.fontWeight = "bold";
-    closeButton.style.border = "none";
-    closeButton.style.borderRadius = "5px";
-    closeButton.style.cursor = "pointer";
-    closeButton.style.background = "white"; // ✅ Match styling for contrast
-    closeButton.style.color = "black";
-    closeButton.style.boxShadow = "0px 2px 5px rgba(0,0,0,0.3)"; // ✅ Button shadow
-    closeButton.style.marginTop = "20px"; // ✅ Add space above button
-    closeButton.style.alignSelf = "center"; // ✅ Centers the button in flexbox
-
-    closeButton.addEventListener("click", function () {
-        msgBox.style.display = "none";
-    });
-}
-
-// Ensure the message box is using flexbox for centering
-msgBox.style.display = "flex";
-msgBox.style.flexDirection = "column"; // ✅ Stack text and button vertically
-msgBox.style.justifyContent = "center"; // ✅ Center contents vertically
-msgBox.style.alignItems = "center"; // ✅ Center contents horizontally
-
-msgBox.appendChild(closeButton);
-
+        document.body.appendChild(msgBox);
     }
 
-    msgBox.style.display = "block";
+    // ✅ Set the message content inside msgBox before appending the button
+    msgBox.innerHTML = `<p>${message}</p>`;
+
+    // Ensure the close button is created only once
+    let closeButton = document.getElementById("ackButton");
+    if (!closeButton) {
+        closeButton = document.createElement("button");
+        closeButton.id = "ackButton";
+        closeButton.innerText = "ACKNOWLEDGE";
+        closeButton.style.padding = "10px 20px"; // ✅ Better padding for button size
+        closeButton.style.fontSize = "18px";
+        closeButton.style.fontWeight = "bold";
+        closeButton.style.border = "none";
+        closeButton.style.borderRadius = "5px";
+        closeButton.style.cursor = "pointer";
+        closeButton.style.background = "white"; // ✅ Match styling for contrast
+        closeButton.style.color = "black";
+        closeButton.style.boxShadow = "0px 2px 5px rgba(0,0,0,0.3)"; // ✅ Button shadow
+        closeButton.style.marginTop = "20px"; // ✅ Add space above button
+        closeButton.style.alignSelf = "center"; // ✅ Centers the button in flexbox
+
+        closeButton.addEventListener("click", function () {
+            msgBox.style.display = "none";
+        });
+    }
+
+    msgBox.appendChild(closeButton); // ✅ Append button only after setting message
+    msgBox.style.display = "block"; // ✅ Show message box
 
     console.log("Validation Message Shown:", message);
 }
+
 
 // Function to get current page filename
 function getCurrentPage() {
