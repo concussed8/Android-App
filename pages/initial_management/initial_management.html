@@ -314,8 +314,6 @@ function updateFluidRateBox() {
     console.log("Updated Fluid Rate Box:", fluidRateBox.innerHTML);
 }
 
-// 🔽 INSERT `showMessage` FUNCTION HERE 🔽
-
 // Function to show validation message with "ACKNOWLEDGE" button
 function showMessage(message) {
     let msgBox = document.getElementById("messageBox");
@@ -365,8 +363,6 @@ function showMessage(message) {
     console.log("Validation Message Shown:", message);
 }
 
-// 🔼 INSERT `showMessage` FUNCTION ABOVE 🔼
-
 // Function to get current page filename
 function getCurrentPage() {
     return window.location.pathname.split("/").pop();
@@ -378,8 +374,6 @@ document.addEventListener("DOMContentLoaded", function () {
     updateHeaderTitle(); // Update the header title dynamically
     animateBulletPoints(); // Start the bullet animation
     updateFluidRateBox(); // Apply the fluid rate changes based on age
-});
-
 
     let prevBtn = document.getElementById("prevBtn");
 
@@ -408,6 +402,7 @@ document.addEventListener("DOMContentLoaded", function () {
         console.error("Previous button not found in DOM.");
     }
 });
+
 
 
 
