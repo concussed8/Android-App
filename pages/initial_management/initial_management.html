@@ -41,7 +41,7 @@ html, body {
 .content-container {
   width: 70vw;
   max-width: 488px;
-  height: auto; /* Adjust height based on content */
+  height: auto;
   background-color: white;
   border: 3px solid black;
   border-radius: 8px;
@@ -55,7 +55,7 @@ html, body {
   font-family: Arial, sans-serif;
   line-height: 1.5;
   padding-left: 20px;
-  margin-top: 0px; /* Adjustable top margin */
+  margin-top: 0px;
 }
 
 .bullet-list li {
@@ -63,10 +63,33 @@ html, body {
 }
 
 .bullet-list ul {
-  padding-left: 20px; /* Indentation for sub-items */
+  padding-left: 20px;
   font-size: 16px;
 }
 
+/* Fluid Rate Header */
+.fluid-rate-header {
+  font-size: 18px;
+  font-weight: bold;
+  color: #0047AB; /* Dark blue */
+  text-align: center;
+  margin-top: 20px;
+  margin-bottom: 10px;
+}
+
+/* Fluid Rate Box */
+.fluid-rate-box {
+  width: 80%;
+  max-width: 350px;
+  background-color: #002D62; /* Dark navy blue */
+  color: white;
+  font-size: 18px;
+  font-weight: bold;
+  text-align: center;
+  padding: 15px;
+  border-radius: 8px;
+  margin: 0 auto;
+}
 
 /* Next & Prev Buttons */
 .nav-buttons {
@@ -95,6 +118,7 @@ html, body {
 }
 
 
+
   </style>
 </head>
 <body>
@@ -112,15 +136,24 @@ html, body {
     </li>
     <li><strong>Start foley catheter</strong>   
        <ul>
-    <li>Monitor urinary output</li>
+         <li>Monitor urinary output</li>
        </ul>
+    </li>
     <li><strong>Send baseline labs:</strong> 
       <ul>
-        <li>Hgb,Creatinine,Lactate</li>
-       
+        <li>Hgb, Creatinine, Lactate</li>
       </ul>
     </li>
   </ul>
+
+  <!-- Fluid Rate Section -->
+  <div class="fluid-rate-container">
+    <p class="fluid-rate-header">INITIAL FLUID RATE – DOES NOT REQUIRE TBSA ESTIMATE</p>
+    <div class="fluid-rate-box">
+      Adults (>16 years) <br>
+      <strong>500 cc/hr Ringers</strong>
+    </div>
+  </div>
 </div>
 
 <!-- Next & Prev Buttons -->
@@ -128,7 +161,6 @@ html, body {
   <img src="https://raw.githubusercontent.com/concussed8/Android-App/main/images/prev.png" id="prevBtn" alt="Previous">
   <img src="https://raw.githubusercontent.com/concussed8/Android-App/main/images/next.png" id="nextBtn" alt="Next">
 </div>
-
 
 <script>
 // Function to set session cookies
