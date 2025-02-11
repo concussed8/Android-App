@@ -261,7 +261,7 @@ function updateBackgroundColor() {
                     console.warn("Unexpected burn type:", burnType);
             }
         }
-    }, 
+    }, 200); // ✅ Fix: Added timeout value of 200ms
 }
 
 // Function to update the header based on selected burn type
