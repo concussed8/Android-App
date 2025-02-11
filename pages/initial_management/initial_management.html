@@ -84,7 +84,7 @@ function getSessionCookie(name) {
     for (let cookie of cookies) {
         let [cookieName, cookieValue] = cookie.split('=');
         if (cookieName === name) {
-            return cookieValue;
+            return decodeURIComponent(cookieValue); // Ensure proper decoding
         }
     }
     return "";
@@ -92,34 +92,51 @@ function getSessionCookie(name) {
 
 // Change background color based on stored burn type
 function updateBackgroundColor() {
-    setTimeout(() => {  // Ensures cookies are fully loaded before applying the background
+    setTimeout(() => {  
         let burnType = getSessionCookie("burnType");
         console.log("Burn Type Retrieved:", burnType); // Debugging log
 
-        if (burnType === "thermal") {
-            document.body.style.backgroundColor = "#800000"; // Dark red
-        } else if (burnType === "chemical") {
-            document.body.style.backgroundColor = "#90EE90"; // Light green
-        } else if (burnType === "electrical") {
-            document.body.style.backgroundColor = "#ADD8E6"; // Light blue
-        } else {
+        if (!burnType) {
             console.warn("No valid burn type found in cookies.");
+        } else {
+            switch (burnType) {
+                case "thermal":
+                    document.body.style.backgroundColor = "#800000"; // Dark red
+                    break;
+                case "chemical":
+                    document.body.style.backgroundColor = "#90EE90"; // Light green
+                    break;
+                case "electrical":
+                    document.body.style.backgroundColor = "#ADD8E6"; // Light blue
+                    break;
+                default:
+                    console.warn("Unexpected burn type:", burnType);
+            }
         }
-    }, 100); // Small delay to ensure cookie retrieval
+    }, 200); // Slightly increased delay to ensure cookies load
+}
+
+// Debugging function to check all cookies
+function checkCookies() {
+    console.log("All Cookies:", document.cookie);
 }
 
 // Run function on page load
-document.addEventListener("DOMContentLoaded", updateBackgroundColor);
+document.addEventListener("DOMContentLoaded", () => {
+    checkCookies();  // Log all cookies
+    updateBackgroundColor();
+});
 
 // Handle Next Button Click
 document.getElementById("nextBtn").addEventListener("click", function () {
-    window.location.href = "nextPage.html"; // Change this to the actual next page
+    window.location.href = "nextPage.html"; 
 });
 
 // Handle Previous Button Click
 document.getElementById("prevBtn").addEventListener("click", function () {
     window.history.back();
 });
+
 
 </script>
 
