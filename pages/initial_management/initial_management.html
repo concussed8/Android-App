@@ -333,8 +333,14 @@ function showMessage(message) {
         msgBox.style.display = "flex";
         msgBox.style.flexDirection = "column";
         msgBox.style.alignItems = "center";
+        document.body.appendChild(msgBox);
+    }
 
-        let closeButton = document.createElement("button");
+    // Ensure the close button is created only once
+    let closeButton = document.getElementById("ackButton");
+    if (!closeButton) {
+        closeButton = document.createElement("button");
+        closeButton.id = "ackButton";
         closeButton.innerText = "ACKNOWLEDGE";
         closeButton.style.marginTop = "10px";
         closeButton.style.padding = "5px 15px";
@@ -343,20 +349,20 @@ function showMessage(message) {
         closeButton.style.border = "none";
         closeButton.style.borderRadius = "5px";
         closeButton.style.cursor = "pointer";
-
         closeButton.addEventListener("click", function () {
             msgBox.style.display = "none";
         });
-
-        msgBox.appendChild(closeButton);
-        document.body.appendChild(msgBox);
     }
 
-  msgBox.innerHTML = `<p>ATTENTION!! DO NOT DELAY TREATMENT! Initial management may occur before TBSA calculation or consult.</p>`;
-if (!msgBox.contains(closeButton)) {
-    msgBox.appendChild(closeButton);
-}
+    // Set message content
+    msgBox.innerHTML = `<p>${message}</p>`;
+    
+    // Append the button (only if not already present)
+    if (!msgBox.contains(closeButton)) {
+        msgBox.appendChild(closeButton);
+    }
 
+    msgBox.style.display = "block";
 
     console.log("Validation Message Shown:", message);
 }
