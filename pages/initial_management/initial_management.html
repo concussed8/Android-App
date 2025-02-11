@@ -39,20 +39,33 @@
       z-index: 1000;
     }
 
-    /* Empty Container (Same size as previous image container) */
-    .content-container {
-      position: relative;
-      width: 90vw; /* Responsive width */
-      max-width: 488px; /* Keep max width same */
-      aspect-ratio: 488 / 985; /* Maintain consistent aspect ratio */
-      background-color: white; /* Ensure it's just a blank space */
-      border: 3px solid black; /* Optional: Adds visibility to the container */
-      border-radius: 8px; /* Optional: Rounds corners */
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      margin-bottom: 20px; /* Adds spacing before nav buttons */
-    }
+    /* Main Container (Adjustable Height) */
+.content-container {
+  position: relative;
+  width: 90vw; /* Responsive width */
+  max-width: 488px; /* Keep max width same */
+  height: 500px; /* Adjustable height */
+  background-color: white; /* Ensure it's just a blank space */
+  border: 3px solid black; /* Main container border */
+  border-radius: 8px; /* Optional: Rounds corners */
+  display: flex;
+  align-items: center; /* Center vertically */
+  justify-content: center; /* Center horizontally */
+  margin-top: 80px; /* Space below header */
+  padding: 20px; /* Padding inside the main container */
+}
+
+/* Inner Container (Centered Box) */
+.inner-container {
+  width: 80%; /* Keeps space along the sides */
+  height: 70%; /* Adjust as needed */
+  background-color: white; /* Keep it white */
+  border: 3px solid red; /* Bright red border for visibility */
+  border-radius: 5px; /* Optional: Rounds corners */
+  display: flex;
+  align-items: center; /* Center content vertically */
+  justify-content: center; /* Center content horizontally */
+}
 
     /* Next & Prev Buttons */
     .nav-buttons {
@@ -83,16 +96,22 @@
 </head>
 <body>
   <!-- Fixed Header -->
-  <div class="header">THERMAL BURN <br> Initial Management <br> No Consult</div>
+<div class="header">THERMAL BURN <br> Initial Management <br> No Consult</div>
 
-  <!-- Empty Container (Same Size as Image Container) -->
-  <div class="content-container"></div>
-
-  <!-- Next & Prev Buttons -->
-  <div class="nav-buttons">
-    <img src="https://raw.githubusercontent.com/concussed8/Android-App/main/images/prev.png" id="prevBtn" alt="Previous">
-    <img src="https://raw.githubusercontent.com/concussed8/Android-App/main/images/next.png" id="nextBtn" alt="Next">
+<!-- Main Container (Adjustable Size) -->
+<div class="content-container">
+  <!-- Inner Container (Centered Box) -->
+  <div class="inner-container">
+    <p>Inner Box</p>
   </div>
+</div>
+
+<!-- Next & Prev Buttons -->
+<div class="nav-buttons">
+  <img src="https://raw.githubusercontent.com/concussed8/Android-App/main/images/prev.png" id="prevBtn" alt="Previous">
+  <img src="https://raw.githubusercontent.com/concussed8/Android-App/main/images/next.png" id="nextBtn" alt="Next">
+</div>
+
 
 <script>
 // Function to set session cookies
