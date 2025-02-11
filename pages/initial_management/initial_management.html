@@ -97,95 +97,29 @@ function getSessionCookie(name) {
     return "";
 }
 
-// Ensure burnType is set before using it
-function ensureBurnTypeExists() {
+// Ensure burnType always matches selectedIcon
+function syncBurnTypeWithSelectedIcon() {
     let burnType = getSessionCookie("burnType");
+    let selectedIcon = getSessionCookie("selectedIcon");
 
-    // If burnType is not set, retrieve selectedIcon as a fallback
-    if (!burnType) {
-        let selectedIcon = getSessionCookie("selectedIcon"); // Fallback from selectedIcon
-        if (selectedIcon === "thermal" || selectedIcon === "chemical" || selectedIcon === "electrical") {
-            setSessionCookie("burnType", selectedIcon);
-            console.log("Burn Type was missing. Set to:", selectedIcon);
-            burnType = selectedIcon;
-        } else {
-            console.warn("No valid burnType or selectedIcon found. Cannot set background color.");
-        }
+    console.log("Syncing Burn Type with Selected Icon...");
+    console.log("Current Burn Type:", burnType);
+    console.log("Selected Icon:", selectedIcon);
+
+    // If burnType is missing OR does not match selectedIcon, update it
+    if (!burnType || burnType !== selectedIcon) {
+        setSessionCookie("burnType", selectedIcon);
+        console.log("Updated Burn Type to:", selectedIcon);
+        return selectedIcon; // Return updated value
     }
 
-    return burnType;
+    return burnType; // Return existing valid burnType
 }
 
 // Change background color based on stored burn type
 function updateBackgroundColor() {
     setTimeout(() => {  
-        let burnType = ensureBurnTypeExists();
-        console.log("Final Burn Type Retrieved:", burnType); // Debugging log
-
-        if (burnType) {
-            switch (burnType) {
-                case "thermal":
-                    document.body.style.backgroundColor = "#800000"; // Dark red
-                    break;
-                case "chemical":
-                    document.body.style.backgroundColor = "#90EE90"; // Light green
-                    break;
-                case "electrical":
-                    document.body.style.backgroundColor = "#ADD8E6"; // Light blue
-                    break;
-                default:
-                    console.warn("Unexpected burn type:", burnType);
-            }
-        }
-    }, 200); // Slight delay to ensure cookies are properly set
-}
-
-// Run function on page load
-document.addEventListener("DOMContentLoaded", () => {
-    updateBackgroundColor();
-});
-// Function to set session cookies
-function setSessionCookie(name, value) {
-    document.cookie = `${name}=${encodeURIComponent(value)}; path=/; SameSite=Lax; max-age=3600`;
-    console.log(`Cookie Set: ${name}=${value}`);
-}
-
-// Function to get a session cookie value
-function getSessionCookie(name) {
-    let cookies = document.cookie.split('; ');
-    console.log("All Cookies:", document.cookie); // Debugging log
-    for (let cookie of cookies) {
-        let [cookieName, cookieValue] = cookie.split('=');
-        if (cookieName === name) {
-            return decodeURIComponent(cookieValue);
-        }
-    }
-    return "";
-}
-
-// Ensure burnType is set before using it
-function ensureBurnTypeExists() {
-    let burnType = getSessionCookie("burnType");
-
-    // If burnType is not set, retrieve selectedIcon as a fallback
-    if (!burnType) {
-        let selectedIcon = getSessionCookie("selectedIcon"); // Fallback from selectedIcon
-        if (selectedIcon === "thermal" || selectedIcon === "chemical" || selectedIcon === "electrical") {
-            setSessionCookie("burnType", selectedIcon);
-            console.log("Burn Type was missing. Set to:", selectedIcon);
-            burnType = selectedIcon;
-        } else {
-            console.warn("No valid burnType or selectedIcon found. Cannot set background color.");
-        }
-    }
-
-    return burnType;
-}
-
-// Change background color based on stored burn type
-function updateBackgroundColor() {
-    setTimeout(() => {  
-        let burnType = ensureBurnTypeExists();
+        let burnType = syncBurnTypeWithSelectedIcon(); // Ensure it's correct
         console.log("Final Burn Type Retrieved:", burnType); // Debugging log
 
         if (burnType) {
