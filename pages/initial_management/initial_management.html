@@ -140,9 +140,33 @@ function updateBackgroundColor() {
     }, 200); // Slight delay to ensure cookies are properly set
 }
 
-// Run function on page load
-document.addEventListener("DOMContentLoaded", () => {
-    updateBackgroundColor();
+// Ensure the Previous Button Works
+document.addEventListener("DOMContentLoaded", function () {
+    updateBackgroundColor(); // Ensure correct background color
+
+    let prevBtn = document.getElementById("prevBtn");
+
+    if (prevBtn) {
+        prevBtn.style.cursor = "pointer"; // Ensure the cursor is correct
+        prevBtn.style.pointerEvents = "auto"; // Ensure clicks are registered
+
+        prevBtn.addEventListener("click", function () {
+            console.log("Previous Button Clicked!");
+            let prevPage = getSessionCookie("previousPage");
+            console.log("Previous Page Retrieved:", prevPage);
+
+            if (prevPage) {
+                window.location.href = prevPage;
+            } else {
+                console.warn("No previous page found. Redirecting to home.");
+                window.location.href = "https://concussed8.github.io/Android-App/"; // Fallback home page
+            }
+        });
+
+        console.log("Previous button event listener attached.");
+    } else {
+        console.error("Previous button not found in DOM.");
+    }
 });
 
 
