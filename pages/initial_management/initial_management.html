@@ -269,17 +269,18 @@ function updateHeaderTitle() {
     let selectedIcon = getSessionCookie("selectedIcon");
 
     if (selectedIcon) {
-        // Capitalize the first letter
-        selectedIcon = selectedIcon.charAt(0).toUpperCase() + selectedIcon.slice(1);
+        // Convert entire word to uppercase
+        selectedIcon = selectedIcon.toUpperCase();
 
-        // Update header text
-        document.querySelector(".header").innerHTML = `${selectedIcon} Burn <br> Initial Management <br> No Consult`;
+        // Update header text with underlining
+        document.querySelector(".header").innerHTML = `<u>${selectedIcon} BURN</u> <br> Initial Management <br> No Consult`;
 
         console.log("Header Updated:", document.querySelector(".header").innerHTML); // Debugging log
     } else {
         console.warn("No selectedIcon found in cookies.");
     }
 }
+
 
 // Function to update fluid rate box based on age
 function updateFluidRateBox() {
