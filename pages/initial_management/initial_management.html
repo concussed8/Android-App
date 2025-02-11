@@ -352,9 +352,11 @@ function showMessage(message) {
         document.body.appendChild(msgBox);
     }
 
-   msgBox.innerHTML = `<p>ATTENTION!! DO NOT DELAY TREATMENT! Initial management may occur before TBSA calculation or consult.</p>`;
+  msgBox.innerHTML = `<p>ATTENTION!! DO NOT DELAY TREATMENT! Initial management may occur before TBSA calculation or consult.</p>`;
+if (!msgBox.contains(closeButton)) {
     msgBox.appendChild(closeButton);
-    msgBox.style.display = "block";
+}
+
 
     console.log("Validation Message Shown:", message);
 }
