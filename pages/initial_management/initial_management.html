@@ -261,7 +261,7 @@ function updateBackgroundColor() {
                     console.warn("Unexpected burn type:", burnType);
             }
         }
-    }, 200);
+    }, 
 }
 
 // Function to update the header based on selected burn type
@@ -280,6 +280,7 @@ function updateHeaderTitle() {
         console.warn("No selectedIcon found in cookies.");
     }
 }
+
 
 
 // Function to update fluid rate box based on age
@@ -488,17 +489,18 @@ function updateHeaderTitle() {
     let selectedIcon = getSessionCookie("selectedIcon");
 
     if (selectedIcon) {
-        // Capitalize the first letter
-        selectedIcon = selectedIcon.charAt(0).toUpperCase() + selectedIcon.slice(1);
+        // Convert the entire word to uppercase
+        selectedIcon = selectedIcon.toUpperCase();
 
-        // Update header text
-        document.querySelector(".header").innerHTML = `${selectedIcon} Burn <br> Initial Management <br> No Consult`;
+        // Update header text with underlining
+        document.querySelector(".header").innerHTML = `<u>${selectedIcon} BURN</u> <br> Initial Management <br> No Consult`;
 
         console.log("Header Updated:", document.querySelector(".header").innerHTML);
     } else {
         console.warn("No selectedIcon found in cookies.");
     }
 }
+
 
 // Change background color based on stored burn type
 function updateBackgroundColor() {
