@@ -297,27 +297,75 @@ function updateFluidRateBox() {
         return;
     }
 
-   if (age >= 16) {
-    fluidRateBox.innerHTML = "Adults (≥16 years) <br> <strong>500 cc/hr Ringers</strong>";
-    contentContainer.style.border = "3px solid black"; // Default black border
-} else if (age >= 6 && age <= 15) {
-    fluidRateBox.innerHTML = "Child (6-15 years) <br> <strong>250 cc/hr Ringers</strong>";
-    contentContainer.style.border = "9px solid #ffc0cb"; // Change border to pink
-} else if (age >= 2 && age <= 5) {
-    fluidRateBox.innerHTML = "Child (2-5 years) <br> <strong>125 cc/hr Ringers</strong>";
-    contentContainer.style.border = "9px solid #ffc0cb"; // Change border to pink
-} 
-// else if (age >= 16) { 
-//     fluidRateBox.innerHTML = "Adults (≥16 years) <br> <strong>500 cc/hr Ringers</strong>"; 
-//     contentContainer.style.border = "9px solid #ffc0cb"; // Default black border (Commented out for now)
-else {
-    fluidRateBox.innerHTML = "Adults (≥16 years) <br> <strong>500 cc/hr Ringers</strong>"; // Fallback
-    contentContainer.style.border = "9px solid black"; // Default black border
+    if (age >= 16) {
+        fluidRateBox.innerHTML = "Adults (≥16 years) <br> <strong>500 cc/hr Ringers</strong>";
+        contentContainer.style.border = "3px solid black"; // Default black border
+    } else if (age >= 6 && age <= 15) {
+        fluidRateBox.innerHTML = "Child (6-15 years) <br> <strong>250 cc/hr Ringers</strong>";
+        contentContainer.style.border = "9px solid #ffc0cb"; // Change border to pink
+    } else if (age >= 2 && age <= 5) {
+        fluidRateBox.innerHTML = "Child (2-5 years) <br> <strong>125 cc/hr Ringers</strong>";
+        contentContainer.style.border = "9px solid #ffc0cb"; // Change border to pink
+    } else {
+        fluidRateBox.innerHTML = "Adults (≥16 years) <br> <strong>500 cc/hr Ringers</strong>"; // Fallback
+        contentContainer.style.border = "9px solid black"; // Default black border
+    }
+
+    console.log("Updated Fluid Rate Box:", fluidRateBox.innerHTML);
 }
 
-console.log("Updated Fluid Rate Box:", fluidRateBox.innerHTML);
+// 🔽 INSERT `showMessage` FUNCTION HERE 🔽
 
+// Function to show validation message with "ACKNOWLEDGE" button
+function showMessage(message) {
+    let msgBox = document.getElementById("messageBox");
+
+    if (!msgBox) {
+        msgBox = document.createElement("div");
+        msgBox.id = "messageBox";
+        msgBox.style.position = "absolute";
+        msgBox.style.top = "15%";
+        msgBox.style.left = "50%";
+        msgBox.style.transform = "translateX(-50%)";
+        msgBox.style.padding = "10px";
+        msgBox.style.background = "rgba(255, 0, 0, 0.8)";
+        msgBox.style.color = "white";
+        msgBox.style.fontFamily = "Courier New, Courier, monospace";
+        msgBox.style.fontSize = "28px";
+        msgBox.style.fontWeight = "bold";
+        msgBox.style.borderRadius = "5px";
+        msgBox.style.zIndex = "10000";
+        msgBox.style.textAlign = "center";
+        msgBox.style.display = "flex";
+        msgBox.style.flexDirection = "column";
+        msgBox.style.alignItems = "center";
+
+        let closeButton = document.createElement("button");
+        closeButton.innerText = "ACKNOWLEDGE";
+        closeButton.style.marginTop = "10px";
+        closeButton.style.padding = "5px 15px";
+        closeButton.style.fontSize = "18px";
+        closeButton.style.fontWeight = "bold";
+        closeButton.style.border = "none";
+        closeButton.style.borderRadius = "5px";
+        closeButton.style.cursor = "pointer";
+
+        closeButton.addEventListener("click", function () {
+            msgBox.style.display = "none";
+        });
+
+        msgBox.appendChild(closeButton);
+        document.body.appendChild(msgBox);
+    }
+
+    msgBox.innerHTML = `<p>${message}</p>`;
+    msgBox.appendChild(closeButton);
+    msgBox.style.display = "block";
+
+    console.log("Validation Message Shown:", message);
 }
+
+// 🔼 INSERT `showMessage` FUNCTION ABOVE 🔼
 
 // Function to get current page filename
 function getCurrentPage() {
@@ -330,6 +378,8 @@ document.addEventListener("DOMContentLoaded", function () {
     updateHeaderTitle(); // Update the header title dynamically
     animateBulletPoints(); // Start the bullet animation
     updateFluidRateBox(); // Apply the fluid rate changes based on age
+});
+
 
     let prevBtn = document.getElementById("prevBtn");
 
