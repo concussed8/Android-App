@@ -275,6 +275,34 @@ function updateHeaderTitle() {
     }
 }
 
+// Function to update fluid rate box based on age
+function updateFluidRateBox() {
+    let age = parseInt(getSessionCookie("age"), 10); // Retrieve age from cookies and convert to number
+    let fluidRateBox = document.querySelector(".fluid-rate-box");
+    let contentContainer = document.querySelector(".content-container");
+
+    if (!fluidRateBox || !contentContainer) {
+        console.error("Fluid rate box or content container not found.");
+        return;
+    }
+
+    if (age >= 16) {
+        fluidRateBox.innerHTML = "Adults (≥16 years) <br> <strong>500 cc/hr Ringers</strong>";
+        contentContainer.style.border = "3px solid black"; // Default black border
+    } else if (age >= 6 && age <= 15) {
+        fluidRateBox.innerHTML = "Child (6-15 years) <br> <strong>250 cc/hr Ringers</strong>";
+        contentContainer.style.border = "3px solid #ffc0cb"; // Change border to pink
+    } else if (age >= 2 && age <= 5) {
+        fluidRateBox.innerHTML = "Child (2-5 years) <br> <strong>250 cc/hr Ringers</strong>";
+        contentContainer.style.border = "3px solid #ffc0cb"; // Change border to pink
+    } else {
+        fluidRateBox.innerHTML = "Adults (≥16 years) <br> <strong>500 cc/hr Ringers</strong>"; // Fallback
+        contentContainer.style.border = "3px solid black"; // Default black border
+    }
+
+    console.log("Updated Fluid Rate Box:", fluidRateBox.innerHTML);
+}
+
 // Function to get current page filename
 function getCurrentPage() {
     return window.location.pathname.split("/").pop();
@@ -285,6 +313,7 @@ document.addEventListener("DOMContentLoaded", function () {
     updateBackgroundColor();
     updateHeaderTitle(); // Update the header title dynamically
     animateBulletPoints(); // Start the bullet animation
+    updateFluidRateBox(); // Apply the fluid rate changes based on age
 
     let prevBtn = document.getElementById("prevBtn");
 
@@ -313,6 +342,7 @@ document.addEventListener("DOMContentLoaded", function () {
         console.error("Previous button not found in DOM.");
     }
 });
+
 
 
 </script>
