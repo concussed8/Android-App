@@ -323,7 +323,7 @@ if (!msgBox) {
     msgBox.style.transform = "translateX(-50%)";
     msgBox.style.width = "80%"; // ✅ Match .content-container width
     msgBox.style.maxWidth = "488px"; // ✅ Match .content-container max-width
-    msgBox.style.height = "auto"; // ✅ Allow dynamic height
+    msgBox.style.height = document.querySelector(".content-container").offsetHeight + "px"; // ✅ Match content-container height
     msgBox.style.background = "rgba(255, 0, 0, 0.8)";
     msgBox.style.color = "white";
     msgBox.style.fontFamily = "Courier New, Courier, monospace";
@@ -340,6 +340,8 @@ if (!msgBox) {
 
     document.body.appendChild(msgBox);
 }
+
+
 
 
 
