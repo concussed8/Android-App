@@ -22,7 +22,7 @@ html, body {
   body {
     display: none;
   }
-
+}
 
 /* Fixed Header */
 .header {
@@ -190,12 +190,11 @@ function animateBulletPoints() {
 
     bulletPoints.forEach((item, index) => {
         setTimeout(() => {
-            item.style.opacity = "1";
-            item.style.transform = "translateX(0)";
-            item.style.animation = "wipe-in 0.8s ease-out forwards";
-        }, index * 400); // Delay each bullet by 400ms
+            item.classList.add("wipe-in"); // ✅ Apply animation class dynamically
+        }, index * 400);
     });
 }
+
 
 // Function to set session cookies
 function setSessionCookie(name, value) {
