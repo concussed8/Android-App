@@ -314,33 +314,32 @@ function updateFluidRateBox() {
 function showMessage(message) {
     let msgBox = document.getElementById("messageBox");
 
-   if (!msgBox) {
+if (!msgBox) {
     msgBox = document.createElement("div");
     msgBox.id = "messageBox";
     msgBox.style.position = "absolute";
     msgBox.style.top = "15%";
     msgBox.style.left = "50%";
     msgBox.style.transform = "translateX(-50%)";
-    msgBox.style.width = "85%";  // ✅ Set width (Adjustable)
+    msgBox.style.width = "80%";  // ✅ Set width (Adjustable)
     msgBox.style.maxWidth = "400px"; // ✅ Prevent it from getting too wide
     msgBox.style.height = "auto"; // ✅ Allow dynamic height based on content
     msgBox.style.padding = "20px"; // ✅ More padding for better readability
     msgBox.style.background = "rgba(255, 0, 0, 0.8)";
     msgBox.style.color = "white";
     msgBox.style.fontFamily = "Courier New, Courier, monospace";
-    msgBox.style.fontSize = "30px"; // ✅ Slightly smaller text if needed
+    msgBox.style.fontSize = "20px"; // ✅ Adjust text size for readability
     msgBox.style.fontWeight = "bold";
     msgBox.style.borderRadius = "8px"; // ✅ Slightly rounder corners
     msgBox.style.zIndex = "10000";
-    msgBox.style.textAlign = "center";
-    msgBox.style.display = "flex";
-    msgBox.style.flexDirection = "column";
-    msgBox.style.alignItems = "center";
-    msgBox.style.justifyContent = "center"; // ✅ Center text inside box
+    msgBox.style.textAlign = "left"; // ✅ Left-align text like a paragraph
+    msgBox.style.display = "block"; // ✅ Standard block display
+    msgBox.style.lineHeight = "1.5"; // ✅ Increase spacing between lines
     msgBox.style.boxShadow = "0px 4px 10px rgba(0,0,0,0.5)"; // ✅ Add subtle shadow for visibility
 
     document.body.appendChild(msgBox);
 }
+
 
 
     // Ensure the close button is created only once
