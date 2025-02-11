@@ -342,30 +342,37 @@ if (!msgBox) {
 }
 
 
-    // Ensure the close button is created only once
-    let closeButton = document.getElementById("ackButton");
-    if (!closeButton) {
-        closeButton = document.createElement("button");
-        closeButton.id = "ackButton";
-        closeButton.innerText = "ACKNOWLEDGE";
-        closeButton.style.marginTop = "10px";
-        closeButton.style.padding = "5px 15px";
-        closeButton.style.fontSize = "18px";
-        closeButton.style.fontWeight = "bold";
-        closeButton.style.border = "none";
-        closeButton.style.borderRadius = "5px";
-        closeButton.style.cursor = "pointer";
-        closeButton.addEventListener("click", function () {
-            msgBox.style.display = "none";
-        });
-    }
+// Ensure the close button is created only once
+let closeButton = document.getElementById("ackButton");
+if (!closeButton) {
+    closeButton = document.createElement("button");
+    closeButton.id = "ackButton";
+    closeButton.innerText = "ACKNOWLEDGE";
+    closeButton.style.padding = "10px 20px"; // ✅ Better padding for button size
+    closeButton.style.fontSize = "18px";
+    closeButton.style.fontWeight = "bold";
+    closeButton.style.border = "none";
+    closeButton.style.borderRadius = "5px";
+    closeButton.style.cursor = "pointer";
+    closeButton.style.background = "white"; // ✅ Match styling for contrast
+    closeButton.style.color = "black";
+    closeButton.style.boxShadow = "0px 2px 5px rgba(0,0,0,0.3)"; // ✅ Button shadow
+    closeButton.style.marginTop = "20px"; // ✅ Add space above button
+    closeButton.style.alignSelf = "center"; // ✅ Centers the button in flexbox
 
-    // Set message content
-    msgBox.innerHTML = `<p>${message}</p>`;
-    
-    // Append the button (only if not already present)
-    if (!msgBox.contains(closeButton)) {
-        msgBox.appendChild(closeButton);
+    closeButton.addEventListener("click", function () {
+        msgBox.style.display = "none";
+    });
+}
+
+// Ensure the message box is using flexbox for centering
+msgBox.style.display = "flex";
+msgBox.style.flexDirection = "column"; // ✅ Stack text and button vertically
+msgBox.style.justifyContent = "center"; // ✅ Center contents vertically
+msgBox.style.alignItems = "center"; // ✅ Center contents horizontally
+
+msgBox.appendChild(closeButton);
+
     }
 
     msgBox.style.display = "block";
