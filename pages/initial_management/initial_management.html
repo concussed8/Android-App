@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, height=device-height, initial-scale=1.0, user-scalable=no">
+  <title>Burn Management Checklist</title>
+  <style>
+    /* Ensure the body fills the viewport */
+    html, body {
+      margin: 0;
+      padding: 0;
+      width: 100vw;
+      height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      overflow: hidden;
+      background-color: white; /* Default background color */
+    }
+
+    /* Prevent landscape mode */
+    @media screen and (orientation: landscape) {
+      body {
+        display: none;
+      }
+    }
+
+    /* Fixed Header */
+    .header {
+      position: absolute;
+      width: 100%;
+      top: 2%;
+      text-align: center;
+      font-size: 8vw; /* Responsive scaling */
+      font-weight: bold;
+      font-family: "Courier New", Courier, monospace;
+      color: white;
+      z-index: 1000;
+    }
+
+    /* Next & Prev Buttons */
+    .nav-buttons {
+      position: absolute;
+      bottom: 70px; /* Places above the disclaimer */
+      display: flex;
+      justify-content: space-between;
+      width: 60vw; /* Adjust width */
+      max-width: 400px;
+      gap: 100px; /* Adjust this to increase or decrease the space between buttons */
+      justify-content: center; /* Centers the icons horizontally */
+      z-index: 1000;
+    }
+
+    .nav-buttons img {
+      width: 100px; /* Control Size */
+      height: 75px;
+      cursor: pointer;
+      border: 0px solid black;
+      border-radius: 10px;
+      opacity: 0.9;
+      transition: transform 0.2s ease;
+    }
+
+    .nav-buttons img:active {
+      transform: scale(1.1);
+    }
+  </style>
+</head>
+<body>
+  <!-- Fixed Header -->
+  <div class="header">Burn Management Checklist</div>
+
+  <!-- Next & Prev Buttons -->
+  <div class="nav-buttons">
+    <img src="https://raw.githubusercontent.com/concussed8/Android-App/main/images/prev.png" id="prevBtn" alt="Previous">
+    <img src="https://raw.githubusercontent.com/concussed8/Android-App/main/images/next.png" id="nextBtn" alt="Next">
+  </div>
+
+<script>
+  // Function to get a session cookie value
+  function getSessionCookie(name) {
+    let cookies = document.cookie.split('; ');
+    for (let cookie of cookies) {
+      let [cookieName, cookieValue] = cookie.split('=');
+      if (cookieName === name) {
+        return cookieValue;
+      }
+    }
+    return "";
+  }
+
+  // Change background color based on stored burn type
+  function updateBackgroundColor() {
+    let burnType = getSessionCookie("burnType");
+    if (burnType === "thermal") {
+      document.body.style.backgroundColor = "#800000"; // Dark red
+    } else if (burnType === "chemical") {
+      document.body.style.backgroundColor = "#90EE90"; // Light green
+    } else if (burnType === "electrical") {
+      document.body.style.backgroundColor = "#ADD8E6"; // Light blue
+    }
+  }
+
+  // Run function on page load
+  document.addEventListener("DOMContentLoaded", updateBackgroundColor);
+
+  // Handle Next Button Click
+  document.getElementById("nextBtn").addEventListener("click", function () {
+    window.location.href = "nextPage.html"; // Change this to the actual next page
+  });
+
+  // Handle Previous Button Click
+  document.getElementById("prevBtn").addEventListener("click", function () {
+    window.history.back();
+  });
+</script>
+
+</body>
+</html>
