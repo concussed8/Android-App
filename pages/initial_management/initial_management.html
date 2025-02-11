@@ -126,9 +126,11 @@ html, body {
   display: flex;
   width: 60vw; /* Responsive width */
   max-width: 400px;
-  justify-content: space-between; /* Ensures even spacing */
+  justify-content: center; /* Centers the icons horizontally */
   align-items: center; /* Vertically aligns icons */
   gap: 100px; /* Creates space between the icons */
+  left: 50%; /* Moves container to center */
+  transform: translateX(-50%); /* Adjusts for centering */
   z-index: 1000;
 }
 
@@ -146,6 +148,7 @@ html, body {
 .nav-buttons img:active {
   transform: scale(1.1);
 }
+
 
 
 
