@@ -321,24 +321,26 @@ if (!msgBox) {
     msgBox.style.top = "15%";
     msgBox.style.left = "50%";
     msgBox.style.transform = "translateX(-50%)";
-    msgBox.style.width = "80%";  // ✅ Set width (Adjustable)
-    msgBox.style.maxWidth = "400px"; // ✅ Prevent it from getting too wide
-    msgBox.style.height = "auto"; // ✅ Allow dynamic height based on content
-    msgBox.style.padding = "20px"; // ✅ More padding for better readability
+    msgBox.style.width = "80%"; // ✅ Match .content-container width
+    msgBox.style.maxWidth = "488px"; // ✅ Match .content-container max-width
+    msgBox.style.height = "auto"; // ✅ Allow dynamic height
     msgBox.style.background = "rgba(255, 0, 0, 0.8)";
     msgBox.style.color = "white";
     msgBox.style.fontFamily = "Courier New, Courier, monospace";
-    msgBox.style.fontSize = "26px"; // ✅ Adjust text size for readability
+    msgBox.style.fontSize = "20px"; // ✅ Adjust font for readability
     msgBox.style.fontWeight = "bold";
-    msgBox.style.borderRadius = "8px"; // ✅ Slightly rounder corners
+    msgBox.style.border = "3px solid black"; // ✅ Match .content-container border
+    msgBox.style.borderRadius = "8px"; // ✅ Match .content-container rounded edges
     msgBox.style.zIndex = "10000";
-    msgBox.style.textAlign = "left"; // ✅ Left-align text like a paragraph
-    msgBox.style.display = "block"; // ✅ Standard block display
-    msgBox.style.lineHeight = "1.5"; // ✅ Increase spacing between lines
-    msgBox.style.boxShadow = "0px 4px 10px rgba(0,0,0,0.5)"; // ✅ Add subtle shadow for visibility
+    msgBox.style.textAlign = "left"; // ✅ Left-align text
+    msgBox.style.display = "block";
+    msgBox.style.lineHeight = "1.5"; // ✅ Improve readability
+    msgBox.style.padding = "20px"; // ✅ Match .content-container padding
+    msgBox.style.boxShadow = "0px 4px 10px rgba(0,0,0,0.5)"; // ✅ Add slight shadow for visibility
 
     document.body.appendChild(msgBox);
 }
+
 
 
 
