@@ -140,26 +140,12 @@ function updateBackgroundColor() {
     }, 200); // Slight delay to ensure cookies are properly set
 }
 
-// Store Previous Page URL (Only if it's a valid referrer and different from current page)
-document.addEventListener("DOMContentLoaded", function () {
-    let currentReferrer = document.referrer;
-    let currentPage = window.location.href;
-    let storedPrevPage = getSessionCookie("previousPage");
+// Function to get current page filename
+function getCurrentPage() {
+    return window.location.pathname.split("/").pop(); // Extracts filename from URL
+}
 
-    console.log("Current Referrer:", currentReferrer);
-    console.log("Currently Stored Previous Page:", storedPrevPage);
-
-    // Update previous page if:
-    // 1. The referrer exists
-    // 2. The referrer is NOT the current page (avoids loops)
-    // 3. The referrer is NOT the home page (prevents going too far back)
-    if (currentReferrer && currentReferrer !== currentPage && currentReferrer !== "https://concussed8.github.io/Android-App/") {
-        setSessionCookie("previousPage", currentReferrer);
-        console.log("Updated Previous Page to:", currentReferrer);
-    }
-});
-
-// Ensure the Previous Button Works
+// Ensure the Previous Button Works with Absolute Navigation
 document.addEventListener("DOMContentLoaded", function () {
     updateBackgroundColor(); // Ensure correct background color
 
@@ -170,17 +156,19 @@ document.addEventListener("DOMContentLoaded", function () {
         prevBtn.style.pointerEvents = "auto"; // Ensure clicks are registered
 
         prevBtn.addEventListener("click", function () {
-            let prevPage = getSessionCookie("previousPage");
-            console.log("Previous Button Clicked!");
-            console.log("Previous Page Retrieved:", prevPage);
+            let currentPage = getCurrentPage();
+            console.log("Previous Button Clicked on:", currentPage);
 
-            if (prevPage && prevPage !== window.location.href) {
-                console.log("Navigating to:", prevPage);
-                window.location.href = prevPage;
-            } else {
-                console.warn("No valid previous page found. Redirecting to last known page.");
-                window.location.href = "https://concussed8.github.io/Android-App/pages/age_weight/age_weight.html"; // Fallback last page
+            let prevPage = "https://concussed8.github.io/Android-App/"; // Default to home (index)
+
+            if (currentPage === "initial_management.html") {
+                prevPage = "https://concussed8.github.io/Android-App/pages/age_weight/age_weight.html";
+            } else if (currentPage === "age_weight.html") {
+                prevPage = "https://concussed8.github.io/Android-App/";
             }
+
+            console.log("Navigating to:", prevPage);
+            window.location.href = prevPage;
         });
 
         console.log("Previous button event listener attached.");
