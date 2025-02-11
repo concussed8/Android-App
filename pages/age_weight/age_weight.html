@@ -286,16 +286,17 @@ document.getElementById("nextBtn").addEventListener("click", function () {
         return;
     }
 
-    // Construct Next Page URL
-    let nextPage = "";
-    if (age >= 16) {
-        nextPage = `https://concussed8.github.io/Android-App/pages/adult_TBSA/adult_${selectedIcon}_tbsa.html`;
-    } else {
-        nextPage = `https://concussed8.github.io/Android-App/pages/pediatric_TBSA/pediatric_${selectedIcon}_tbsa.html`;
-    }
+   // Construct Next Page URL
+let nextPage = "";
+if (age >= 16) {
+    nextPage = "https://concussed8.github.io/Android-App/pages/initial_management/initial_management.html";
+} else {
+    nextPage = `https://concussed8.github.io/Android-App/pages/pediatric_TBSA/pediatric_${selectedIcon}_tbsa.html`;
+}
 
-    console.log("Redirecting to:", nextPage);
-    window.location.href = nextPage;
+console.log("Redirecting to:", nextPage);
+window.location.href = nextPage;
+
 });
 
 // Store Previous Page URL & Handle Back Navigation
