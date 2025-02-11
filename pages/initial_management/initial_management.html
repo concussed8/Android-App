@@ -67,7 +67,14 @@ html, body {
   font-size: 16px;
 }
 
-/* Fluid Rate Header */
+/* Pulsating Animation */
+@keyframes pulsate {
+  0% { transform: scale(1); opacity: 1; }
+  50% { transform: scale(1.05); opacity: 0.8; }
+  100% { transform: scale(1); opacity: 1; }
+}
+
+/* Apply Pulsating Effect to Fluid Rate Header */
 .fluid-rate-header {
   font-size: 18px;
   font-weight: bold;
@@ -75,9 +82,10 @@ html, body {
   text-align: center;
   margin-top: 20px;
   margin-bottom: 10px;
+  animation: pulsate 1.5s infinite ease-in-out;
 }
 
-/* Fluid Rate Box */
+/* Apply Pulsating Effect to Fluid Rate Box */
 .fluid-rate-box {
   width: 80%;
   max-width: 350px;
@@ -89,7 +97,9 @@ html, body {
   padding: 15px;
   border-radius: 8px;
   margin: 0 auto;
+  animation: pulsate 1.5s infinite ease-in-out;
 }
+
 
 /* Next & Prev Buttons */
 .nav-buttons {
