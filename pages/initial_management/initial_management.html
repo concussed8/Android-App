@@ -16,7 +16,7 @@
       align-items: center;
       justify-content: center;
       overflow: hidden;
-      background-color: white; /* Default background color */
+      background-color: white; /* Keep plain white background */
     }
 
     /* Prevent landscape mode */
@@ -35,44 +35,39 @@
       font-size: 8vw; /* Responsive scaling */
       font-weight: bold;
       font-family: "Courier New", Courier, monospace;
-      color: white;
+      color: black; /* Changed to black for visibility */
       z-index: 1000;
     }
 
-    /* Image container (Newly added, same size as Electrical TBSA) */
-    .image-container {
+    /* Empty Container (Same size as previous image container) */
+    .content-container {
       position: relative;
       width: 90vw; /* Responsive width */
-      max-width: 488px; /* Keep max size same as image */
-      aspect-ratio: 488 / 985; /* Maintain image aspect ratio */
-      z-index: 1; /* Ensure it's behind the header */
-      margin-bottom: 20px; /* Adds spacing before nav buttons */
-    }
-
-    /* Style the image */
-    .image-container img {
-      width: 100%;
-      height: auto;
-      display: block;
-      outline: 6px solid black; /* Adjust size & color */
+      max-width: 488px; /* Keep max width same */
+      aspect-ratio: 488 / 985; /* Maintain consistent aspect ratio */
+      background-color: white; /* Ensure it's just a blank space */
+      border: 3px solid black; /* Optional: Adds visibility to the container */
       border-radius: 8px; /* Optional: Rounds corners */
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-bottom: 20px; /* Adds spacing before nav buttons */
     }
 
     /* Next & Prev Buttons */
     .nav-buttons {
       position: absolute;
-      bottom: 70px; /* Places above the disclaimer */
+      bottom: 70px;
       display: flex;
-      justify-content: space-between;
-      width: 60vw; /* Adjust width */
+      justify-content: center;
+      width: 60vw;
       max-width: 400px;
-      gap: 100px; /* Adjust this to increase or decrease the space between buttons */
-      justify-content: center; /* Centers the icons horizontally */
+      gap: 100px;
       z-index: 1000;
     }
 
     .nav-buttons img {
-      width: 100px; /* Control Size */
+      width: 100px;
       height: 75px;
       cursor: pointer;
       border: 0px solid black;
@@ -90,10 +85,8 @@
   <!-- Fixed Header -->
   <div class="header">Burn Management Checklist</div>
 
-  <!-- Image Container (Newly Added) -->
-  <div class="image-container">
-    <img src="https://raw.githubusercontent.com/concussed8/IOS-test/main/images/rule_of_9_adult.jpg" alt="Rule of 9 Adult">
-  </div>
+  <!-- Empty Container (Same Size as Image Container) -->
+  <div class="content-container"></div>
 
   <!-- Next & Prev Buttons -->
   <div class="nav-buttons">
@@ -111,7 +104,7 @@ function setSessionCookie(name, value) {
 // Function to get a session cookie value
 function getSessionCookie(name) {
     let cookies = document.cookie.split('; ');
-    console.log("All Cookies:", document.cookie); // Debugging log
+    console.log("All Cookies:", document.cookie);
     for (let cookie of cookies) {
         let [cookieName, cookieValue] = cookie.split('=');
         if (cookieName === name) {
@@ -130,60 +123,59 @@ function syncBurnTypeWithSelectedIcon() {
     console.log("Current Burn Type:", burnType);
     console.log("Selected Icon:", selectedIcon);
 
-    // If burnType is missing OR does not match selectedIcon, update it
     if (!burnType || burnType !== selectedIcon) {
         setSessionCookie("burnType", selectedIcon);
         console.log("Updated Burn Type to:", selectedIcon);
-        return selectedIcon; // Return updated value
+        return selectedIcon;
     }
 
-    return burnType; // Return existing valid burnType
+    return burnType;
 }
 
 // Change background color based on stored burn type
 function updateBackgroundColor() {
     setTimeout(() => {  
-        let burnType = syncBurnTypeWithSelectedIcon(); // Ensure it's correct
-        console.log("Final Burn Type Retrieved:", burnType); // Debugging log
+        let burnType = syncBurnTypeWithSelectedIcon();
+        console.log("Final Burn Type Retrieved:", burnType);
 
         if (burnType) {
             switch (burnType) {
                 case "thermal":
-                    document.body.style.backgroundColor = "#800000"; // Dark red
+                    document.body.style.backgroundColor = "#800000";
                     break;
                 case "chemical":
-                    document.body.style.backgroundColor = "#90EE90"; // Light green
+                    document.body.style.backgroundColor = "#90EE90";
                     break;
                 case "electrical":
-                    document.body.style.backgroundColor = "#ADD8E6"; // Light blue
+                    document.body.style.backgroundColor = "#ADD8E6";
                     break;
                 default:
                     console.warn("Unexpected burn type:", burnType);
             }
         }
-    }, 200); // Slight delay to ensure cookies are properly set
+    }, 200);
 }
 
 // Function to get current page filename
 function getCurrentPage() {
-    return window.location.pathname.split("/").pop(); // Extracts filename from URL
+    return window.location.pathname.split("/").pop();
 }
 
 // Ensure the Previous Button Works with Absolute Navigation
 document.addEventListener("DOMContentLoaded", function () {
-    updateBackgroundColor(); // Ensure correct background color
+    updateBackgroundColor();
 
     let prevBtn = document.getElementById("prevBtn");
 
     if (prevBtn) {
-        prevBtn.style.cursor = "pointer"; // Ensure the cursor is correct
-        prevBtn.style.pointerEvents = "auto"; // Ensure clicks are registered
+        prevBtn.style.cursor = "pointer";
+        prevBtn.style.pointerEvents = "auto";
 
         prevBtn.addEventListener("click", function () {
             let currentPage = getCurrentPage();
             console.log("Previous Button Clicked on:", currentPage);
 
-            let prevPage = "https://concussed8.github.io/Android-App/"; // Default to home (index)
+            let prevPage = "https://concussed8.github.io/Android-App/";
 
             if (currentPage === "initial_management.html") {
                 prevPage = "https://concussed8.github.io/Android-App/pages/age_weight/age_weight.html";
