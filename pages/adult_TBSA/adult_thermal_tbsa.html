@@ -121,124 +121,82 @@
     <input type="tel" class="input-field field7" data-max="18" value="0%" maxlength="3">
   </div>
 
- <script>
-  // Function to set a session cookie
-  function setSessionCookie(name, value) {
-    document.cookie = `${name}=${value}; path=/; samesite=strict; max-age=3600`; // 1-hour session cookie
-  }
+  <script>
+    document.querySelectorAll(".input-field").forEach(input => {
+      input.addEventListener("focus", function () {
+        if (this.value === "0%") {
+          this.value = ""; // Clear when focused
+        }
+      });
 
-  // Function to get a session cookie value
-  function getSessionCookie(name) {
-    let cookies = document.cookie.split("; ");
-    for (let cookie of cookies) {
-      let [cookieName, cookieValue] = cookie.split("=");
-      if (cookieName === name) {
-        return cookieValue;
-      }
-    }
-    return null; // Return null if cookie is not found
-  }
+      input.addEventListener("blur", function () {
+        if (this.value === "" || this.value === "%") {
+          this.value = "0%"; // Reset if empty on blur
+          this.classList.remove("red-bold"); // Remove red bold styling
+        }
+      });
 
-  // Store input changes in session cookies
-  document.getElementById("sex").addEventListener("change", function () {
-    setSessionCookie("sex", this.value);
-  });
+      input.addEventListener("input", function () {
+        let value = this.value.replace(/\D/g, ""); // Remove non-numeric characters
+        let maxVal = parseInt(this.dataset.max); // Get max allowed % from data attribute
 
-  document.getElementById("age").addEventListener("input", function () {
-    setSessionCookie("age", this.value);
-  });
+        if (value.length > 0) {
+          if (parseInt(value) > maxVal) {
+            alert(`Value cannot exceed ${maxVal}%. Please re-enter a valid amount.`);
+            this.value = ""; // Clear the field instead of defaulting to the max
+            this.classList.remove("red-bold"); // Remove red bold styling
+            return;
+          } else {
+            this.value = value + "%"; // Append %
+            this.classList.add("red-bold"); // Make text red and bold
+          }
+        }
+      });
 
-  document.getElementById("weight").addEventListener("input", function () {
-    setSessionCookie("weight", this.value);
-  });
+      // Prevent typing non-numeric characters
+      input.addEventListener("keypress", function (e) {
+        if (!/[0-9]/.test(e.key)) {
+          e.preventDefault(); // Block non-numeric input
+        }
+      });
 
-  // Function to show a warning message if required fields are not filled
-  function showMessage() {
-    alert("Please complete Sex, Age, and Weight to continue!");
-  }
+      // Allow backspace to fully clear the field
+      input.addEventListener("keydown", function (e) {
+        if (e.key === "Backspace") {
+          if (this.value.length <= 2) {
+            this.value = ""; // Allow clearing the field completely
+            e.preventDefault();
+            this.classList.remove("red-bold"); // Remove red bold styling
+          } else {
+            this.value = this.value.slice(0, -2) + "%"; // Remove last digit but keep %
+          }
+        }
+      });
 
-  // Handle clicks for Next button
-  document.getElementById("nextBtn").addEventListener("click", function () {
-    let selectedIcon = getSessionCookie("selectedIcon"); // Get selected icon (thermal/electrical/chemical)
-    let age = getSessionCookie("age");
-    let sex = getSessionCookie("sex");
-    let weight = getSessionCookie("weight");
+      // Automatically select all text when clicked
+      input.addEventListener("focus", function () {
+        setTimeout(() => {
+          this.setSelectionRange(0, this.value.length - 1); // Select only the numbers
+        }, 50);
+      });
+    });
 
-    // Ensure all fields are filled
-    if (!sex || !age || !weight) {
-      showMessage(); // Show alert if fields are missing
-      return;
-    }
-
-    let ageValue = age ? parseInt(age, 10) : 0; // Convert age to number
-
-    // Debugging: Log values to console
-    console.log("Selected Icon:", selectedIcon);
-    console.log("Age:", ageValue);
-    console.log("Sex:", sex);
-    console.log("Weight:", weight);
-
-    // Check if age is 16 or older and redirect accordingly
-    if (ageValue >= 16) {
-      let redirectUrl = "";
-
-      if (selectedIcon === "thermal") {
-        redirectUrl = "https://concussed8.github.io/Android-App/pages/adult_TBSA/adult_thermal_tbsa.html";
-      } else if (selectedIcon === "electrical") {
-        redirectUrl = "https://concussed8.github.io/Android-App/pages/adult_TBSA/adult_electrical_tbsa.html";
-      } else if (selectedIcon === "chemical") {
-        redirectUrl = "https://concussed8.github.io/Android-App/pages/adult_TBSA/adult_chemical_tbsa.html";
-      }
-
-      if (redirectUrl) {
-        console.log("Redirecting to:", redirectUrl);
-        window.location.href = redirectUrl;
+    // Hide everything in landscape mode, but allow pull-to-refresh in portrait
+    function checkOrientation() {
+      if (window.matchMedia("(orientation: landscape)").matches) {
+        document.body.style.display = "none";
       } else {
-        console.error("Invalid icon type or missing URL!");
+        document.body.style.display = "flex";
       }
-    } else {
-      console.log("User is under 16. No action taken.");
-      // Additional logic can be added here for users under 16
     }
-  });
 
-  // Handle clicks for Previous button (navigates back to last page)
-  document.getElementById("prevBtn").addEventListener("click", function () {
-    window.history.back(); // Navigates back to previous page
-  });
+    // Listen for orientation changes
+    window.addEventListener("resize", checkOrientation);
+    window.addEventListener("orientationchange", checkOrientation);
 
-  // Restrict Age and Weight Fields to Numbers Only
-  document.querySelectorAll(".input-box").forEach(input => {
-    input.addEventListener("input", function () {
-      this.value = this.value.replace(/\D/g, ''); // Remove non-numeric characters
-    });
-
-    input.addEventListener("keypress", function (e) {
-      if (!/[0-9]/.test(e.key)) {
-        e.preventDefault(); // Prevent non-numeric key presses
-      }
-    });
-  });
-
-  // Enable Pull-to-Refresh in Portrait Mode
-  let lastY = 0;
-  document.addEventListener("touchstart", (e) => { lastY = e.touches[0].clientY; });
-  document.addEventListener("touchend", (e) => {
-    let currentY = e.changedTouches[0].clientY;
-    if (currentY - lastY > 100) location.reload(); // Pull-down refresh
-  });
-
-  // Prevent landscape mode
-  function checkOrientation() {
-    if (window.matchMedia("(orientation: landscape)").matches) {
-      document.body.innerHTML = "<div style='display:flex;justify-content:center;align-items:center;height:100vh;font-size:24px;color:red;'>Return to Portrait Mode</div>";
-    }
-  }
-
-  window.addEventListener("resize", checkOrientation);
-  window.addEventListener("orientationchange", checkOrientation);
-
-</script>
+    // Run on load
+    checkOrientation();
+  </script>
 
 </body>
 </html>
