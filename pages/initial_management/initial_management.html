@@ -6,111 +6,90 @@
   <title>Burn Management Checklist</title>
   <style>
     /* Ensure the body fills the viewport */
-    html, body {
-      margin: 0;
-      padding: 0;
-      width: 100vw;
-      height: 100vh;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-      overflow: hidden;
-      background-color: white; /* Keep plain white background */
-    }
+html, body {
+  margin: 0;
+  padding: 0;
+  width: 100vw;
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  background-color: white; /* Keep plain white background */
+}
 
-    /* Prevent landscape mode */
-    @media screen and (orientation: landscape) {
-      body {
-        display: none;
-      }
-    }
+/* Prevent landscape mode */
+@media screen and (orientation: landscape) {
+  body {
+    display: none;
+  }
+}
 
-    /* Fixed Header */
-    .header {
-      position: absolute;
-      width: 100%;
-      top: 2%;
-      text-align: center;
-      font-size: 8vw; /* Responsive scaling */
-      font-weight: bold;
-      font-family: "Courier New", Courier, monospace;
-      color: white; /* Changed to black for visibility */
-      z-index: 1000;
-    }
+/* Fixed Header */
+.header {
+  width: 100%;
+  text-align: center;
+  font-size: 8vw; /* Responsive scaling */
+  font-weight: bold;
+  font-family: "Courier New", Courier, monospace;
+  color: black; /* Changed to black for visibility */
+  z-index: 1000;
+  padding-top: 20px; /* Adds spacing inside the header */
+  padding-bottom: 20px; /* Space between header and container */
+}
 
-    /* Main Container (Adjustable Height) */
+/* Main Container (Adjustable Height & Spacing Below Header) */
 .content-container {
-  position: relative;
   width: 70vw; /* Responsive width */
   max-width: 488px; /* Keep max width same */
   height: 500px; /* Adjustable height */
   background-color: white; /* Ensure it's just a blank space */
   border: 3px solid black; /* Main container border */
   border-radius: 8px; /* Optional: Rounds corners */
-  display: flex;
-  align-items: center; /* Center vertically */
-  justify-content: center; /* Center horizontally */
-  margin-top: 80px; /* Space below header */
-  padding: 20px; /* Padding inside the main container */
+  margin-top: 30px; /* Space below the header */
+  padding: 20px; /* Padding inside the container */
 }
 
-/* Inner Container (Centered Box) */
-.inner-container {
-  width: 95%; /* Keeps space along the sides */
-  height: 70%; /* Adjust as needed */
-  background-color: white; /* Keep it white */
-  border: 3px solid red; /* Bright red border for visibility */
-  border-radius: 5px; /* Optional: Rounds corners */
+/* Next & Prev Buttons */
+.nav-buttons {
+  position: absolute;
+  bottom: 20px;
   display: flex;
-  align-items: center; /* Center content vertically */
-  justify-content: center; /* Center content horizontally */
+  justify-content: center;
+  width: 60vw;
+  max-width: 400px;
+  gap: 100px;
+  z-index: 1000;
 }
 
-    /* Next & Prev Buttons */
-    .nav-buttons {
-      position: absolute;
-      bottom: 20px;
-      display: flex;
-      justify-content: center;
-      width: 60vw;
-      max-width: 400px;
-      gap: 100px;
-      z-index: 1000;
-    }
+.nav-buttons img {
+  width: 100px;
+  height: 75px;
+  cursor: pointer;
+  border: 0px solid black;
+  border-radius: 10px;
+  opacity: 0.9;
+  transition: transform 0.2s ease;
+}
 
-    .nav-buttons img {
-      width: 100px;
-      height: 75px;
-      cursor: pointer;
-      border: 0px solid black;
-      border-radius: 10px;
-      opacity: 0.9;
-      transition: transform 0.2s ease;
-    }
+.nav-buttons img:active {
+  transform: scale(1.1);
+}
 
-    .nav-buttons img:active {
-      transform: scale(1.1);
-    }
   </style>
 </head>
 <body>
-  <!-- Fixed Header -->
+<!-- Fixed Header -->
 <div class="header">THERMAL BURN <br> Initial Management <br> No Consult</div>
 
-<!-- Main Container (Adjustable Size) -->
-<div class="content-container">
-  <!-- Inner Container (Centered Box) -->
-  <div class="inner-container">
-    <p>Inner Box</p>
-  </div>
-</div>
+<!-- Main Container (Now Positioned Below Header) -->
+<div class="content-container"></div>
 
 <!-- Next & Prev Buttons -->
 <div class="nav-buttons">
   <img src="https://raw.githubusercontent.com/concussed8/Android-App/main/images/prev.png" id="prevBtn" alt="Previous">
   <img src="https://raw.githubusercontent.com/concussed8/Android-App/main/images/next.png" id="nextBtn" alt="Next">
 </div>
+
 
 
 <script>
