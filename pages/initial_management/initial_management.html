@@ -53,19 +53,30 @@ html, body {
 .bullet-list {
   font-size: 18px;
   font-family: Arial, sans-serif;
-  line-height: 1.0;
+  line-height: 1.0; /* Keep existing line spacing */
   padding-left: 20px;
   margin-top: 0px;
 }
 
+/* Bullet List Items - Initially Hidden */
 .bullet-list li {
   margin-bottom: 5px;
+  opacity: 0; /* Start fully hidden */
+  transform: translateX(-100%); /* Start off-screen */
 }
 
-.bullet-list ul {
-  padding-left: 20px;
-  font-size: 16px;
+/* Animation: Wipe In from Left */
+@keyframes wipe-in {
+  0% {
+    transform: translateX(-100%);
+    opacity: 0;
+  }
+  100% {
+    transform: translateX(0);
+    opacity: 1;
+  }
 }
+
 
 /* Pulsating Animation */
 @keyframes pulsate {
@@ -173,6 +184,19 @@ html, body {
 </div>
 
 <script>
+// Function to animate bullet points one by one
+function animateBulletPoints() {
+    let bulletPoints = document.querySelectorAll(".bullet-list li");
+
+    bulletPoints.forEach((item, index) => {
+        setTimeout(() => {
+            item.style.opacity = "1";
+            item.style.transform = "translateX(0)";
+            item.style.animation = "wipe-in 0.8s ease-out forwards";
+        }, index * 400); // Delay each bullet by 400ms
+    });
+}
+
 // Function to set session cookies
 function setSessionCookie(name, value) {
     document.cookie = `${name}=${encodeURIComponent(value)}; path=/; SameSite=Lax; max-age=3600`;
@@ -260,6 +284,7 @@ function getCurrentPage() {
 document.addEventListener("DOMContentLoaded", function () {
     updateBackgroundColor();
     updateHeaderTitle(); // Update the header title dynamically
+    animateBulletPoints(); // Start the bullet animation
 
     let prevBtn = document.getElementById("prevBtn");
 
@@ -288,6 +313,7 @@ document.addEventListener("DOMContentLoaded", function () {
         console.error("Previous button not found in DOM.");
     }
 });
+
 
 </script>
 
