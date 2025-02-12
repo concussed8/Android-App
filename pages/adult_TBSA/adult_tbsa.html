@@ -317,6 +317,15 @@ document.addEventListener("DOMContentLoaded", function () {
             }
         });
     }
+
+    // ✅ Next Button Function (Redirect to parkland.html)
+    let nextBtn = document.getElementById("nextBtn");
+    if (nextBtn) {
+        nextBtn.addEventListener("click", function () {
+            console.log("Navigating to Next Page: Parkland Calculation");
+            window.location.href = "https://concussed8.github.io/Android-App/pages/parkland.html";
+        });
+    }
 });
 
   </script>
