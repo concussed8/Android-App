@@ -78,66 +78,82 @@
       border: 0px solid black;
       border-radius: 8px;
       margin: 0 auto;
-    }/* Label Style - Responsive width */
+    }
+   /* Input Box Wrapper - Ensures proper spacing between weight and TBSA fields */
+.input-group {
+  display: flex; /* Aligns label and input side by side */
+  align-items: center; /* Keeps label and input vertically centered */
+  justify-content: space-between; /* Spreads label and input evenly */
+  width: 100%; /* Takes full width inside the container */
+  margin-bottom: 12px; /* Creates a 12px gap between input groups */
+}
+
+/* Ensures no extra margin at the bottom of the last input group */
+.input-group:last-child {
+  margin-bottom: 0;
+}
+
+/* Label Style - Responsive width */
 .input-group label {
-  font-size: 18px;
-  font-weight: bold;
-  padding: 8px 3%; /* Adjust padding dynamically */
-  border-radius: 6px;
-  text-align: center;
-  white-space: nowrap;
-  display: inline-block;
-  width: 30%; /* Label width is 30% of .content-container */
+  font-size: 18px; /* Keeps text readable */
+  font-weight: bold; /* Makes text stand out */
+  padding: 8px 3%; /* Adds horizontal padding dynamically based on width */
+  border-radius: 6px; /* Slightly rounded corners for aesthetics */
+  text-align: center; /* Centers label text */
+  white-space: nowrap; /* Prevents text from breaking onto multiple lines */
+  display: inline-block; /* Ensures labels maintain their width */
+  width: 30%; /* Each label takes 30% of .content-container width */
 }
 
 /* Input Field Style - Responsive width */
 .input-group input {
-  font-size: 18px;
-  font-weight: bold;
-  text-align: center;
-  border: none;
-  border-radius: 6px;
-  padding: 8px;
-  outline: none;
-  font-family: Arial, sans-serif;
-  width: 65%; /* Input field takes 65% of .content-container */
+  font-size: 18px; /* Ensures readability */
+  font-weight: bold; /* Makes the text visually distinct */
+  text-align: center; /* Centers the input text */
+  border: none; /* Removes default border */
+  border-radius: 6px; /* Softens edges */
+  padding: 8px; /* Adds space inside the input */
+  outline: none; /* Removes default focus outline */
+  font-family: Arial, sans-serif; /* Ensures consistent font */
+  width: 65%; /* Input field takes up 65% of .content-container width */
 }
 
 /* Orange Box (Weight) - Responsive */
 .weight-group {
-  background-color: #FFA500;
-  color: white;
-  width: 100%; /* Ensures full width inside .content-container */
-  display: flex;
-  align-items: center;
-  padding: 8px 0;
+  background-color: #FFA500; /* Sets a strong orange background */
+  color: white; /* White text for contrast */
+  width: 100%; /* Expands to full width of .content-container */
+  display: flex; /* Aligns label and input side by side */
+  align-items: center; /* Centers text vertically */
+  padding: 8px 0; /* Adds top and bottom padding */
 }
 
-/* Orange Input Field */
+/* Orange Input Field - Matches weight box */
 .weight-group input {
-  background-color: white;
-  color: black;
-  border: 2px solid #FFA500;
-  width: 65%;
+  background-color: white; /* White background for readability */
+  color: black; /* Black text for contrast */
+  border: 2px solid #FFA500; /* Keeps border consistent with weight box */
+  width: 65%; /* Maintains same width as other inputs */
 }
 
 /* Light Blue Box (% TBSA) - Responsive */
 .tbsa-group {
-  background-color: #ADD8E6;
-  color: black;
-  width: 100%; /* Ensures full width inside .content-container */
-  display: flex;
-  align-items: center;
-  padding: 8px 0;
+  background-color: #ADD8E6; /* Sets a light blue background */
+  color: black; /* Black text for readability */
+  width: 100%; /* Expands to full width of .content-container */
+  display: flex; /* Aligns label and input side by side */
+  align-items: center; /* Centers text vertically */
+  padding: 8px 0; /* Adds top and bottom padding */
 }
 
-/* Light Blue Input Field */
+/* Light Blue Input Field - Matches TBSA box */
 .tbsa-group input {
-  background-color: white;
-  color: black;
-  border: 2px solid #ADD8E6;
-  width: 65%;
+  background-color: white; /* White background for readability */
+  color: black; /* Black text for contrast */
+  border: 2px solid #ADD8E6; /* Matches border color with TBSA box */
+  width: 65%; /* Ensures uniformity with other inputs */
 }
+
 
 
     /* Navigation Buttons */
