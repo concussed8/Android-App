@@ -176,7 +176,7 @@ function setSessionCookie(name, value) {
     document.cookie = `${name}=${encodeURIComponent(value)}; path=/; SameSite=Lax; max-age=3600`; // 1-hour expiry
 }
 
-// Function to store all input field values in the "adultTBSA" cookie
+// Function to store input field values in "adultTBSA" cookie
 function saveAdultTBSACookie() {
     let tbsaData = {};
 
@@ -294,10 +294,15 @@ function checkOrientation() {
 window.addEventListener("resize", checkOrientation);
 window.addEventListener("orientationchange", checkOrientation);
 
-// ✅ Handle Previous Button Click - Retrieve from session cookie
+// ✅ Store the previous page in a cookie when navigating here
 document.addEventListener("DOMContentLoaded", function () {
     updateBackgroundColor();
     checkOrientation();
+
+    // ✅ Save the previous page URL when this page loads
+    if (document.referrer) {
+        setSessionCookie("previousPage", document.referrer);
+    }
 
     let prevBtn = document.getElementById("prevBtn");
     if (prevBtn) {
