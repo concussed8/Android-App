@@ -206,39 +206,43 @@ body {
    ============================== */
 
 .calcbox {
-  background-color: #FFEE66; /* yellow background */
-  color: black; /* White text for contrast */
-  width: 100%; /* Full width */
+  background-color: #FFEE66; /* Yellow background */
+  color: black; /* Black text for contrast */
+  width: 100%; /* Full width inside the container */
   display: flex; /* Aligns input and label */
   align-items: center; /* Centers text vertically */
-  padding: 8px 0; /* Adds padding */
+  padding: 8px 0; /* Adds padding inside */
+  border: 2px dashed black; /* Hashed border */
+  
+  /* 🔽 Incrementally adjust distance from the box above */
+  margin-top: 25px; /* Change this value to move the box up/down */
 }
 
 /* Output field (left side) */
 .calcbox input {
-  background-color: white;
-  color: black;
-  border: 2px solid black;
-  width: 45%;
-  text-align: center;
-  font-size: 26px;
-  font-weight: bold;
-  margin-left: 20px; /* Move 20px to the right */
+  background-color: white; /* White background for readability */
+  color: black; /* Black text */
+  border: 2px solid black; /* Solid border */
+  width: 45%; /* Matches other input field widths */
+  text-align: center; /* Centers text */
+  font-size: 26px; /* Large, readable font */
+  font-weight: bold; /* Makes text bold */
+  margin-left: 20px; /* 🔽 Change this value to move right */
 }
-
 
 /* Label on the right */
 .calclabel {
   font-size: 18px; /* Readable font size */
   font-weight: bold; /* Bold text */
-  color: black; /* black text */
-  padding: 8px 3%; /* Adds padding */
+  color: black; /* Black text */
+  padding: 8px 3%; /* Adds horizontal padding */
   border-radius: 10px; /* Softens edges */
   text-align: center; /* Centers text */
   white-space: nowrap; /* Prevents text wrapping */
   display: inline-block; /* Maintains structure */
   width: 30%; /* Label width */
 }
+
 /* ==============================
    Navigation Buttons
    ============================== */
