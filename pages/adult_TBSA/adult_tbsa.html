@@ -299,14 +299,27 @@ document.addEventListener("DOMContentLoaded", function () {
     updateBackgroundColor();
     checkOrientation();
 
+    // ✅ Save the previous page URL when this page loads
+    if (document.referrer) {
+        setSessionCookie("previousPage", document.referrer);
+    }
+
     let prevBtn = document.getElementById("prevBtn");
     if (prevBtn) {
         prevBtn.addEventListener("click", function () {
-            console.log("Navigating to Initial Management Page.");
-            window.location.href = "https://concussed8.github.io/Android-App/pages/initial_management/initial_management.html";
+            let prevPage = getSessionCookie("previousPage");
+
+            if (prevPage) {
+                console.log("Navigating to Previous Page:", prevPage);
+                window.location.href = prevPage;
+            } else {
+                console.warn("No previous page stored. Redirecting to Initial Management Page.");
+                window.location.href = "https://concussed8.github.io/Android-App/pages/initial_management/initial_management.html";
+            }
         });
     }
 });
+
 
     // ✅ Next Button Function (Redirect to parkland.html)
     let nextBtn = document.getElementById("nextBtn");
