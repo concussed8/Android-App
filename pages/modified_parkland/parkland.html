@@ -186,7 +186,7 @@ body {
    ============================== */
 
 .tbsa-group {
-  background-color: #ADD8E6; /* Light blue background */
+  background-color: #66CCFF; /* Light blue background */
   color: black; /* Black text for contrast */
   width: 100%; /* Expands to full width */
   display: flex; /* Aligns label and input */
@@ -268,7 +268,7 @@ body {
   </div>
 
   <script>
- // Function to retrieve a session cookie value
+// Function to retrieve a session cookie value
 function getSessionCookie(name) {
     let cookies = document.cookie.split('; ');
     for (let cookie of cookies) {
@@ -384,13 +384,38 @@ function populateInputFields() {
     }
 }
 
+// Function to handle Previous Button Click (Retrieve from Cookies)
+function handlePreviousButton() {
+    let prevBtn = document.getElementById("prevBtn");
+
+    if (prevBtn) {
+        let prevPage = getSessionCookie("previousPage");
+
+        if (prevPage) {
+            console.log("Previous Page Retrieved:", prevPage);
+            prevBtn.addEventListener("click", function () {
+                window.location.href = prevPage;
+            });
+        } else {
+            console.warn("No previous page stored in cookies.");
+        }
+    }
+}
+
 // Store the previous page in a cookie when navigating here
 document.addEventListener("DOMContentLoaded", function () {
     updateBackgroundColor();
     updateHeaderTitle();
     displayFluidImage();
     populateInputFields();
+    handlePreviousButton();
+
+    // ✅ Store the previous page URL when navigating here
+    if (document.referrer) {
+        document.cookie = `previousPage=${document.referrer}; path=/; SameSite=Lax; max-age=3600`;
+    }
 });
+
 
 </script>
 
