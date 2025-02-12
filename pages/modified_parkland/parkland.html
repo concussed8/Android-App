@@ -32,7 +32,7 @@ body {
 
 
 /* ==============================
-   Main Page Title
+   Main Page Title (Fixed at Top)
    ============================== */
 .main-header {
   font-family: "Courier New", monospace; /* Uses monospaced font */
@@ -40,11 +40,15 @@ body {
   font-weight: bold; /* Makes text bold */
   color: white; /* Sets text color */
   text-align: center; /* Centers text horizontally */
-  position: relative; /* Allows better control over spacing */
-  width: 90%; /* Makes the header width responsive */
+  position: fixed; /* Fixes the header at the top of the viewport */
+  top: 0; /* Ensures the header stays at the very top */
+  left: 50%; /* Centers the header horizontally */
+  transform: translateX(-50%); /* Ensures perfect centering */
+  width: 100%; /* Stretches across the entire width */
   max-width: 600px; /* Prevents excessive stretching */
   padding: 10px 0; /* Adds vertical padding */
-  margin-bottom: 10px; /* Default spacing between header and container */
+  background-color: rgba(0, 0, 0, 0.2); /* Optional: Slight background for readability */
+  z-index: 1000; /* Keeps it above other content */
 }
 
 /* Underline only "THERMAL BURN" */
@@ -53,7 +57,7 @@ body {
 }
 
 /* ==============================
-   Content Container
+   Content Container (Below Header)
    ============================== */
 .content-container {
   width: 80%; /* Responsive width */
@@ -66,16 +70,17 @@ body {
   text-align: center; /* Centers content */
   box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.5); /* Adds subtle shadow */
   
-  /* 🔽 Reduce space between header and container */
-  margin-top: -20px; /* Adjust this value as needed */
+  /* 🔽 Controls distance from the header */
+  margin-top: 60px; /* Pushes the container below the fixed header */
 }
 
 /* Adjust for smaller screens */
 @media (max-width: 768px) {
   .content-container {
-    margin-top: 5px; /* Reduces gap even further for mobile */
+    margin-top: 70px; /* Slightly increases spacing for mobile */
   }
 }
+
 
 
 /* ==============================
