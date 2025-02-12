@@ -159,7 +159,7 @@
 </div>
 
   <script>
-// Function to retrieve a session cookie value
+ // Function to retrieve a session cookie value
 function getSessionCookie(name) {
     let cookies = document.cookie.split('; ');
     for (let cookie of cookies) {
@@ -176,152 +176,147 @@ function setSessionCookie(name, value) {
     document.cookie = `${name}=${encodeURIComponent(value)}; path=/; SameSite=Lax; max-age=3600`; // 1-hour expiry
 }
 
-// Function to update background and container header color based on selected burn type
+// Function to store input field values in "adultTBSA" cookie
+function saveAdultTBSACookie() {
+    let tbsaData = {};
+
+    document.querySelectorAll(".input-field").forEach(input => {
+        tbsaData[input.classList[1]] = input.value; // Store field class and value
+    });
+
+    setSessionCookie("adultTBSA", JSON.stringify(tbsaData)); // Save JSON data as a cookie
+}
+
+// Function to update background color based on selected burn type (also updates header color)
 function updateBackgroundColor() {
-    setTimeout(() => {
+    setTimeout(() => {  
         let burnType = getSessionCookie("selectedIcon");
 
         console.log("Applying Background Color for:", burnType);
 
-        let backgroundColor = "#800000"; // Default to thermal
-        let headerColor = "#800000";
+        let backgroundColor = "";
+        let headerColor = "";
 
         if (burnType) {
             switch (burnType) {
                 case "thermal":
-                    backgroundColor = "#800000"; // Dark Red
+                    backgroundColor = "#800000";
                     headerColor = "#800000";
                     break;
                 case "chemical":
-                    backgroundColor = "#90EE90"; // Light Green
+                    backgroundColor = "#90EE90";
                     headerColor = "#90EE90";
                     break;
                 case "electrical":
-                    backgroundColor = "#ADD8E6"; // Light Blue
+                    backgroundColor = "#ADD8E6";
                     headerColor = "#ADD8E6";
                     break;
                 default:
                     console.warn("Unexpected burn type:", burnType);
+                    return;
             }
-        }
 
-        document.body.style.backgroundColor = backgroundColor;
-        document.querySelector(".container-header").style.color = headerColor;
+            document.body.style.backgroundColor = backgroundColor;
+            document.querySelector(".header").style.color = headerColor;
+        }
     }, 200);
 }
 
-// Function to update the main page title dynamically
-function updateHeaderTitle() {
-    let burnType = getSessionCookie("selectedIcon");
-    let headerSpan = document.querySelector(".main-header span");
-
-    if (burnType && headerSpan) {
-        switch (burnType) {
-            case "thermal":
-                headerSpan.textContent = "THERMAL BURN";
-                break;
-            case "chemical":
-                headerSpan.textContent = "CHEMICAL BURN";
-                break;
-            case "electrical":
-                headerSpan.textContent = "ELECTRICAL BURN";
-                break;
-            default:
-                console.warn("Unexpected burn type:", burnType);
+// Function to handle input validation for TBSA percentage
+document.querySelectorAll(".input-field").forEach(input => {
+    input.addEventListener("focus", function () {
+        if (this.value === "0%") {
+            this.value = "";
         }
-    }
-}
+    });
 
-// Function to display the correct fluid resuscitation image inside the container
-function displayFluidImage() {
-    let age = parseInt(getSessionCookie("age"), 10);
-    let burnType = getSessionCookie("selectedIcon");
-    let imagePath = "";
-
-    if (age >= 16) {
-        if (burnType === "thermal" || burnType === "chemical") {
-            imagePath = "https://raw.githubusercontent.com/concussed8/Android-App/main/images/2mls_kg.png";
-        } else if (burnType === "electrical") {
-            imagePath = "https://raw.githubusercontent.com/concussed8/Android-App/main/images/4mls_kg.png";
+    input.addEventListener("blur", function () {
+        if (this.value === "" || this.value === "%") {
+            this.value = "0%";
+            this.classList.remove("red-bold");
         }
-    } else {
-        imagePath = "https://raw.githubusercontent.com/concussed8/Android-App/main/images/3mls_kg.png";
-    }
+    });
 
-    document.getElementById("fluidImage").src = imagePath;
-    console.log("Loaded Fluid Image:", imagePath);
+    input.addEventListener("input", function () {
+        let value = this.value.replace(/\D/g, "");
+        let maxVal = parseInt(this.dataset.max);
+
+        if (value.length > 0) {
+            if (parseInt(value) > maxVal) {
+                alert(`Value cannot exceed ${maxVal}%. Please re-enter a valid amount.`);
+                this.value = "";
+                this.classList.remove("red-bold");
+                return;
+            } else {
+                this.value = value + "%";
+                this.classList.add("red-bold");
+            }
+        }
+
+        saveAdultTBSACookie();
+    });
+
+    input.addEventListener("keypress", function (e) {
+        if (!/[0-9]/.test(e.key)) {
+            e.preventDefault();
+        }
+    });
+
+    input.addEventListener("keydown", function (e) {
+        if (e.key === "Backspace") {
+            if (this.value.length <= 2) {
+                this.value = "";
+                e.preventDefault();
+                this.classList.remove("red-bold");
+            } else {
+                this.value = this.value.slice(0, -2) + "%";
+            }
+        }
+    });
+
+    input.addEventListener("focus", function () {
+        setTimeout(() => {
+            this.setSelectionRange(0, this.value.length - 1);
+        }, 50);
+    });
+});
+
+// Function to handle landscape mode prevention
+function checkOrientation() {
+    if (window.matchMedia("(orientation: landscape)").matches) {
+        document.body.style.display = "none";
+    } else {
+        document.body.style.display = "flex";
+    }
 }
 
-// Function to populate input fields with stored cookie values
-function populateInputFields() {
-    let weightField = document.getElementById("weight");
-    let tbsaField = document.getElementById("tbsa");
+// Listen for orientation changes
+window.addEventListener("resize", checkOrientation);
+window.addEventListener("orientationchange", checkOrientation);
 
-    // Retrieve and set weight
-    let storedWeight = getSessionCookie("weight");
-    if (storedWeight) {
-        weightField.value = storedWeight + " kg";
-    } else {
-        console.warn("No weight found in cookies.");
+// ✅ Store the previous page in a cookie when navigating here
+document.addEventListener("DOMContentLoaded", function () {
+    updateBackgroundColor();
+    checkOrientation();
+
+    // ✅ Save the previous page URL when this page loads
+    if (document.referrer) {
+        setSessionCookie("previousPage", document.referrer);
     }
 
-    // Retrieve and sum values for TBSA
-    let storedTBSA = getSessionCookie("adultTBSA");
-    if (storedTBSA) {
-        let tbsaData = JSON.parse(storedTBSA); // Convert back to object
-        let totalTBSA = Object.values(tbsaData).reduce((sum, value) => {
-            let numericValue = parseFloat(value.replace("%", "")) || 0; // Extract number
-            return sum + numericValue;
-        }, 0);
-
-        tbsaField.value = totalTBSA + "%";
-    } else {
-        console.warn("No TBSA values found in cookies.");
-    }
-}
-
-// Function to handle Previous Button Click with Age-Based Redirection
-function handlePreviousButton() {
     let prevBtn = document.getElementById("prevBtn");
-
     if (prevBtn) {
         prevBtn.addEventListener("click", function () {
-            let age = parseInt(getSessionCookie("age"), 10);
+            let prevPage = getSessionCookie("previousPage");
 
-            if (age >= 16) {
-                window.location.href = "https://concussed8.github.io/Android-App/pages/adult_TBSA/
-adult_tbsa.html";
-            } else if (age >= 2 && age <= 3) {
-                window.location.href = "infant_tbsa.html";
-            } else if (age >= 4 && age <= 15) {
-                window.location.href = "child_tbsa.html";
+            if (prevPage) {
+                console.log("Navigating to Previous Page:", prevPage);
+                window.location.href = prevPage;
             } else {
-                console.warn("No valid age-based redirection found.");
+                console.warn("No previous page stored.");
             }
         });
     }
-}
-
-// Function to handle Next Button Click (Redirect to next page)
-function handleNextButton() {
-    let nextBtn = document.getElementById("nextBtn");
-
-    if (nextBtn) {
-        nextBtn.addEventListener("click", function () {
-            console.log("Navigating to Next Page: Modified Parkland Calculation Page");
-            window.location.href = "https://concussed8.github.io/Android-App/pages/modified_parkland.html";
-        });
-    }
-}
-
-// Run all functions when the page loads
-document.addEventListener("DOMContentLoaded", function () {
-    updateBackgroundColor();
-    updateHeaderTitle();
-    displayFluidImage();
-    populateInputFields();
-    handlePreviousButton(); // ✅ Handles navigation correctly
-    handleNextButton();
 });
 
   </script>
