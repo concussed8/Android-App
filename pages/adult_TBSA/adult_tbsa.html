@@ -100,21 +100,18 @@
         border: 2px solid black;
       }
     }
-   /* Navigation Buttons Styling */
+  /* Navigation Buttons Styling */
 .nav-buttons {
-  position: fixed; /* Stays at the bottom */
-  bottom: 20px; /* Distance from bottom */
+  position: absolute; /* Ensures it stays within .image-container */
+  bottom: -90px; /* Moves it below the image */
   left: 50%; /* Center horizontally */
-  transform: translateX(-50%); /* Adjust for perfect centering */
+  transform: translateX(-50%); /* Corrects centering */
   display: flex;
-  justify-content: center; /* Centers icons horizontally */
+  justify-content: center; /* Ensures proper alignment */
   width: 60vw; /* Responsive width */
   max-width: 400px;
   gap: 100px; /* Space between buttons */
   z-index: 1000;
-  background: rgba(255, 255, 255, 0.1); /* Optional: Slight transparent background */
-  padding: 10px; /* Some padding for spacing */
-  border-radius: 10px; /* Optional: Round background edges */
 }
 
 /* Style for the navigation buttons */
@@ -132,6 +129,7 @@
   transform: scale(1.1);
   opacity: 1;
 }
+
 
   </style>
 </head>
