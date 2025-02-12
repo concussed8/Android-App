@@ -33,21 +33,20 @@ body {
    Main Page Title
    ============================== */
 
-/* Styling for the main page header */
+/* ==============================
+   Main Page Title
+   ============================== */
 .main-header {
   font-family: "Courier New", monospace; /* Uses monospaced font */
   font-size: 26px; /* Sets readable font size */
   font-weight: bold; /* Makes text bold */
   color: white; /* Sets text color */
   text-align: center; /* Centers text horizontally */
-  margin-bottom: 20px; /* Adds spacing below */
-  position: absolute; /* Allows precise positioning */
-  top: 0%; /* Moves header down from top */
-  left: 50%; /* Positions header in the center */
-  transform: translateX(-50%); /* Ensures perfect centering */
+  position: relative; /* Allows better control over spacing */
   width: 90%; /* Makes the header width responsive */
   max-width: 600px; /* Prevents excessive stretching */
   padding: 10px 0; /* Adds vertical padding */
+  margin-bottom: 10px; /* Default spacing between header and container */
 }
 
 /* Underline only "THERMAL BURN" */
@@ -58,8 +57,6 @@ body {
 /* ==============================
    Content Container
    ============================== */
-
-/* Main container styling */
 .content-container {
   width: 80%; /* Responsive width */
   max-width: 488px; /* Prevents excessive stretching */
@@ -72,7 +69,7 @@ body {
   box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.5); /* Adds subtle shadow */
   
   /* 🔽 Reduce space between header and container */
-  margin-top: -50px; /* Adjust this value as needed */
+  margin-top: -20px; /* Adjust this value as needed */
 }
 
 /* Adjust for smaller screens */
@@ -81,6 +78,7 @@ body {
     margin-top: 5px; /* Reduces gap even further for mobile */
   }
 }
+
 
 /* ==============================
    Container Header
