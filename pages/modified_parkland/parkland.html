@@ -473,25 +473,23 @@ function updatePreviousPageHistory() {
     let currentURL = window.location.href;
     let prevPageHistory = getSessionCookie("prevPageHistory");
 
-    if (prevPageHistory) {
-        let historyArray = JSON.parse(prevPageHistory);
-        
-        // Prevent duplicate storage (check if the last page is already stored)
-        if (historyArray.length === 0 || historyArray[historyArray.length - 1] !== currentURL) {
-            historyArray.push(currentURL);
-        }
-        
-        // Keep only the last 5 pages to avoid excessive storage
-        while (historyArray.length > 5) {
-            historyArray.shift();
-        }
+    let historyArray = prevPageHistory ? JSON.parse(prevPageHistory) : [];
 
-        setSessionCookie("prevPageHistory", JSON.stringify(historyArray));
-    } else {
-        // If no history, initialize with the first page
-        setSessionCookie("prevPageHistory", JSON.stringify([currentURL]));
+    // Prevent duplicate storage
+    if (historyArray.length === 0 || historyArray[historyArray.length - 1] !== currentURL) {
+        historyArray.push(currentURL);
     }
+
+    // Keep only the last 5 pages to avoid excessive storage
+    while (historyArray.length > 5) {
+        historyArray.shift();
+    }
+
+    console.log("Updating Page History:", historyArray); // ✅ Debugging Output
+
+    setSessionCookie("prevPageHistory", JSON.stringify(historyArray));
 }
+
 
 
 // Function to handle Previous Button Click (Retrieve from History)
@@ -505,18 +503,24 @@ function handlePreviousButton() {
             if (prevPageHistory) {
                 let historyArray = JSON.parse(prevPageHistory);
 
-                // Ensure we are not at the first page
+                console.log("Stored Page History:", historyArray); // ✅ Debugging Output
+
+                // Ensure history has more than 1 page before popping
                 if (historyArray.length > 1) {
                     historyArray.pop(); // Remove the current page
                     let prevPage = historyArray[historyArray.length - 1]; // Get the last visited page
 
                     console.log("Navigating to Previous Page:", prevPage);
 
-                    // Update the cookie with the updated history
+                    // Update the cookie with the remaining history
                     setSessionCookie("prevPageHistory", JSON.stringify(historyArray));
 
                     // Redirect to the previous page
-                    window.location.href = prevPage;
+                    if (prevPage) {
+                        window.location.href = prevPage;
+                    } else {
+                        console.warn("Previous page is null/undefined.");
+                    }
                 } else {
                     console.warn("No previous page stored.");
                 }
@@ -544,10 +548,11 @@ document.addEventListener("DOMContentLoaded", function () {
     displayFluidImage();
     populateInputFields();
     calculateFluidResuscitation();
-    updatePreviousPageHistory(); // ✅ Updates history correctly
+    updatePreviousPageHistory(); // ✅ Stores history correctly
     handlePreviousButton(); // ✅ Retrieves correct previous page
     handleNextButton();
 });
+
 
 
 
