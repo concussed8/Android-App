@@ -336,8 +336,8 @@ function getSessionCookie(name) {
 // Function to set a session cookie
 function setSessionCookie(name, value) {
     document.cookie = `${name}=${encodeURIComponent(value)}; path=/; SameSite=Lax; max-age=3600`; // 1-hour expiry
-
 }
+
 // Function to update background and container header color based on selected burn type
 function updateBackgroundColor() {
     setTimeout(() => {
@@ -393,6 +393,7 @@ function updateHeaderTitle() {
         }
     }
 }
+
 // Function to display the correct fluid resuscitation image inside the container
 function displayFluidImage() {
     let age = parseInt(getSessionCookie("age"), 10);
@@ -412,6 +413,7 @@ function displayFluidImage() {
     document.getElementById("fluidImage").src = imagePath;
     console.log("Loaded Fluid Image:", imagePath);
 }
+
 // Function to populate input fields with stored cookie values
 function populateInputFields() {
     let weightField = document.getElementById("weight");
@@ -439,93 +441,23 @@ function populateInputFields() {
         console.warn("No TBSA values found in cookies.");
     }
 }
-// Function to calculate and display the result in calcbox
-function calculateFluidResuscitation() {
-    let age = parseInt(getSessionCookie("age"), 10);
-    let burnType = getSessionCookie("selectedIcon");
-    let weight = parseFloat(getSessionCookie("weight"));
-    let storedTBSA = getSessionCookie("adultTBSA");
-    let totalTBSA = 0;
-    let result = 0;
 
-    if (storedTBSA) {
-        let tbsaData = JSON.parse(storedTBSA);
-        totalTBSA = Object.values(tbsaData).reduce((sum, value) => {
-            let numericValue = parseFloat(value.replace("%", "")) || 0;
-            return sum + numericValue;
-        }, 0);
-    }
-
-    if (!isNaN(weight) && !isNaN(totalTBSA) && totalTBSA > 0) {
-        if ((burnType === "thermal" || burnType === "chemical") && age >= 16) {
-            result = (2 * weight * totalTBSA) / 16;
-        } else if (age >= 2 && age <= 15) {
-            result = (3 * weight * totalTBSA) / 16;
-        } else if (burnType === "electrical" && age >= 16) {
-            result = (4 * weight * totalTBSA) / 16;
-        }
-    }
-
-    document.getElementById("calcOutput").value = result.toFixed(2);
-}
-// Function to update the previous page history in a cookie
-function updatePreviousPageHistory() {
-    let currentURL = window.location.href;
-    let prevPageHistory = getSessionCookie("prevPageHistory");
-
-    let historyArray = prevPageHistory ? JSON.parse(prevPageHistory) : [];
-
-    // Prevent duplicate storage
-    if (historyArray.length === 0 || historyArray[historyArray.length - 1] !== currentURL) {
-        historyArray.push(currentURL);
-    }
-
-    // Keep only the last 5 pages to avoid excessive storage
-    while (historyArray.length > 5) {
-        historyArray.shift();
-    }
-
-    console.log("Updating Page History:", historyArray); // ✅ Debugging Output
-
-    setSessionCookie("prevPageHistory", JSON.stringify(historyArray));
-}
-
-
-
-// Function to handle Previous Button Click (Retrieve from History)
+// Function to handle Previous Button Click with Age-Based Redirection
 function handlePreviousButton() {
     let prevBtn = document.getElementById("prevBtn");
 
     if (prevBtn) {
         prevBtn.addEventListener("click", function () {
-            let prevPageHistory = getSessionCookie("prevPageHistory");
+            let age = parseInt(getSessionCookie("age"), 10);
 
-            if (prevPageHistory) {
-                let historyArray = JSON.parse(prevPageHistory);
-
-                console.log("Stored Page History:", historyArray); // ✅ Debugging Output
-
-                // Ensure history has more than 1 page before popping
-                if (historyArray.length > 1) {
-                    historyArray.pop(); // Remove the current page
-                    let prevPage = historyArray[historyArray.length - 1]; // Get the last visited page
-
-                    console.log("Navigating to Previous Page:", prevPage);
-
-                    // Update the cookie with the remaining history
-                    setSessionCookie("prevPageHistory", JSON.stringify(historyArray));
-
-                    // Redirect to the previous page
-                    if (prevPage) {
-                        window.location.href = prevPage;
-                    } else {
-                        console.warn("Previous page is null/undefined.");
-                    }
-                } else {
-                    console.warn("No previous page stored.");
-                }
+            if (age >= 16) {
+                window.location.href = "adult_tbsa.html";
+            } else if (age >= 2 && age <= 3) {
+                window.location.href = "infant_tbsa.html";
+            } else if (age >= 4 && age <= 15) {
+                window.location.href = "child_tbsa.html";
             } else {
-                console.warn("No previous history found.");
+                console.warn("No valid age-based redirection found.");
             }
         });
     }
@@ -542,20 +474,16 @@ function handleNextButton() {
         });
     }
 }
+
+// Run all functions when the page loads
 document.addEventListener("DOMContentLoaded", function () {
     updateBackgroundColor();
     updateHeaderTitle();
     displayFluidImage();
     populateInputFields();
-    calculateFluidResuscitation();
-    updatePreviousPageHistory(); // ✅ Stores history correctly
-    handlePreviousButton(); // ✅ Retrieves correct previous page
+    handlePreviousButton(); // ✅ Handles navigation correctly
     handleNextButton();
 });
-
-
-
-
 
 </script>
 
