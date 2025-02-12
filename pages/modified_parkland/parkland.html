@@ -5,113 +5,96 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
   <title>Fluid Resuscitation</title>
   <style>
- /* ==============================
+/* ==============================
    General Page Layout & Styling
    ============================== */
 
-/* Ensure the body fills the viewport */
+/* Ensures the body fills the viewport */
 body {
-  margin: 0; /* Removes default browser margin */
+  margin: 0; /* Removes default browser margins */
   padding: 0; /* Removes default browser padding */
   display: flex; /* Enables flexible positioning */
   flex-direction: column; /* Stacks elements vertically */
-  align-items: center; /* Centers elements horizontally */
-  justify-content: center; /* Centers elements vertically */
-  height: 100vh; /* Sets the height to fill the screen */
+  align-items: center; /* Centers content horizontally */
+  justify-content: center; /* Centers content vertically */
+  height: 100vh; /* Sets height to full screen */
   background-color: #800000; /* Default background color (updates dynamically) */
-  overflow-y: auto; /* Allows vertical scrolling if content overflows */
+  overflow-y: auto; /* Allows vertical scrolling if needed */
 }
 
-/* Prevent landscape mode */
+/* Prevents landscape mode */
 @media screen and (orientation: landscape) {
   body {
-    display: none; /* Hides everything when device is rotated to landscape */
+    display: none; /* Hides content in landscape mode */
   }
 }
 
-
-
 /* ==============================
-   Main Page Title (Fixed at Top)
+   Main Page Title
    ============================== */
+
+/* Main header styling */
 .main-header {
   font-family: "Courier New", monospace; /* Uses monospaced font */
   font-size: 26px; /* Sets readable font size */
   font-weight: bold; /* Makes text bold */
-  color: white; /* Sets text color */
-  text-align: center; /* Centers text horizontally */
-  position: fixed; /* Fixes the header at the top of the viewport */
-  top: 0; /* Ensures the header stays at the very top */
-  left: 50%; /* Centers the header horizontally */
-  transform: translateX(-50%); /* Ensures perfect centering */
-  width: 100%; /* Stretches across the entire width */
+  color: white; /* White text for visibility */
+  text-align: center; /* Centers text */
+  position: relative; /* Allows precise positioning */
+  width: 90%; /* Makes the header width responsive */
   max-width: 600px; /* Prevents excessive stretching */
   padding: 10px 0; /* Adds vertical padding */
-  background-color: rgba(0, 0, 0, 0.2); /* Optional: Slight background for readability */
-  z-index: 1000; /* Keeps it above other content */
+  margin-bottom: 10px; /* Adds spacing below header */
 }
 
 /* Underline only "THERMAL BURN" */
 .main-header span {
-  text-decoration: underline; /* Underlines the text */
+  text-decoration: underline; /* Underlines only the burn type */
 }
 
 /* ==============================
-   Content Container (Below Header)
+   Content Container
    ============================== */
+
+/* Styles the main content box */
 .content-container {
   width: 80%; /* Responsive width */
   max-width: 488px; /* Prevents excessive stretching */
-  height: auto; /* Adapts to content size */
+  height: auto; /* Adjusts to content size */
   background-color: white; /* Sets background color */
-  border: 3px solid black; /* Default border (updates dynamically) */
+  border: 3px solid black; /* Default black border (updates dynamically) */
   border-radius: 8px; /* Softens edges */
-  padding: 20px; /* Adds inner spacing */
+  padding: 20px; /* Adds internal spacing */
   text-align: center; /* Centers content */
   box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.5); /* Adds subtle shadow */
   
-  /* 🔽 Controls distance from the header */
-  margin-top: -250px; /* Pushes the container below the fixed header */
+  /* 🔽 Controls spacing between header and container */
+  margin-top: -20px; /* Adjust as needed */
 }
 
 /* Adjust for smaller screens */
 @media (max-width: 768px) {
   .content-container {
-    margin-top: -250px; /* Slightly increases spacing for mobile */
+    margin-top: 5px; /* Reduces gap for mobile */
   }
-}
-
-
-
-/* ==============================
-   Container Header
-   ============================== */
-
-.container-header {
-  font-family: Arial, sans-serif; /* Sets a clean font */
-  font-size: 22px; /* Adjusts font size */
-  font-weight: bold; /* Makes the header stand out */
-  text-align: center; /* Centers text */
-  color: #800000; /* Default color (updates dynamically) */
-  margin-bottom: 15px; /* Adds spacing below */
 }
 
 /* ==============================
    Fluid Resuscitation Image
    ============================== */
 
-/* Image container inside the content box */
+/* Container for the fluid image */
 .fluid-image-container {
-  width: 100%; /* Makes image container match content width */
+  width: 100%; /* Matches content width */
   text-align: center; /* Centers image */
-  margin-bottom: 15px; /* Adds spacing below image */
+  margin-bottom: 15px; /* Adds spacing below */
 }
 
 /* Image styling */
 .fluid-image-container img {
   width: 100%; /* Makes image responsive */
   max-width: 320px; /* Prevents excessive stretching */
-  height: auto; /* Keeps image aspect ratio */
+  height: auto; /* Keeps aspect ratio */
   display: block; /* Prevents unwanted spacing */
   border-radius: 8px; /* Softens edges */
   margin: 0 auto; /* Centers the image */
@@ -124,32 +107,32 @@ body {
 /* Wrapper for input fields */
 .input-group {
   display: flex; /* Aligns label and input side by side */
-  align-items: center; /* Centers label and input vertically */
-  justify-content: space-between; /* Ensures even spacing */
-  width: 100%; /* Takes full width inside the container */
-  margin-bottom: 12px; /* Creates a gap between input groups */
+  align-items: center; /* Centers text vertically */
+  justify-content: space-between; /* Distributes label and input evenly */
+  width: 100%; /* Takes full width */
+  margin-bottom: 12px; /* Spacing between input groups */
 }
 
-/* Ensures no extra margin at the bottom of the last input group */
+/* Removes extra margin at the bottom of the last input group */
 .input-group:last-child {
   margin-bottom: 0;
 }
 
 /* Label Style - Responsive width */
 .input-group label {
-  font-size: 18px; /* Ensures readability */
+  font-size: 18px; /* Sets readable font size */
   font-weight: bold; /* Makes label stand out */
   padding: 8px 3%; /* Dynamically adjusts padding */
   border-radius: 10px; /* Softens edges */
   text-align: center; /* Centers label text */
-  white-space: nowrap; /* Prevents text from wrapping */
-  display: inline-block; /* Ensures label retains width */
-  width: 30%; /* Label takes 30% of .content-container width */
+  white-space: nowrap; /* Prevents text wrapping */
+  display: inline-block; /* Keeps label structure */
+  width: 30%; /* Labels take 30% of content width */
 }
 
 /* Input Field Style - Responsive width */
 .input-group input {
-  font-size: 18px; /* Ensures readability */
+  font-size: 18px; /* Sets readable font size */
   font-weight: bold; /* Makes input text distinct */
   text-align: center; /* Centers text */
   border: none; /* Removes default border */
@@ -157,7 +140,7 @@ body {
   padding: 8px; /* Adds internal spacing */
   outline: none; /* Removes default focus outline */
   font-family: Arial, sans-serif; /* Ensures consistency */
-  width: 45%; /* Input field takes 65% of .content-container width */
+  width: 65%; /* Inputs take 65% of content width */
 }
 
 /* ==============================
@@ -167,16 +150,16 @@ body {
 .weight-group {
   background-color: #FFA500; /* Orange background */
   color: white; /* White text for contrast */
-  width: 100%; /* Expands to full width */
+  width: 100%; /* Full width */
   display: flex; /* Aligns label and input */
   align-items: center; /* Centers text vertically */
-  padding: 4px 0; /* Adds padding */
+  padding: 8px 0; /* Adds padding */
 }
 
 /* Orange input field */
 .weight-group input {
-  background-color: white; /* White background for readability */
-  color: black; /* Black text for contrast */
+  background-color: white; /* White background */
+  color: black; /* Black text */
   border: 2px solid #FFA500; /* Matches weight box */
   width: 65%;
 }
@@ -186,20 +169,57 @@ body {
    ============================== */
 
 .tbsa-group {
-  background-color: #66CCFF; /* Light blue background */
-  color: black; /* Black text for contrast */
-  width: 100%; /* Expands to full width */
+  background-color: #ADD8E6; /* Light blue background */
+  color: black; /* Black text */
+  width: 100%; /* Full width */
   display: flex; /* Aligns label and input */
   align-items: center; /* Centers text vertically */
-  padding: 4px 0; /* Adds padding */
+  padding: 8px 0; /* Adds padding */
 }
 
 /* Light blue input field */
 .tbsa-group input {
-  background-color: white; /* White background for readability */
-  color: black; /* Black text for contrast */
+  background-color: white; /* White background */
+  color: black; /* Black text */
   border: 2px solid #ADD8E6; /* Matches TBSA box */
   width: 65%;
+}
+
+/* ==============================
+   Calculation Box (Output Left, Label Right)
+   ============================== */
+
+.calcbox {
+  background-color: black; /* Black background */
+  color: white; /* White text for contrast */
+  width: 100%; /* Full width */
+  display: flex; /* Aligns input and label */
+  align-items: center; /* Centers text vertically */
+  padding: 8px 0; /* Adds padding */
+}
+
+/* Output field (left side) */
+.calcbox input {
+  background-color: white; /* White background */
+  color: black; /* Black text */
+  border: 2px solid black; /* Matches box */
+  width: 65%; /* Same as other inputs */
+  text-align: center; /* Centers text */
+  font-size: 18px; /* Readable font size */
+  font-weight: bold; /* Bold text */
+}
+
+/* Label on the right */
+.calclabel {
+  font-size: 18px; /* Readable font size */
+  font-weight: bold; /* Bold text */
+  color: white; /* White text */
+  padding: 8px 3%; /* Adds padding */
+  border-radius: 10px; /* Softens edges */
+  text-align: center; /* Centers text */
+  white-space: nowrap; /* Prevents text wrapping */
+  display: inline-block; /* Maintains structure */
+  width: 30%; /* Label width */
 }
 
 /* ==============================
@@ -207,17 +227,18 @@ body {
    ============================== */
 
 .nav-buttons {
-  position: absolute; /* Allows precise positioning */
-  bottom: 20px; /* Keeps buttons at the bottom */
-  left: 50%; /* Centers buttons horizontally */
-  transform: translateX(-50%); /* Ensures perfect centering */
-  display: flex; /* Aligns buttons in a row */
-  justify-content: center; /* Keeps even spacing */
-  width: 60vw; /* Responsive width */
-  max-width: 400px; /* Prevents excessive stretching */
-  gap: 100px; /* Creates spacing between buttons */
-  z-index: 1000; /* Ensures buttons stay on top */
+  position: absolute;
+  bottom: 20px;
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  justify-content: center;
+  width: 60vw;
+  max-width: 400px;
+  gap: 190px;
+  z-index: 1000;
 }
+
 
 /* Navigation Button Images */
 .nav-buttons img {
