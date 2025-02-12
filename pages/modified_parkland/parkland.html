@@ -1,0 +1,273 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+  <title>Fluid Resuscitation</title>
+  <style>
+    /* Ensure the body fills the viewport */
+    body {
+      margin: 0;
+      padding: 0;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      height: 100vh;
+      background-color: #800000; /* Default, changes dynamically */
+      overflow-y: auto;
+    }
+
+    /* Prevent landscape mode */
+    @media screen and (orientation: landscape) {
+      body {
+        display: none; /* Hides everything in landscape mode */
+      }
+    }
+
+    /* Main Page Title */
+    .main-header {
+      font-family: "Courier New", monospace;
+      font-size: 26px;
+      font-weight: bold;
+      color: white;
+      text-align: center;
+      margin-bottom: 20px;
+    }
+
+    /* Underline only "THERMAL BURN" */
+    .main-header span {
+      text-decoration: underline;
+    }
+
+    /* Content Container */
+    .content-container {
+      width: 80%;
+      max-width: 488px;
+      height: auto;
+      background-color: white;
+      border: 3px solid black; /* Default, changes dynamically */
+      border-radius: 8px;
+      padding: 20px;
+      text-align: center;
+      box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.5);
+    }
+
+    /* Container Header */
+    .container-header {
+      font-family: Arial, sans-serif;
+      font-size: 22px;
+      font-weight: bold;
+      text-align: center;
+      color: #800000; /* Default, changes dynamically */
+      margin-bottom: 15px;
+    }
+
+    /* Fluid Resuscitation Image Inside Container */
+    .fluid-image-container {
+      width: 100%;
+      text-align: center;
+      margin-bottom: 15px;
+    }
+
+    .fluid-image-container img {
+      width: 100%;
+      max-width: 320px;
+      height: auto;
+      display: block;
+      border: 4px solid black;
+      border-radius: 8px;
+      margin: 0 auto;
+    }
+
+    /* Input Box Wrapper */
+    .input-group {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      width: 100%;
+      margin: 10px 0;
+    }
+
+    /* Label Style */
+    .input-group label {
+      font-size: 18px;
+      font-weight: bold;
+      padding: 8px 12px;
+      border-radius: 6px;
+      text-align: center;
+      white-space: nowrap;
+      display: inline-block;
+    }
+
+    /* Input Field Style */
+    .input-group input {
+      flex: 1;
+      font-size: 18px;
+      font-weight: bold;
+      text-align: center;
+      border: none;
+      border-radius: 6px;
+      padding: 8px;
+      outline: none;
+      font-family: Arial, sans-serif;
+    }
+
+    /* Orange Box (Weight) */
+    .weight-group {
+      background-color: #FFA500;
+      color: white;
+    }
+
+    .weight-group input {
+      background-color: white;
+      color: black;
+      border: 2px solid #FFA500;
+    }
+
+    /* Light Blue Box (% TBSA) */
+    .tbsa-group {
+      background-color: #ADD8E6;
+      color: black;
+    }
+
+    .tbsa-group input {
+      background-color: white;
+      color: black;
+      border: 2px solid #ADD8E6;
+    }
+
+    /* Navigation Buttons */
+    .nav-buttons {
+      position: absolute;
+      bottom: 20px;
+      left: 50%;
+      transform: translateX(-50%);
+      display: flex;
+      justify-content: center;
+      width: 60vw;
+      max-width: 400px;
+      gap: 190px;
+      z-index: 1000;
+    }
+
+    .nav-buttons img {
+      width: 100px;
+      height: 75px;
+      cursor: pointer;
+      border-radius: 10px;
+      opacity: 0.9;
+      transition: transform 0.2s ease;
+    }
+
+    .nav-buttons img:active {
+      transform: scale(1.1);
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Main Page Title -->
+  <div class="main-header"><span>THERMAL BURN</span> Fluid Resuscitation</div>
+
+  <!-- Content Container -->
+  <div class="content-container">
+    <div class="container-header">Modified Parkland Calculations</div>
+
+    <!-- Fluid Image INSIDE the Container -->
+    <div class="fluid-image-container">
+      <img id="fluidImage" src="" alt="Fluid Resuscitation Image">
+    </div>
+
+    <!-- Input Boxes -->
+    <div class="input-group weight-group">
+      <label for="weight">Weight:</label>
+      <input type="text" id="weight" readonly>
+    </div>
+
+    <div class="input-group tbsa-group">
+      <label for="tbsa">% TBSA:</label>
+      <input type="text" id="tbsa" readonly>
+    </div>
+  </div>
+
+  <!-- Navigation Buttons -->
+  <div class="nav-buttons">
+    <img src="https://raw.githubusercontent.com/concussed8/Android-App/main/images/prev.png" id="prevBtn" alt="Previous">
+    <img src="https://raw.githubusercontent.com/concussed8/Android-App/main/images/next.png" id="nextBtn" alt="Next">
+  </div>
+
+  <script>
+  // Function to retrieve a session cookie value
+  function getSessionCookie(name) {
+      let cookies = document.cookie.split('; ');
+      for (let cookie of cookies) {
+          let [cookieName, cookieValue] = cookie.split('=');
+          if (cookieName === name) {
+              return decodeURIComponent(cookieValue);
+          }
+      }
+      return "";
+  }
+
+  // Function to update background and container header color based on selected burn type
+  function updateBackgroundColor() {
+      setTimeout(() => {
+          let burnType = getSessionCookie("selectedIcon");
+
+          console.log("Applying Background Color for:", burnType);
+
+          let backgroundColor = "#800000"; // Default to thermal
+          let headerColor = "#800000"; 
+
+          if (burnType) {
+              switch (burnType) {
+                  case "thermal":
+                      backgroundColor = "#800000"; // Dark Red
+                      headerColor = "#800000";
+                      break;
+                  case "chemical":
+                      backgroundColor = "#90EE90"; // Light Green
+                      headerColor = "#90EE90";
+                      break;
+                  case "electrical":
+                      backgroundColor = "#ADD8E6"; // Light Blue
+                      headerColor = "#ADD8E6";
+                      break;
+              }
+          }
+
+          document.body.style.backgroundColor = backgroundColor;
+          document.querySelector(".container-header").style.color = headerColor;
+      }, 200);
+  }
+
+  // Function to display the correct fluid resuscitation image INSIDE the container
+  function displayFluidImage() {
+      let age = parseInt(getSessionCookie("age"), 10);
+      let burnType = getSessionCookie("selectedIcon");
+      let imagePath = "";
+
+      if (age >= 16) {
+          if (burnType === "thermal" || burnType === "chemical") {
+              imagePath = "https://raw.githubusercontent.com/concussed8/Android-App/main/images/2mls_kg.png";
+          } else if (burnType === "electrical") {
+              imagePath = "https://raw.githubusercontent.com/concussed8/Android-App/main/images/4mls_kg.png";
+          }
+      } else {
+          imagePath = "https://raw.githubusercontent.com/concussed8/Android-App/main/images/3mls_kg.png";
+      }
+
+      document.getElementById("fluidImage").src = imagePath;
+      console.log("Loaded Fluid Image:", imagePath);
+  }
+
+  // Store the previous page in a cookie when navigating here
+  document.addEventListener("DOMContentLoaded", function () {
+      updateBackgroundColor();
+      displayFluidImage();
+  });
+</script>
+
+</body>
+</html>
