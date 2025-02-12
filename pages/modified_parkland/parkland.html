@@ -658,7 +658,8 @@ function getSessionCookie(name) {
 
 // Function to set a session cookie
 function setSessionCookie(name, value) {
-    document.cookie = `${name}=${encodeURIComponent(value)}; path=/; SameSite=Lax; max-age=3600`; // 1-hour expiry
+  document.cookie = `${name}=${encodeURIComponent(value)}; path=/; SameSite=Lax; max-age=3600`; // 1-hour expiry
+
 }
 // Function to update background and container header color based on selected burn type
 function updateBackgroundColor() {
