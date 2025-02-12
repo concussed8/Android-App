@@ -135,22 +135,14 @@
 </head>
 <body>
 
- <!-- Fixed Header -->
+<!-- Fixed Header -->
 <div class="header">Total Body Surface Area Burned</div>
 
-<!-- Image & Input Container -->
+<!-- Image and Inputs Container -->
 <div class="image-container">
     <img src="https://raw.githubusercontent.com/concussed8/IOS-test/main/images/rule_of_9_adult.jpg" alt="Rule of 9 Adult">
-</div>
-
-<!-- Navigation Buttons (Placed Separately for Proper Layout) -->
-<div class="nav-buttons">
-    <img src="https://raw.githubusercontent.com/concussed8/Android-App/main/images/prev.png" id="prevBtn" alt="Previous">
-    <img src="https://raw.githubusercontent.com/concussed8/Android-App/main/images/next.png" id="nextBtn" alt="Next">
-</div>
-
-
-    <!-- Fillable Fields (Inputs) -->
+    
+    <!-- Input Fields -->
     <input type="tel" class="input-field field1" data-max="9" value="0%" maxlength="3">
     <input type="tel" class="input-field field2" data-max="36" value="0%" maxlength="3">
     <input type="tel" class="input-field field3" data-max="1" value="0%" maxlength="2">
@@ -158,7 +150,13 @@
     <input type="tel" class="input-field field5" data-max="9" value="0%" maxlength="3">
     <input type="tel" class="input-field field6" data-max="18" value="0%" maxlength="3">
     <input type="tel" class="input-field field7" data-max="18" value="0%" maxlength="3">
-  </div>
+</div>
+
+<!-- Navigation Buttons (OUTSIDE image-container) -->
+<div class="nav-buttons">
+    <img src="https://raw.githubusercontent.com/concussed8/Android-App/main/images/prev.png" id="prevBtn" alt="Previous">
+    <img src="https://raw.githubusercontent.com/concussed8/Android-App/main/images/next.png" id="nextBtn" alt="Next">
+</div>
 
   <script>
   // Function to retrieve a session cookie value
