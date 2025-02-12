@@ -176,6 +176,17 @@ function setSessionCookie(name, value) {
     document.cookie = `${name}=${encodeURIComponent(value)}; path=/; SameSite=Lax; max-age=3600`; // 1-hour expiry
 }
 
+// Function to store all input field values in the "adultTBSA" cookie
+function saveAdultTBSACookie() {
+    let tbsaData = {};
+
+    document.querySelectorAll(".input-field").forEach(input => {
+        tbsaData[input.classList[1]] = input.value; // Store field class and value
+    });
+
+    setSessionCookie("adultTBSA", JSON.stringify(tbsaData)); // Save JSON data as a cookie
+}
+
 // Function to update background color based on selected burn type (also updates header color)
 function updateBackgroundColor() {
     setTimeout(() => {  
@@ -190,15 +201,15 @@ function updateBackgroundColor() {
             switch (burnType) {
                 case "thermal":
                     backgroundColor = "#800000"; // Dark red for Thermal
-                    headerColor = "#800000"; // Gold for contrast
+                    headerColor = "#800000"; // Maroon header
                     break;
                 case "chemical":
                     backgroundColor = "#90EE90"; // Light green for Chemical
-                    headerColor = "#90EE90"; // Dark green for contrast
+                    headerColor = "#90EE90"; // Green header
                     break;
                 case "electrical":
                     backgroundColor = "#ADD8E6"; // Light blue for Electrical
-                    headerColor = "#ADD8E6"; // Dark blue for contrast
+                    headerColor = "#ADD8E6"; // Blue header
                     break;
                 default:
                     console.warn("Unexpected burn type:", burnType);
@@ -211,7 +222,6 @@ function updateBackgroundColor() {
         }
     }, 200);
 }
-
 
 // Function to handle input validation for TBSA percentage
 document.querySelectorAll(".input-field").forEach(input => {
@@ -243,6 +253,8 @@ document.querySelectorAll(".input-field").forEach(input => {
                 this.classList.add("red-bold"); // Make text red and bold
             }
         }
+
+        saveAdultTBSACookie(); // Save values to cookie on every change
     });
 
     // Prevent typing non-numeric characters
