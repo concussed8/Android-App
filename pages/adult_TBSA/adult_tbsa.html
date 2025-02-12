@@ -159,7 +159,7 @@
 </div>
 
   <script>
-  // Function to retrieve a session cookie value
+ // Function to retrieve a session cookie value
 function getSessionCookie(name) {
     let cookies = document.cookie.split('; ');
     for (let cookie of cookies) {
@@ -190,33 +190,32 @@ function saveAdultTBSACookie() {
 // Function to update background color based on selected burn type (also updates header color)
 function updateBackgroundColor() {
     setTimeout(() => {  
-        let burnType = getSessionCookie("selectedIcon"); // Retrieve stored burn type
+        let burnType = getSessionCookie("selectedIcon");
 
         console.log("Applying Background Color for:", burnType);
 
-        let backgroundColor = ""; // Default empty
-        let headerColor = ""; // Default empty
+        let backgroundColor = "";
+        let headerColor = "";
 
         if (burnType) {
             switch (burnType) {
                 case "thermal":
-                    backgroundColor = "#800000"; // Dark red for Thermal
-                    headerColor = "#800000"; // Maroon header
+                    backgroundColor = "#800000";
+                    headerColor = "#800000";
                     break;
                 case "chemical":
-                    backgroundColor = "#90EE90"; // Light green for Chemical
-                    headerColor = "#90EE90"; // Green header
+                    backgroundColor = "#90EE90";
+                    headerColor = "#90EE90";
                     break;
                 case "electrical":
-                    backgroundColor = "#ADD8E6"; // Light blue for Electrical
-                    headerColor = "#ADD8E6"; // Blue header
+                    backgroundColor = "#ADD8E6";
+                    headerColor = "#ADD8E6";
                     break;
                 default:
                     console.warn("Unexpected burn type:", burnType);
                     return;
             }
 
-            // Apply colors to both the background and the header
             document.body.style.backgroundColor = backgroundColor;
             document.querySelector(".header").style.color = headerColor;
         }
@@ -227,60 +226,57 @@ function updateBackgroundColor() {
 document.querySelectorAll(".input-field").forEach(input => {
     input.addEventListener("focus", function () {
         if (this.value === "0%") {
-            this.value = ""; // Clear when focused
+            this.value = "";
         }
     });
 
     input.addEventListener("blur", function () {
         if (this.value === "" || this.value === "%") {
-            this.value = "0%"; // Reset if empty on blur
-            this.classList.remove("red-bold"); // Remove red bold styling
+            this.value = "0%";
+            this.classList.remove("red-bold");
         }
     });
 
     input.addEventListener("input", function () {
-        let value = this.value.replace(/\D/g, ""); // Remove non-numeric characters
-        let maxVal = parseInt(this.dataset.max); // Get max allowed % from data attribute
+        let value = this.value.replace(/\D/g, "");
+        let maxVal = parseInt(this.dataset.max);
 
         if (value.length > 0) {
             if (parseInt(value) > maxVal) {
                 alert(`Value cannot exceed ${maxVal}%. Please re-enter a valid amount.`);
-                this.value = ""; // Clear the field instead of defaulting to the max
-                this.classList.remove("red-bold"); // Remove red bold styling
+                this.value = "";
+                this.classList.remove("red-bold");
                 return;
             } else {
-                this.value = value + "%"; // Append % symbol
-                this.classList.add("red-bold"); // Make text red and bold
+                this.value = value + "%";
+                this.classList.add("red-bold");
             }
         }
 
-        saveAdultTBSACookie(); // Save values to cookie on every change
+        saveAdultTBSACookie();
     });
 
-    // Prevent typing non-numeric characters
     input.addEventListener("keypress", function (e) {
         if (!/[0-9]/.test(e.key)) {
-            e.preventDefault(); // Block non-numeric input
+            e.preventDefault();
         }
     });
 
-    // Allow backspace to fully clear the field
     input.addEventListener("keydown", function (e) {
         if (e.key === "Backspace") {
             if (this.value.length <= 2) {
-                this.value = ""; // Allow clearing the field completely
+                this.value = "";
                 e.preventDefault();
-                this.classList.remove("red-bold"); // Remove red bold styling
+                this.classList.remove("red-bold");
             } else {
-                this.value = this.value.slice(0, -2) + "%"; // Remove last digit but keep %
+                this.value = this.value.slice(0, -2) + "%";
             }
         }
     });
 
-    // Automatically select all text when clicked
     input.addEventListener("focus", function () {
         setTimeout(() => {
-            this.setSelectionRange(0, this.value.length - 1); // Select only the numbers
+            this.setSelectionRange(0, this.value.length - 1);
         }, 50);
     });
 });
@@ -288,9 +284,9 @@ document.querySelectorAll(".input-field").forEach(input => {
 // Function to handle landscape mode prevention
 function checkOrientation() {
     if (window.matchMedia("(orientation: landscape)").matches) {
-        document.body.style.display = "none"; // Hide everything in landscape mode
+        document.body.style.display = "none";
     } else {
-        document.body.style.display = "flex"; // Show everything in portrait mode
+        document.body.style.display = "flex";
     }
 }
 
@@ -298,10 +294,24 @@ function checkOrientation() {
 window.addEventListener("resize", checkOrientation);
 window.addEventListener("orientationchange", checkOrientation);
 
-// Run on page load
+// ✅ Handle Previous Button Click - Retrieve from session cookie
 document.addEventListener("DOMContentLoaded", function () {
-    updateBackgroundColor(); // Set the background color
-    checkOrientation(); // Ensure the correct orientation on load
+    updateBackgroundColor();
+    checkOrientation();
+
+    let prevBtn = document.getElementById("prevBtn");
+    if (prevBtn) {
+        prevBtn.addEventListener("click", function () {
+            let prevPage = getSessionCookie("previousPage");
+
+            if (prevPage) {
+                console.log("Navigating to Previous Page:", prevPage);
+                window.location.href = prevPage;
+            } else {
+                console.warn("No previous page stored.");
+            }
+        });
+    }
 });
 
   </script>
