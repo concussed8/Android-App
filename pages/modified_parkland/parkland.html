@@ -442,6 +442,36 @@ function populateInputFields() {
     }
 }
 
+// Function to calculate and display the result in calcbox
+function calculateFluidResuscitation() {
+    let age = parseInt(getSessionCookie("age"), 10);
+    let burnType = getSessionCookie("selectedIcon");
+    let weight = parseFloat(getSessionCookie("weight"));
+    let storedTBSA = getSessionCookie("adultTBSA");
+    let totalTBSA = 0;
+    let result = 0;
+
+    if (storedTBSA) {
+        let tbsaData = JSON.parse(storedTBSA);
+        totalTBSA = Object.values(tbsaData).reduce((sum, value) => {
+            let numericValue = parseFloat(value.replace("%", "")) || 0;
+            return sum + numericValue;
+        }, 0);
+    }
+
+    if (!isNaN(weight) && !isNaN(totalTBSA) && totalTBSA > 0) {
+        if ((burnType === "thermal" || burnType === "chemical") && age >= 16) {
+            result = (2 * weight * totalTBSA) / 16;
+        } else if (age >= 2 && age <= 15) {
+            result = (3 * weight * totalTBSA) / 16;
+        } else if (burnType === "electrical" && age >= 16) {
+            result = (4 * weight * totalTBSA) / 16;
+        }
+    }
+
+    document.getElementById("calcOutput").value = result.toFixed(2) + " mls/hr";
+}
+
 // Function to properly store the current page as the last visited page
 function storePreviousPage() {
     let currentURL = window.location.href;
@@ -484,6 +514,7 @@ document.addEventListener("DOMContentLoaded", function () {
     updateHeaderTitle();
     displayFluidImage();
     populateInputFields();
+    calculateFluidResuscitation(); // ✅ Perform calculation on page load
     storePreviousPage(); // ✅ Ensures the current page is stored properly
     handlePreviousButton();
     handleNextButton();
