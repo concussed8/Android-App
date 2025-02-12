@@ -317,6 +317,15 @@ document.addEventListener("DOMContentLoaded", function () {
             }
         });
     }
+
+    // ✅ Handle the next button click (Redirect to modified_parkland.html)
+    let nextBtn = document.getElementById("nextBtn");
+    if (nextBtn) {
+        nextBtn.addEventListener("click", function () {
+            console.log("Next Button Clicked - Redirecting to Modified Parkland Page");
+            window.location.href = "https://concussed8.github.io/Android-App/pages/modified_parkland.html";
+        });
+    }
 });
 
   </script>
