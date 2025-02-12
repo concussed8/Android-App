@@ -268,75 +268,130 @@ body {
   </div>
 
   <script>
-  // Function to retrieve a session cookie value
-  function getSessionCookie(name) {
-      let cookies = document.cookie.split('; ');
-      for (let cookie of cookies) {
-          let [cookieName, cookieValue] = cookie.split('=');
-          if (cookieName === name) {
-              return decodeURIComponent(cookieValue);
-          }
-      }
-      return "";
-  }
+ // Function to retrieve a session cookie value
+function getSessionCookie(name) {
+    let cookies = document.cookie.split('; ');
+    for (let cookie of cookies) {
+        let [cookieName, cookieValue] = cookie.split('=');
+        if (cookieName === name) {
+            return decodeURIComponent(cookieValue);
+        }
+    }
+    return "";
+}
 
-  // Function to update background and container header color based on selected burn type
-  function updateBackgroundColor() {
-      setTimeout(() => {
-          let burnType = getSessionCookie("selectedIcon");
+// Function to update background and container header color based on selected burn type
+function updateBackgroundColor() {
+    setTimeout(() => {
+        let burnType = getSessionCookie("selectedIcon");
 
-          console.log("Applying Background Color for:", burnType);
+        console.log("Applying Background Color for:", burnType);
 
-          let backgroundColor = "#800000"; // Default to thermal
-          let headerColor = "#800000"; 
+        let backgroundColor = "#800000"; // Default to thermal
+        let headerColor = "#800000";
 
-          if (burnType) {
-              switch (burnType) {
-                  case "thermal":
-                      backgroundColor = "#800000"; // Dark Red
-                      headerColor = "#800000";
-                      break;
-                  case "chemical":
-                      backgroundColor = "#90EE90"; // Light Green
-                      headerColor = "#90EE90";
-                      break;
-                  case "electrical":
-                      backgroundColor = "#ADD8E6"; // Light Blue
-                      headerColor = "#ADD8E6";
-                      break;
-              }
-          }
+        if (burnType) {
+            switch (burnType) {
+                case "thermal":
+                    backgroundColor = "#800000"; // Dark Red
+                    headerColor = "#800000";
+                    break;
+                case "chemical":
+                    backgroundColor = "#90EE90"; // Light Green
+                    headerColor = "#90EE90";
+                    break;
+                case "electrical":
+                    backgroundColor = "#ADD8E6"; // Light Blue
+                    headerColor = "#ADD8E6";
+                    break;
+                default:
+                    console.warn("Unexpected burn type:", burnType);
+            }
+        }
 
-          document.body.style.backgroundColor = backgroundColor;
-          document.querySelector(".container-header").style.color = headerColor;
-      }, 200);
-  }
+        document.body.style.backgroundColor = backgroundColor;
+        document.querySelector(".container-header").style.color = headerColor;
+    }, 200);
+}
 
-  // Function to display the correct fluid resuscitation image INSIDE the container
-  function displayFluidImage() {
-      let age = parseInt(getSessionCookie("age"), 10);
-      let burnType = getSessionCookie("selectedIcon");
-      let imagePath = "";
+// Function to update the main page title dynamically
+function updateHeaderTitle() {
+    let burnType = getSessionCookie("selectedIcon");
+    let headerSpan = document.querySelector(".main-header span");
 
-      if (age >= 16) {
-          if (burnType === "thermal" || burnType === "chemical") {
-              imagePath = "https://raw.githubusercontent.com/concussed8/Android-App/main/images/2mls_kg.png";
-          } else if (burnType === "electrical") {
-              imagePath = "https://raw.githubusercontent.com/concussed8/Android-App/main/images/4mls_kg.png";
-          }
-      } else {
-          imagePath = "https://raw.githubusercontent.com/concussed8/Android-App/main/images/3mls_kg.png";
-      }
+    if (burnType && headerSpan) {
+        switch (burnType) {
+            case "thermal":
+                headerSpan.textContent = "THERMAL BURN";
+                break;
+            case "chemical":
+                headerSpan.textContent = "CHEMICAL BURN";
+                break;
+            case "electrical":
+                headerSpan.textContent = "ELECTRICAL BURN";
+                break;
+            default:
+                console.warn("Unexpected burn type:", burnType);
+        }
+    }
+}
 
-      document.getElementById("fluidImage").src = imagePath;
-      console.log("Loaded Fluid Image:", imagePath);
-  }
+// Function to display the correct fluid resuscitation image INSIDE the container
+function displayFluidImage() {
+    let age = parseInt(getSessionCookie("age"), 10);
+    let burnType = getSessionCookie("selectedIcon");
+    let imagePath = "";
 
-  // Store the previous page in a cookie when navigating here
-  document.addEventListener("DOMContentLoaded", function () {
-      updateBackgroundColor();
-      displayFluidImage();
-  });
+    if (age >= 16) {
+        if (burnType === "thermal" || burnType === "chemical") {
+            imagePath = "https://raw.githubusercontent.com/concussed8/Android-App/main/images/2mls_kg.png";
+        } else if (burnType === "electrical") {
+            imagePath = "https://raw.githubusercontent.com/concussed8/Android-App/main/images/4mls_kg.png";
+        }
+    } else {
+        imagePath = "https://raw.githubusercontent.com/concussed8/Android-App/main/images/3mls_kg.png";
+    }
+
+    document.getElementById("fluidImage").src = imagePath;
+    console.log("Loaded Fluid Image:", imagePath);
+}
+
+// Function to populate the input fields with stored cookie values
+function populateInputFields() {
+    let weightField = document.getElementById("weight");
+    let tbsaField = document.getElementById("tbsa");
+
+    // Retrieve and set weight
+    let storedWeight = getSessionCookie("weight");
+    if (storedWeight) {
+        weightField.value = storedWeight + " kg";
+    } else {
+        console.warn("No weight found in cookies.");
+    }
+
+    // Retrieve and sum values for TBSA
+    let storedTBSA = getSessionCookie("adultTBSA");
+    if (storedTBSA) {
+        let tbsaData = JSON.parse(storedTBSA); // Convert back to object
+        let totalTBSA = Object.values(tbsaData).reduce((sum, value) => {
+            let numericValue = parseFloat(value.replace("%", "")) || 0; // Extract number
+            return sum + numericValue;
+        }, 0);
+
+        tbsaField.value = totalTBSA + "%";
+    } else {
+        console.warn("No TBSA values found in cookies.");
+    }
+}
+
+// Store the previous page in a cookie when navigating here
+document.addEventListener("DOMContentLoaded", function () {
+    updateBackgroundColor();
+    updateHeaderTitle();
+    displayFluidImage();
+    populateInputFields();
+});
+
 </script>
 
 </body>
