@@ -268,6 +268,276 @@ body {
   </div>
 
   <script>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+  <title>Fluid Resuscitation</title>
+  <style>
+ /* ==============================
+   General Page Layout & Styling
+   ============================== */
+
+/* Ensure the body fills the viewport */
+body {
+  margin: 0; /* Removes default browser margin */
+  padding: 0; /* Removes default browser padding */
+  display: flex; /* Enables flexible positioning */
+  flex-direction: column; /* Stacks elements vertically */
+  align-items: center; /* Centers elements horizontally */
+  justify-content: center; /* Centers elements vertically */
+  height: 100vh; /* Sets the height to fill the screen */
+  background-color: #800000; /* Default background color (updates dynamically) */
+  overflow-y: auto; /* Allows vertical scrolling if content overflows */
+}
+
+/* Prevent landscape mode */
+@media screen and (orientation: landscape) {
+  body {
+    display: none; /* Hides everything when device is rotated to landscape */
+  }
+}
+
+
+
+/* ==============================
+   Main Page Title (Fixed at Top)
+   ============================== */
+.main-header {
+  font-family: "Courier New", monospace; /* Uses monospaced font */
+  font-size: 26px; /* Sets readable font size */
+  font-weight: bold; /* Makes text bold */
+  color: white; /* Sets text color */
+  text-align: center; /* Centers text horizontally */
+  position: fixed; /* Fixes the header at the top of the viewport */
+  top: 0; /* Ensures the header stays at the very top */
+  left: 50%; /* Centers the header horizontally */
+  transform: translateX(-50%); /* Ensures perfect centering */
+  width: 100%; /* Stretches across the entire width */
+  max-width: 600px; /* Prevents excessive stretching */
+  padding: 10px 0; /* Adds vertical padding */
+  background-color: rgba(0, 0, 0, 0.2); /* Optional: Slight background for readability */
+  z-index: 1000; /* Keeps it above other content */
+}
+
+/* Underline only "THERMAL BURN" */
+.main-header span {
+  text-decoration: underline; /* Underlines the text */
+}
+
+/* ==============================
+   Content Container (Below Header)
+   ============================== */
+.content-container {
+  width: 80%; /* Responsive width */
+  max-width: 488px; /* Prevents excessive stretching */
+  height: auto; /* Adapts to content size */
+  background-color: white; /* Sets background color */
+  border: 3px solid black; /* Default border (updates dynamically) */
+  border-radius: 8px; /* Softens edges */
+  padding: 20px; /* Adds inner spacing */
+  text-align: center; /* Centers content */
+  box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.5); /* Adds subtle shadow */
+  
+  /* 🔽 Controls distance from the header */
+  margin-top: -250px; /* Pushes the container below the fixed header */
+}
+
+/* Adjust for smaller screens */
+@media (max-width: 768px) {
+  .content-container {
+    margin-top: -250px; /* Slightly increases spacing for mobile */
+  }
+}
+
+
+
+/* ==============================
+   Container Header
+   ============================== */
+
+.container-header {
+  font-family: Arial, sans-serif; /* Sets a clean font */
+  font-size: 22px; /* Adjusts font size */
+  font-weight: bold; /* Makes the header stand out */
+  text-align: center; /* Centers text */
+  color: #800000; /* Default color (updates dynamically) */
+  margin-bottom: 15px; /* Adds spacing below */
+}
+
+/* ==============================
+   Fluid Resuscitation Image
+   ============================== */
+
+/* Image container inside the content box */
+.fluid-image-container {
+  width: 100%; /* Makes image container match content width */
+  text-align: center; /* Centers image */
+  margin-bottom: 15px; /* Adds spacing below image */
+}
+
+/* Image styling */
+.fluid-image-container img {
+  width: 100%; /* Makes image responsive */
+  max-width: 320px; /* Prevents excessive stretching */
+  height: auto; /* Keeps image aspect ratio */
+  display: block; /* Prevents unwanted spacing */
+  border-radius: 8px; /* Softens edges */
+  margin: 0 auto; /* Centers the image */
+}
+
+/* ==============================
+   Input Fields
+   ============================== */
+
+/* Wrapper for input fields */
+.input-group {
+  display: flex; /* Aligns label and input side by side */
+  align-items: center; /* Centers label and input vertically */
+  justify-content: space-between; /* Ensures even spacing */
+  width: 100%; /* Takes full width inside the container */
+  margin-bottom: 12px; /* Creates a gap between input groups */
+}
+
+/* Ensures no extra margin at the bottom of the last input group */
+.input-group:last-child {
+  margin-bottom: 0;
+}
+
+/* Label Style - Responsive width */
+.input-group label {
+  font-size: 18px; /* Ensures readability */
+  font-weight: bold; /* Makes label stand out */
+  padding: 8px 3%; /* Dynamically adjusts padding */
+  border-radius: 10px; /* Softens edges */
+  text-align: center; /* Centers label text */
+  white-space: nowrap; /* Prevents text from wrapping */
+  display: inline-block; /* Ensures label retains width */
+  width: 30%; /* Label takes 30% of .content-container width */
+}
+
+/* Input Field Style - Responsive width */
+.input-group input {
+  font-size: 18px; /* Ensures readability */
+  font-weight: bold; /* Makes input text distinct */
+  text-align: center; /* Centers text */
+  border: none; /* Removes default border */
+  border-radius: 6px; /* Softens edges */
+  padding: 8px; /* Adds internal spacing */
+  outline: none; /* Removes default focus outline */
+  font-family: Arial, sans-serif; /* Ensures consistency */
+  width: 65%; /* Input field takes 65% of .content-container width */
+}
+
+/* ==============================
+   Weight Input (Orange Box)
+   ============================== */
+
+.weight-group {
+  background-color: #FFA500; /* Orange background */
+  color: white; /* White text for contrast */
+  width: 100%; /* Expands to full width */
+  display: flex; /* Aligns label and input */
+  align-items: center; /* Centers text vertically */
+  padding: 8px 0; /* Adds padding */
+}
+
+/* Orange input field */
+.weight-group input {
+  background-color: white; /* White background for readability */
+  color: black; /* Black text for contrast */
+  border: 2px solid #FFA500; /* Matches weight box */
+  width: 65%;
+}
+
+/* ==============================
+   TBSA Input (Light Blue Box)
+   ============================== */
+
+.tbsa-group {
+  background-color: #66CCFF; /* Light blue background */
+  color: black; /* Black text for contrast */
+  width: 100%; /* Expands to full width */
+  display: flex; /* Aligns label and input */
+  align-items: center; /* Centers text vertically */
+  padding: 8px 0; /* Adds padding */
+}
+
+/* Light blue input field */
+.tbsa-group input {
+  background-color: white; /* White background for readability */
+  color: black; /* Black text for contrast */
+  border: 2px solid #ADD8E6; /* Matches TBSA box */
+  width: 65%;
+}
+
+/* ==============================
+   Navigation Buttons
+   ============================== */
+
+.nav-buttons {
+  position: absolute; /* Allows precise positioning */
+  bottom: 20px; /* Keeps buttons at the bottom */
+  left: 50%; /* Centers buttons horizontally */
+  transform: translateX(-50%); /* Ensures perfect centering */
+  display: flex; /* Aligns buttons in a row */
+  justify-content: center; /* Keeps even spacing */
+  width: 60vw; /* Responsive width */
+  max-width: 400px; /* Prevents excessive stretching */
+  gap: 100px; /* Creates spacing between buttons */
+  z-index: 1000; /* Ensures buttons stay on top */
+}
+
+/* Navigation Button Images */
+.nav-buttons img {
+  width: 100px; /* Sets button width */
+  height: 75px; /* Sets button height */
+  cursor: pointer; /* Indicates clickability */
+  border-radius: 10px; /* Softens button edges */
+  opacity: 0.9; /* Adds slight transparency */
+  transition: transform 0.2s ease; /* Smooth hover effect */
+}
+
+/* Button Click Effect */
+.nav-buttons img:active {
+  transform: scale(1.1); /* Slightly enlarges button */
+}
+ </style>
+</head>
+<body>
+
+  <!-- Main Page Title -->
+  <div class="main-header"><span>THERMAL BURN</span> Fluid Resuscitation</div>
+
+  <!-- Content Container -->
+  <div class="content-container">
+    <div class="container-header">Modified Parkland Calculations</div>
+
+    <!-- Fluid Image INSIDE the Container -->
+    <div class="fluid-image-container">
+      <img id="fluidImage" src="" alt="Fluid Resuscitation Image">
+    </div>
+
+    <!-- Input Boxes -->
+    <div class="input-group weight-group">
+      <label for="weight">Weight:</label>
+      <input type="text" id="weight" readonly>
+    </div>
+
+    <div class="input-group tbsa-group">
+      <label for="tbsa">% TBSA:</label>
+      <input type="text" id="tbsa" readonly>
+    </div>
+  </div>
+
+  <!-- Navigation Buttons -->
+  <div class="nav-buttons">
+    <img src="https://raw.githubusercontent.com/concussed8/Android-App/main/images/prev.png" id="prevBtn" alt="Previous">
+    <img src="https://raw.githubusercontent.com/concussed8/Android-App/main/images/next.png" id="nextBtn" alt="Next">
+  </div>
+
+  <script>
 // Function to retrieve a session cookie value
 function getSessionCookie(name) {
     let cookies = document.cookie.split('; ');
@@ -278,6 +548,11 @@ function getSessionCookie(name) {
         }
     }
     return "";
+}
+
+// Function to set a session cookie
+function setSessionCookie(name, value) {
+    document.cookie = `${name}=${encodeURIComponent(value)}; path=/; SameSite=Lax; max-age=3600`; // 1-hour expiry
 }
 
 // Function to update background and container header color based on selected burn type
@@ -336,7 +611,7 @@ function updateHeaderTitle() {
     }
 }
 
-// Function to display the correct fluid resuscitation image INSIDE the container
+// Function to display the correct fluid resuscitation image inside the container
 function displayFluidImage() {
     let age = parseInt(getSessionCookie("age"), 10);
     let burnType = getSessionCookie("selectedIcon");
@@ -356,7 +631,7 @@ function displayFluidImage() {
     console.log("Loaded Fluid Image:", imagePath);
 }
 
-// Function to populate the input fields with stored cookie values
+// Function to populate input fields with stored cookie values
 function populateInputFields() {
     let weightField = document.getElementById("weight");
     let tbsaField = document.getElementById("tbsa");
@@ -384,38 +659,59 @@ function populateInputFields() {
     }
 }
 
+// Function to properly store the current page as the last visited page
+function storePreviousPage() {
+    let currentURL = window.location.href;
+    setSessionCookie("previousPage", currentURL);
+}
+
 // Function to handle Previous Button Click (Retrieve from Cookies)
 function handlePreviousButton() {
     let prevBtn = document.getElementById("prevBtn");
 
     if (prevBtn) {
-        let prevPage = getSessionCookie("previousPage");
+        prevBtn.addEventListener("click", function () {
+            let prevPage = getSessionCookie("previousPage");
 
-        if (prevPage) {
-            console.log("Previous Page Retrieved:", prevPage);
-            prevBtn.addEventListener("click", function () {
+            if (prevPage) {
+                console.log("Navigating to Previous Page:", prevPage);
                 window.location.href = prevPage;
-            });
-        } else {
-            console.warn("No previous page stored in cookies.");
-        }
+            } else {
+                console.warn("No previous page stored in cookies.");
+            }
+        });
     }
 }
 
-// Store the previous page in a cookie when navigating here
+// Function to handle Next Button Click (Redirect to next page)
+function handleNextButton() {
+    let nextBtn = document.getElementById("nextBtn");
+
+    if (nextBtn) {
+        nextBtn.addEventListener("click", function () {
+            console.log("Navigating to Next Page: Modified Parkland Calculation Page");
+            window.location.href = "https://concussed8.github.io/Android-App/pages/modified_parkland.html";
+        });
+    }
+}
+
+// Run all functions when the page loads
 document.addEventListener("DOMContentLoaded", function () {
     updateBackgroundColor();
     updateHeaderTitle();
     displayFluidImage();
     populateInputFields();
+    storePreviousPage(); // ✅ Ensures the current page is stored properly
     handlePreviousButton();
-
-    // ✅ Store the previous page URL when navigating here
-    if (document.referrer) {
-        document.cookie = `previousPage=${document.referrer}; path=/; SameSite=Lax; max-age=3600`;
-    }
+    handleNextButton();
 });
 
+
+
+</script>
+
+</body>
+</html>
 
 </script>
 
