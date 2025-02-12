@@ -78,64 +78,67 @@
       border: 0px solid black;
       border-radius: 8px;
       margin: 0 auto;
-    }
+    }/* Label Style - Responsive width */
+.input-group label {
+  font-size: 18px;
+  font-weight: bold;
+  padding: 8px 3%; /* Adjust padding dynamically */
+  border-radius: 6px;
+  text-align: center;
+  white-space: nowrap;
+  display: inline-block;
+  width: 30%; /* Label width is 30% of .content-container */
+}
 
-    /* Input Box Wrapper */
-    .input-group {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      width: 85%;
-      margin: 10px 0;
-    }
+/* Input Field Style - Responsive width */
+.input-group input {
+  font-size: 18px;
+  font-weight: bold;
+  text-align: center;
+  border: none;
+  border-radius: 6px;
+  padding: 8px;
+  outline: none;
+  font-family: Arial, sans-serif;
+  width: 65%; /* Input field takes 65% of .content-container */
+}
 
-    /* Label Style */
-    .input-group label {
-      font-size: 18px;
-      font-weight: bold;
-      padding: 8px 12px;
-      border-radius: 6px;
-      text-align: center;
-      white-space: nowrap;
-      display: inline-block;
-    }
+/* Orange Box (Weight) - Responsive */
+.weight-group {
+  background-color: #FFA500;
+  color: white;
+  width: 100%; /* Ensures full width inside .content-container */
+  display: flex;
+  align-items: center;
+  padding: 8px 0;
+}
 
-    /* Input Field Style */
-    .input-group input {
-      flex: 1;
-      font-size: 18px;
-      font-weight: bold;
-      text-align: center;
-      border: none;
-      border-radius: 6px;
-      padding: 8px;
-      outline: none;
-      font-family: Arial, sans-serif;
-    }
+/* Orange Input Field */
+.weight-group input {
+  background-color: white;
+  color: black;
+  border: 2px solid #FFA500;
+  width: 65%;
+}
 
-    /* Orange Box (Weight) */
-    .weight-group {
-      background-color: #FFA500;
-      color: white;
-    }
+/* Light Blue Box (% TBSA) - Responsive */
+.tbsa-group {
+  background-color: #ADD8E6;
+  color: black;
+  width: 100%; /* Ensures full width inside .content-container */
+  display: flex;
+  align-items: center;
+  padding: 8px 0;
+}
 
-    .weight-group input {
-      background-color: white;
-      color: black;
-      border: 2px solid #FFA500;
-    }
+/* Light Blue Input Field */
+.tbsa-group input {
+  background-color: white;
+  color: black;
+  border: 2px solid #ADD8E6;
+  width: 65%;
+}
 
-    /* Light Blue Box (% TBSA) */
-    .tbsa-group {
-      background-color: #ADD8E6;
-      color: black;
-    }
-
-    .tbsa-group input {
-      background-color: white;
-      color: black;
-      border: 2px solid #ADD8E6;
-    }
 
     /* Navigation Buttons */
     .nav-buttons {
