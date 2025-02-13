@@ -216,7 +216,7 @@ margin-bottom: 20px; /* ✅ Creates space between the header and the container *
 </div>
 
   <script>
- // ✅ Function: Retrieve a session cookie value
+    // ✅ Function: Retrieve a session cookie value
 function getSessionCookie(name) {
     let cookies = document.cookie.split('; ');
     for (let cookie of cookies) {
@@ -247,12 +247,12 @@ function saveAdultTBSACookie() {
 function populateTBSAFromCookies() {
     let storedTBSA = getSessionCookie("adultTBSA");
     if (storedTBSA) {
-        let tbsaData = JSON.parse(storedTBSA); // Convert back to object
+        let tbsaData = JSON.parse(storedTBSA);
         document.querySelectorAll(".input-field").forEach(input => {
-            let classKey = input.classList[1]; // Extract class identifier
+            let classKey = input.classList[1];
             if (tbsaData[classKey]) {
-                input.value = tbsaData[classKey]; // Restore previous value
-                input.classList.add("red-bold"); // Keep red-bold styling if needed
+                input.value = tbsaData[classKey];
+                input.classList.add("red-bold");
             }
         });
         console.log("TBSA Values Restored from Cookie:", tbsaData);
@@ -309,7 +309,7 @@ function setupTBSAInputValidation() {
                 this.classList.add("red-bold");
             }
 
-            saveAdultTBSACookie(); // ✅ Save values after user inputs
+            saveAdultTBSACookie();
         });
 
         input.addEventListener("keypress", function (e) {
@@ -357,6 +357,18 @@ function setupNextButtonNavigation() {
     }
 }
 
+// ✅ Function: Handle Prev Button Navigation (Always Redirect to Initial Management)
+function setupPrevButtonNavigation() {
+    let prevBtn = document.getElementById("prevBtn");
+    if (prevBtn) {
+        prevBtn.addEventListener("click", function () {
+            let prevPage = "https://concussed8.github.io/Android-App/pages/initial_management/initial_management.html";
+            console.log("Redirecting to:", prevPage);
+            window.location.href = prevPage;
+        });
+    }
+}
+
 // ✅ Run all functions when the page loads
 document.addEventListener("DOMContentLoaded", function () {
     updateBackgroundColor();
@@ -364,6 +376,7 @@ document.addEventListener("DOMContentLoaded", function () {
     populateTBSAFromCookies(); // ✅ Restores input values when returning to TBSA page
     setupTBSAInputValidation();
     setupNextButtonNavigation();
+    setupPrevButtonNavigation(); // ✅ Prev button now always redirects to Initial Management
 });
 
 // ✅ Listen for orientation changes
