@@ -159,7 +159,7 @@
 </div>
 
   <script>
- // Function to retrieve a session cookie value
+    // Function to retrieve a session cookie value
 function getSessionCookie(name) {
     let cookies = document.cookie.split('; ');
     for (let cookie of cookies) {
@@ -294,31 +294,21 @@ function checkOrientation() {
 window.addEventListener("resize", checkOrientation);
 window.addEventListener("orientationchange", checkOrientation);
 
-// ✅ Store the previous page in a cookie when navigating here
+// ✅ Run functions when the page loads
 document.addEventListener("DOMContentLoaded", function () {
     updateBackgroundColor();
     checkOrientation();
 
-    // ✅ Save the previous page URL when this page loads
-    if (document.referrer) {
-        setSessionCookie("previousPage", document.referrer);
-    }
-
+    // ✅ Previous Button: Navigate to Initial Management Page
     let prevBtn = document.getElementById("prevBtn");
     if (prevBtn) {
         prevBtn.addEventListener("click", function () {
-            let prevPage = getSessionCookie("previousPage");
-
-            if (prevPage) {
-                console.log("Navigating to Previous Page:", prevPage);
-                window.location.href = prevPage;
-            } else {
-                console.warn("No previous page stored.");
-            }
+            console.log("Navigating to Initial Management Page");
+            window.location.href = "https://concussed8.github.io/Android-App/pages/initial_management/initial_management.html";
         });
     }
 
-    // ✅ Next Button Function (Redirect to parkland.html)
+    // ✅ Next Button: Navigate to Parkland Calculation Page
     let nextBtn = document.getElementById("nextBtn");
     if (nextBtn) {
         nextBtn.addEventListener("click", function () {
@@ -328,7 +318,7 @@ document.addEventListener("DOMContentLoaded", function () {
     }
 });
 
-  </script>
+   </script>
 
 </body>
 </html>
