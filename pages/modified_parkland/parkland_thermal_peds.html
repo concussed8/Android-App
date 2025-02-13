@@ -211,6 +211,11 @@ body {
    Calculation Box (Output Left, Label Right)
    ============================== */
 
+@keyframes slideBorder {
+  0% { background-position: 0% 50%; }
+  100% { background-position: 100% 50%; }
+}
+
 .calcbox {
   background-color: #FFEE66; /* Yellow background */
   color: black; /* Black text for contrast */
@@ -218,11 +223,35 @@ body {
   display: flex; /* Aligns input and label */
   align-items: center; /* Centers text vertically */
   padding: 8px 0; /* Adds padding inside */
-  border: 2px dashed red; /* Hashed border */
-  
-  /* 🔽 Incrementally adjust distance from the box above */
+  border: 4px dashed transparent; /* Invisible default border */
+  position: relative; /* Needed for pseudo-elements */
+  overflow: hidden; /* Prevents animation overflow */
+
+  /* 🔽 Adjust distance from the box above */
   margin-top: 25px; /* Change this value to move the box up/down */
 }
+
+/* Pseudo-element for animated border */
+.calcbox::before {
+  content: "";
+  position: absolute;
+  top: -4px;
+  left: -4px;
+  right: -4px;
+  bottom: -4px;
+  border: 4px dashed black; /* Dashed border */
+  background: linear-gradient(90deg, black 50%, transparent 50%);
+  background-size: 12px 100%; /* Dash size */
+  animation: slideBorder 2s linear infinite;
+  pointer-events: none;
+}
+
+/* Adjustable Speed */
+@keyframes slideBorder {
+  0% { transform: translateX(0); }
+  100% { transform: translateX(12px); } /* Moves by one dash width */
+}
+
 
 /* Output field (left side) */
 .calcbox input {
