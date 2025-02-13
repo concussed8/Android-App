@@ -236,12 +236,29 @@ function setSessionCookie(name, value) {
 // ✅ Function: Store input field values in "adultTBSA" cookie
 function saveAdultTBSACookie() {
     let tbsaData = {};
-
     document.querySelectorAll(".input-field").forEach(input => {
         tbsaData[input.classList[1]] = input.value; // Store field class and value
     });
 
     setSessionCookie("adultTBSA", JSON.stringify(tbsaData));
+}
+
+// ✅ Function: Populate TBSA input fields from cookies (when returning to the TBSA page)
+function populateTBSAFromCookies() {
+    let storedTBSA = getSessionCookie("adultTBSA");
+    if (storedTBSA) {
+        let tbsaData = JSON.parse(storedTBSA);
+        document.querySelectorAll(".input-field").forEach(input => {
+            let classKey = input.classList[1];
+            if (tbsaData[classKey]) {
+                input.value = tbsaData[classKey];
+                input.classList.add("red-bold");
+            }
+        });
+        console.log("TBSA Values Restored from Cookie:", tbsaData);
+    } else {
+        console.warn("No TBSA values found in cookies.");
+    }
 }
 
 // ✅ Function: Update background and header color based on selected burn type
@@ -340,18 +357,31 @@ function setupNextButtonNavigation() {
     }
 }
 
+// ✅ Function: Handle Prev Button Navigation (Always Redirect to Initial Management)
+function setupPrevButtonNavigation() {
+    let prevBtn = document.getElementById("prevBtn");
+    if (prevBtn) {
+        prevBtn.addEventListener("click", function () {
+            let prevPage = "https://concussed8.github.io/Android-App/pages/initial_management/initial_management.html";
+            console.log("Redirecting to:", prevPage);
+            window.location.href = prevPage;
+        });
+    }
+}
+
 // ✅ Run all functions when the page loads
 document.addEventListener("DOMContentLoaded", function () {
     updateBackgroundColor();
     checkOrientation();
+    populateTBSAFromCookies(); // ✅ Restores input values when returning to TBSA page
     setupTBSAInputValidation();
     setupNextButtonNavigation();
+    setupPrevButtonNavigation(); // ✅ Prev button now always redirects to Initial Management
 });
 
 // ✅ Listen for orientation changes
 window.addEventListener("resize", checkOrientation);
 window.addEventListener("orientationchange", checkOrientation);
-
   </script>
 
 </body>
