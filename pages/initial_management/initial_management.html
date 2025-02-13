@@ -194,43 +194,13 @@ html, body {
 <script>
   document.addEventListener("DOMContentLoaded", function () {
     updateBackgroundColor();
-    updateHeaderTitle(); 
+    updateHeaderTitle();
     updateFluidRateBox();
     showMessage("ATTENTION!! DO NOT DELAY TREATMENT! Initial management may occur before TBSA calculation or burn centre consultation.");
 
-    let nextBtn = document.getElementById("nextBtn");
-    let prevBtn = document.getElementById("prevBtn");
-
-    // ✅ Next Button: Navigate Based on Age
-    if (nextBtn && getCurrentPage() === "initial_management.html") {
-        nextBtn.style.cursor = "pointer";
-        nextBtn.style.pointerEvents = "auto";
-
-        nextBtn.addEventListener("click", function () {
-            let age = parseInt(getSessionCookie("age"), 10);
-
-            if (!isNaN(age)) {
-                let nextPage = age >= 10 
-                    ? "https://concussed8.github.io/Android-App/pages/adult_TBSA/adult_tbsa.html"
-                    : `https://concussed8.github.io/Android-App/pages/peds_tbsa/${age}y_tbsa.html`;
-
-                console.log("Redirecting to:", nextPage);
-                window.location.href = nextPage;
-            }
-        });
-    }
-
-    // ✅ Previous Button: Navigate to Age Weight Page
-    if (prevBtn) {
-        prevBtn.style.cursor = "pointer";
-        prevBtn.style.pointerEvents = "auto";
-
-        prevBtn.addEventListener("click", function () {
-            let prevPage = "https://concussed8.github.io/Android-App/pages/age_weight/age_weight.html";
-            console.log("Navigating to:", prevPage);
-            window.location.href = prevPage;
-        });
-    }
+    disableNextButton(); // ✅ Ensures Next button is disabled until Acknowledge is clicked
+    setupPreviousButton(); // ✅ Keeps Previous button active
+    setupNextButton(); // ✅ Next button remains inactive until Acknowledge is pressed
 });
 
 // ✅ Function: Get Current Page Name
@@ -255,29 +225,17 @@ function getSessionCookie(name) {
     return "";
 }
 
-// ✅ Function: Sync Burn Type with Selected Icon
-function syncBurnTypeWithSelectedIcon() {
-    let selectedIcon = getSessionCookie("selectedIcon");
-    if (!selectedIcon) return;
-
-    let burnType = getSessionCookie("burnType");
-    if (burnType !== selectedIcon) {
-        setSessionCookie("burnType", selectedIcon);
-    }
-    return selectedIcon;
-}
-
-// ✅ Function: Update Background Color
+// ✅ Function: Update Background Color Based on Burn Type
 function updateBackgroundColor() {
     setTimeout(() => {
-        let burnType = syncBurnTypeWithSelectedIcon();
+        let burnType = getSessionCookie("selectedIcon") || "thermal"; // Default to thermal
         let colors = {
             "thermal": "#800000",
             "chemical": "#90EE90",
             "electrical": "#ADD8E6"
         };
 
-        if (burnType in colors) {
+        if (colors[burnType]) {
             document.body.style.backgroundColor = colors[burnType];
         }
     }, 200);
@@ -330,7 +288,7 @@ function showMessage(message) {
         boxShadow: "0px 4px 10px rgba(0,0,0,0.5)", zIndex: "10000"
     });
 
-    let closeButton = document.getElementById("ackButton") || document.createElement("button");
+    let closeButton = document.createElement("button");
     closeButton.id = "ackButton";
     closeButton.innerText = "ACKNOWLEDGE";
     Object.assign(closeButton.style, {
@@ -342,12 +300,58 @@ function showMessage(message) {
 
     closeButton.addEventListener("click", function () {
         msgBox.style.display = "none";
-        animateBulletPoints();
+        enableNextButton(); // ✅ Unlocks the Next button after clicking
+        animateBulletPoints(); // ✅ Trigger bullet animation after closing
     });
 
-    if (!document.getElementById("ackButton")) msgBox.appendChild(closeButton);
+    msgBox.appendChild(closeButton);
     document.body.appendChild(msgBox);
     msgBox.style.display = "block";
+}
+
+// ✅ Function: Disable Next Button on Load
+function disableNextButton() {
+    let nextBtn = document.getElementById("nextBtn");
+    if (nextBtn) {
+        nextBtn.style.pointerEvents = "none"; // Disable clicks
+        nextBtn.style.opacity = "0.5"; // Visually indicate disabled state
+    }
+}
+
+// ✅ Function: Enable Next Button After Acknowledge
+function enableNextButton() {
+    let nextBtn = document.getElementById("nextBtn");
+    if (nextBtn) {
+        nextBtn.style.pointerEvents = "auto"; // Enable clicks
+        nextBtn.style.opacity = "1"; // Restore full opacity
+    }
+}
+
+// ✅ Function: Handle Previous Button (Remains Active)
+function setupPreviousButton() {
+    let prevBtn = document.getElementById("prevBtn");
+    if (prevBtn) {
+        prevBtn.addEventListener("click", function () {
+            console.log("Navigating to Initial Management Page");
+            window.location.href = "https://concussed8.github.io/Android-App/pages/initial_management/initial_management.html";
+        });
+    }
+}
+
+// ✅ Function: Handle Next Button (Disabled Until Acknowledge)
+function setupNextButton() {
+    let nextBtn = document.getElementById("nextBtn");
+    if (nextBtn) {
+        nextBtn.addEventListener("click", function () {
+            let age = parseInt(getSessionCookie("age"), 10);
+            let nextPage = age >= 10 
+                ? "https://concussed8.github.io/Android-App/pages/adult_TBSA/adult_tbsa.html"
+                : `https://concussed8.github.io/Android-App/pages/peds_tbsa/${age}y_tbsa.html`;
+
+            console.log("Redirecting to:", nextPage);
+            window.location.href = nextPage;
+        });
+    }
 }
 
 // ✅ Function: Animate Bullet Points
