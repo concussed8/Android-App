@@ -389,37 +389,44 @@ document.addEventListener("DOMContentLoaded", function () {
     updateHeaderTitle(); // Update the header title dynamically
     updateFluidRateBox(); // Apply the fluid rate changes based on age
 
-    // ✅ Display the warning message when the page loads
-    showMessage("ATTENTION!! DO NOT DELAY TREATMENT! Initial management may occur before TBSA calculation or burn centre consultation.");
+// Display the warning message when the page loads
+showMessage("ATTENTION!! DO NOT DELAY TREATMENT! Initial management may occur before TBSA calculation or burn centre consultation.");
 
-    let prevBtn = document.getElementById("prevBtn");
+let nextBtn = document.getElementById("nextBtn");
 
-    if (prevBtn) {
-        prevBtn.style.cursor = "pointer";
-        prevBtn.style.pointerEvents = "auto";
+// Ensure logic only runs when on initial_management.html
+if (nextBtn && getCurrentPage() === "initial_management.html") {
+    nextBtn.style.cursor = "pointer";
+    nextBtn.style.pointerEvents = "auto";
 
-        prevBtn.addEventListener("click", function () {
-            let currentPage = getCurrentPage();
-            console.log("Previous Button Clicked on:", currentPage);
+    nextBtn.addEventListener("click", function () {
+        let age = parseInt(getSessionCookie("age"), 10);
 
-            let prevPage = "https://concussed8.github.io/Android-App/";
+        console.log("Next Button Clicked - Age:", age);
 
-            if (currentPage === "initial_management.html") {
-                prevPage = "https://concussed8.github.io/Android-App/pages/age_weight/age_weight.html";
-            } else if (currentPage === "age_weight.html") {
-                prevPage = "https://concussed8.github.io/Android-App/";
+        if (!isNaN(age)) {
+            let nextPage = "";
+
+            if (age >= 10) {
+                nextPage = "https://concussed8.github.io/Android-App/pages/adult_TBSA/adult_tbsa.html";
+            } else if (age >= 2 && age <= 9) {
+                nextPage = `https://concussed8.github.io/Android-App/pages/peds_tbsa/${age}y_tbsa.html`;
             }
 
-            console.log("Navigating to:", prevPage);
-            window.location.href = prevPage;
-        });
+            if (nextPage) {
+                console.log("Redirecting to:", nextPage);
+                window.location.href = nextPage;
+            }
+        }
+    });
 
-        console.log("Previous button event listener attached.");
-    } else {
-        console.error("Previous button not found in DOM.");
-    }
-});
+    console.log("Next button event listener attached.");
+} else {
+    console.log("Next button not found or not on initial_management.html.");
+}
+
 // Function to update fluid rate box based on age
+
 function updateFluidRateBox() {
     let age = parseInt(getSessionCookie("age"), 10); // Retrieve age from cookies and convert to number
     let fluidRateBox = document.querySelector(".fluid-rate-box");
