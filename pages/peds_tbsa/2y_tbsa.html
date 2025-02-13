@@ -5,129 +5,182 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
   <title>Adul_TBSA</title>
   <style>
-    /* Ensure the body fills the viewport */
-    body {
-      margin: 0;
-      padding: 0;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-      height: 100vh;
-      background-color: #800000;
-      overflow-y: auto; /* Allows pull-to-refresh */
-    }
+    /* ==========================
+   General Page Styling
+   ========================== */
 
-    /* Prevent landscape mode */
-    @media screen and (orientation: landscape) {
-      body {
-        display: none; /* Hides everything in landscape mode */
-      }
-    }
+/* Ensures the body fills the viewport and centers content */
+body {
+  margin: 0; /* Removes default browser margin */
+  padding: 0; /* Removes default browser padding */
+  display: flex; /* Enables flexible layout */
+  flex-direction: column; /* Stacks elements vertically */
+  align-items: center; /* Centers elements horizontally */
+  justify-content: center; /* Centers elements vertically */
+  height: 100vh; /* Full viewport height */
+  background-color: #800000; /* Default background color */
+  overflow-y: auto; /* Allows scrolling and pull-to-refresh on mobile */
+}
 
-    /* Fixed Header (No Background, Locked Position) */
-    .header {
-      position: absolute;
-      top: 31px; /* Locked Position */
-      left: 33px; /* Locked Position */
-      color: maroon;
-      font-size: 22px;
-      font-weight: bold;
-      font-family: Arial, sans-serif;
-      cursor: default; /* No dragging */
-      user-select: none;
-      z-index: 1000; /* Ensures it's in front */
-    }
+/* Simulate Mobile Viewport on Desktop */
+/* Uncomment to test on a larger screen like a mobile layout */
 
-    /* Image container with relative positioning */
-    .image-container {
-      position: relative;
-      width: 90vw; /* Responsive width */
-      max-width: 488px; /* Keep max size same as image */
-      aspect-ratio: 488 / 985; /* Maintain image aspect ratio */
-      z-index: 1; /* Ensure it's behind the header */
-    }
+@media screen and (min-width: 769px) { 
+  body {
+    transform: scale(0.7); /* Adjust the scale factor as needed */
+    transform-origin: top center; /* Ensures scaling from center */
+    width: 375px; /* Approximate mobile width */
+    height: 667px; /* Approximate mobile height */
+    overflow: hidden; /* Prevents extra scrollbars */
+  }
+}
 
-    /* Style the image */
-    .image-container img {
-      width: 100%;
-      height: auto;
-      display: block;
-      outline: 6px solid black; /* Adjust size & color */
-      border-radius: 8px; /* Optional: Rounds corners */
-    }
 
-    /* Positioning for fillable fields */
-    .input-field {
-      position: absolute;
-      width: 26%;  /* Relative to image width */
-      height: 7%; /* Relative to image height */
-      background: white;
-      border: 6px solid black;
-      text-align: center;
-      font-size: 1em;
-      font-weight: bold;
-      color: black;
-      cursor: default;
-      user-select: none;
-      z-index: 10; /* Above the image but below the header */
-    }
+/* ==========================
+   Prevent Landscape Mode
+   ========================== */
 
-    /* Make the entered text red and bold */
-    .input-field.red-bold {
-      color: red;
-      font-weight: bold;
-    }
+/* Hides the entire page when in landscape mode */
+@media screen and (orientation: landscape) {
+  body {
+    display: none; /* Prevents usage in landscape orientation */
+  }
+}
 
-    /* Default input field positions */
-    .field1 { top: 45.55px; left: 120px; }  /* Head (Max 9%) */
-    .field2 { top: 185px; left: 123px; } /* Chest/Trunk (Max 36%) */
-    .field3 { top: 352px; left: 126px; } /* Groin (Max 1%) */
-    .field4 { top: 245px; left: 6px; }  /* Right Arm (Max 9%) */
-    .field5 { top: 245px; left: 236px; } /* Left Arm (Max 9%) */
-    .field6 { top: 511px; left: 75px; } /* Right Leg (Max 18%) */
-    .field7 { top: 511px; left: 185px; } /* Left Leg (Max 18%) */
+/* ==========================
+   Fixed Header (Full Width of Container)
+   ========================== */
+.header {
+  position: absolute; /* Keeps header fixed */
+  top: 31px; /* Positions header from top */
+  left: 0; /* Aligns with the left of the container */
+  width: 100%; /* Stretches header to match container width */
+  max-width: 488px; /* Ensures it doesn't exceed container width */
+  text-align: center; /* Centers text */
+  background-color: white; /* Matches container background */
+  padding: 8px 0; /* Adds spacing inside the header */
+  color: maroon; /* Sets text color */
+  font-size: 22px; /* Sets readable font size */
+  font-weight: bold; /* Bold text */
+  font-family: Arial, sans-serif; /* Standard font */
+  cursor: default; /* Prevents selection */
+  user-select: none; /* Disables text selection */
+  z-index: 1000; /* Keeps header in front of other elements */
+  border-bottom: 2px solid #FF66B2; /* Optional: Adds pink bottom border */
+}
 
-    /* Hidden Position Display */
-    .footer {
-      display: none; /* Hide position display */
-    }
 
-    /* Ensure mobile responsiveness */
-    @media (max-width: 768px) {
-      .input-field {
-        font-size: 0.8em;
-        border: 2px solid black;
-      }
-    }
-  /* Navigation Buttons Styling */
+/* ==========================
+   Image Container
+   ========================== */
+
+/* Wrapper for the burn image */
+.image-container {
+  position: relative; /* Allows absolute positioning inside */
+  width: 90vw; /* Makes image responsive */
+  max-width: 488px; /* Prevents excessive stretching */
+  aspect-ratio: 488 / 985; /* Maintains image aspect ratio */
+  z-index: 1; /* Ensures image stays behind inputs */
+}
+
+/* Styles for the burn reference image */
+.image-container img {
+  width: 100%; /* Ensures full width */
+  height: auto; /* Maintains aspect ratio */
+  display: block; /* Prevents extra spacing */
+  background-color: white; /* ✅ White background applied only within the pink border */
+  outline: 6px solid #FF66B2; /* Adds pink border around the image */
+  border-radius: 8px; /* Slightly rounds corners */
+}
+
+
+/* ==========================
+   Input Fields (Fillable Areas)
+   ========================== */
+
+/* General input field styling */
+.input-field {
+  position: absolute; /* Allows precise placement */
+  width: 16%; /* Relative to image width */
+  height: 5%; /* Relative to image height */
+  background: white; /* White background */
+  border: 6px solid black; /* Thick black border */
+  text-align: center; /* Centers text */
+  font-size: 1em; /* Readable font size */
+  font-weight: bold; /* Bold text */
+  color: black; /* Black text */
+  cursor: default; /* Prevents cursor changes */
+  user-select: none; /* Disables selection */
+  z-index: 10; /* Ensures inputs are above the image */
+}
+
+/* Highlights input when edited */
+.input-field.red-bold {
+  color: red; /* Changes text color to red */
+  font-weight: bold; /* Makes text bold */
+}
+
+/* ==========================
+   Input Field Positions (Mapped to Body Parts)
+   ========================== */
+
+.field1 { top: 35px; left: 100px; }  /* Head (Max 9%) */
+.field2 { top: 154px; left: 104px; } /* Chest/Trunk (Max 36%) */
+.field3 { top: 296px; left: 106px; } /* Groin (Max 1%) */
+.field4 { top: 205px; left: 3px; }  /* Right Arm (Max 9%) */
+.field5 { top: 205px; left: 200px; } /* Left Arm (Max 9%) */
+.field6 { top: 431px; left: 62px; } /* Right Leg (Max 18%) */
+.field7 { top: 431px; left: 156px; } /* Left Leg (Max 18%) */
+
+/* ==========================
+   Footer (Hidden)
+   ========================== */
+.footer {
+  display: none; /* Hides footer */
+}
+
+/* ==========================
+   Mobile Adjustments (Small Screens)
+   ========================== */
+@media (max-width: 768px) {
+  .input-field {
+    font-size: 0.8em; /* Reduces font size */
+    border: 2px solid black; /* Thinner borders */
+  }
+}
+
+/* ==========================
+   Navigation Buttons
+   ========================== */
+
+/* Container for navigation buttons */
 .nav-buttons {
   position: absolute; /* Ensures it stays within .image-container */
-  bottom: 0px; /* Moves it below the image */
-  left: 50%; /* Center horizontally */
-  transform: translateX(-50%); /* Corrects centering */
-  display: flex;
-  justify-content: center; /* Ensures proper alignment */
+  bottom: 0px; /* Positions buttons below the image */
+  left: 50%; /* Centers buttons */
+  transform: translateX(-50%); /* Ensures perfect centering */
+  display: flex; /* Aligns buttons in a row */
+  justify-content: center; /* Distributes buttons evenly */
   width: 60vw; /* Responsive width */
-  max-width: 400px;
-  gap: 190px; /* Space between buttons */
-  z-index: 1000;
+  max-width: 400px; /* Prevents excessive stretching */
+  gap: 190px; /* Adds space between buttons */
+  z-index: 1000; /* Ensures buttons stay in front */
 }
 
-/* Style for the navigation buttons */
+/* Styling for navigation button images */
 .nav-buttons img {
-  width: 100px; /* Icon width */
-  height: 75px; /* Icon height */
-  cursor: pointer;
-  border-radius: 10px;
-  opacity: 0.9;
-  transition: transform 0.2s ease, opacity 0.2s ease;
+  width: 100px; /* Sets button width */
+  height: 75px; /* Sets button height */
+  cursor: pointer; /* Indicates clickability */
+  border-radius: 10px; /* Softens button edges */
+  opacity: 0.9; /* Slight transparency */
+  transition: transform 0.2s ease, opacity 0.2s ease; /* Smooth hover effect */
 }
 
-/* Button Press Effect */
+/* Button Click Effect */
 .nav-buttons img:active {
-  transform: scale(1.1);
-  opacity: 1;
+  transform: scale(1.1); /* Slightly enlarges button */
+  opacity: 1; /* Makes button fully visible */
 }
 
 
