@@ -25,7 +25,6 @@ body {
 /* Simulate Mobile Viewport on Desktop */
 /* Uncomment to test on a larger screen like a mobile layout */
 
-/*
 @media screen and (min-width: 769px) { 
   body {
     transform: scale(0.7); /* Adjust the scale factor as needed */
@@ -35,8 +34,6 @@ body {
     overflow: hidden; /* Prevents extra scrollbars */
   }
 }
-*/
-
 
 
 /* ==========================
@@ -53,6 +50,7 @@ body {
 /* ==========================
    Fixed Header (Full Width of Container)
    ========================== */
+
 .header {
   position: absolute; /* Keeps header fixed */
   top: 31px; /* Positions header from top */
@@ -60,7 +58,7 @@ body {
   width: 100%; /* Stretches header to match container width */
   max-width: 488px; /* Ensures it doesn't exceed container width */
   text-align: center; /* Centers text */
-  background-color: none; /* Matches container background */
+  background-color: white; /* Matches container background */
   padding: 8px 0; /* Adds spacing inside the header */
   color: maroon; /* Sets text color */
   font-size: 22px; /* Sets readable font size */
@@ -71,6 +69,7 @@ body {
   z-index: 1000; /* Keeps header in front of other elements */
   border-bottom: 2px solid #FF66B2; /* Optional: Adds pink bottom border */
 }
+
 
 
 /* ==========================
@@ -127,13 +126,13 @@ body {
    Input Field Positions (Mapped to Body Parts)
    ========================== */
 
-.field1 { top: 35px; left: 100px; }  /* Head (Max 9%) */
-.field2 { top: 154px; left: 104px; } /* Chest/Trunk (Max 36%) */
-.field3 { top: 296px; left: 106px; } /* Groin (Max 1%) */
-.field4 { top: 205px; left: 3px; }  /* Right Arm (Max 9%) */
-.field5 { top: 205px; left: 200px; } /* Left Arm (Max 9%) */
-.field6 { top: 431px; left: 62px; } /* Right Leg (Max 18%) */
-.field7 { top: 431px; left: 156px; } /* Left Leg (Max 18%) */
+.field1 { top:23px; left: 65px; }  /* Head (Max 9%) */
+.field2 { top: 100px; left: 67px; } /* Chest/Trunk (Max 36%) */
+.field3 { top: 192px; left: 68px; } /* Groin (Max 1%) */
+.field4 { top: 133px; left: 1px; }  /* Right Arm (Max 9%) */
+.field5 { top: 133px; left: 130px; } /* Left Arm (Max 9%) */
+.field6 { top: 283px; left: 39px; } /* Right Leg (Max 18%) */
+.field7 { top: 283px; left: 102px; } /* Left Leg (Max 18%) */
 
 /* ==========================
    Footer (Hidden)
