@@ -200,13 +200,13 @@ margin-bottom: 20px; /* ✅ Creates space between the header and the container *
     <img src="https://raw.githubusercontent.com/concussed8/IOS-test/main/images/2_ref_tbsa.png" alt="Rule of 9 2year">
     
     <!-- Input Fields -->
-    <input type="tel" class="input-field field1" data-max="9" value="0%" maxlength="3">
+    <input type="tel" class="input-field field1" data-max="16" value="0%" maxlength="3">
     <input type="tel" class="input-field field2" data-max="36" value="0%" maxlength="3">
-    <input type="tel" class="input-field field3" data-max="1" value="0%" maxlength="2">
+    <input type="tel" class="input-field field3" data-max="N/A" value="0%" maxlength="2">
     <input type="tel" class="input-field field4" data-max="9" value="0%" maxlength="3">
     <input type="tel" class="input-field field5" data-max="9" value="0%" maxlength="3">
-    <input type="tel" class="input-field field6" data-max="18" value="0%" maxlength="3">
-    <input type="tel" class="input-field field7" data-max="18" value="0%" maxlength="3">
+    <input type="tel" class="input-field field6" data-max="15" value="0%" maxlength="3">
+    <input type="tel" class="input-field field7" data-max="15" value="0%" maxlength="3">
 </div>
 
 <!-- Navigation Buttons (OUTSIDE image-container) -->
@@ -246,7 +246,7 @@ function saveAdultTBSACookie() {
 
 // Function to update background color based on selected burn type (also updates header color)
 function updateBackgroundColor() {
-    setTimeout(() => {  
+    setTimeout(() => {
         let burnType = getSessionCookie("selectedIcon");
 
         console.log("Applying Background Color for:", burnType);
@@ -351,35 +351,25 @@ function checkOrientation() {
 window.addEventListener("resize", checkOrientation);
 window.addEventListener("orientationchange", checkOrientation);
 
-// ✅ Store the previous page in a cookie when navigating here
+// ✅ Update Background Color and Orientation on Load
 document.addEventListener("DOMContentLoaded", function () {
     updateBackgroundColor();
     checkOrientation();
 
-    // ✅ Save the previous page URL when this page loads
-    if (document.referrer) {
-        setSessionCookie("previousPage", document.referrer);
-    }
-
+    // ✅ Previous Button: Navigate to Initial Management Page
     let prevBtn = document.getElementById("prevBtn");
     if (prevBtn) {
         prevBtn.addEventListener("click", function () {
-            let prevPage = getSessionCookie("previousPage");
-
-            if (prevPage) {
-                console.log("Navigating to Previous Page:", prevPage);
-                window.location.href = prevPage;
-            } else {
-                console.warn("No previous page stored.");
-            }
+            console.log("Navigating to Initial Management Page");
+            window.location.href = "https://concussed8.github.io/Android-App/pages/initial_management/initial_management.html";
         });
     }
 
-    // ✅ Next Button Function (Redirect to parkland.html)
+    // ✅ Next Button: Navigate to Parkland Calculation Page
     let nextBtn = document.getElementById("nextBtn");
     if (nextBtn) {
         nextBtn.addEventListener("click", function () {
-            console.log("Navigating to Next Page: Parkland Calculation");
+            console.log("Navigating to Parkland Calculation Page");
             window.location.href = "https://concussed8.github.io/Android-App/pages/modified_parkland/parkland.html";
         });
     }
