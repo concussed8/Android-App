@@ -1,0 +1,334 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+  <title>Adul_TBSA</title>
+  <style>
+    /* Ensure the body fills the viewport */
+    body {
+      margin: 0;
+      padding: 0;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      height: 100vh;
+      background-color: #800000;
+      overflow-y: auto; /* Allows pull-to-refresh */
+    }
+
+    /* Prevent landscape mode */
+    @media screen and (orientation: landscape) {
+      body {
+        display: none; /* Hides everything in landscape mode */
+      }
+    }
+
+    /* Fixed Header (No Background, Locked Position) */
+    .header {
+      position: absolute;
+      top: 31px; /* Locked Position */
+      left: 33px; /* Locked Position */
+      color: maroon;
+      font-size: 22px;
+      font-weight: bold;
+      font-family: Arial, sans-serif;
+      cursor: default; /* No dragging */
+      user-select: none;
+      z-index: 1000; /* Ensures it's in front */
+    }
+
+    /* Image container with relative positioning */
+    .image-container {
+      position: relative;
+      width: 90vw; /* Responsive width */
+      max-width: 488px; /* Keep max size same as image */
+      aspect-ratio: 488 / 985; /* Maintain image aspect ratio */
+      z-index: 1; /* Ensure it's behind the header */
+    }
+
+    /* Style the image */
+    .image-container img {
+      width: 100%;
+      height: auto;
+      display: block;
+      outline: 6px solid black; /* Adjust size & color */
+      border-radius: 8px; /* Optional: Rounds corners */
+    }
+
+    /* Positioning for fillable fields */
+    .input-field {
+      position: absolute;
+      width: 26%;  /* Relative to image width */
+      height: 7%; /* Relative to image height */
+      background: white;
+      border: 6px solid black;
+      text-align: center;
+      font-size: 1em;
+      font-weight: bold;
+      color: black;
+      cursor: default;
+      user-select: none;
+      z-index: 10; /* Above the image but below the header */
+    }
+
+    /* Make the entered text red and bold */
+    .input-field.red-bold {
+      color: red;
+      font-weight: bold;
+    }
+
+    /* Default input field positions */
+    .field1 { top: 45.55px; left: 120px; }  /* Head (Max 9%) */
+    .field2 { top: 185px; left: 123px; } /* Chest/Trunk (Max 36%) */
+    .field3 { top: 352px; left: 126px; } /* Groin (Max 1%) */
+    .field4 { top: 245px; left: 6px; }  /* Right Arm (Max 9%) */
+    .field5 { top: 245px; left: 236px; } /* Left Arm (Max 9%) */
+    .field6 { top: 511px; left: 75px; } /* Right Leg (Max 18%) */
+    .field7 { top: 511px; left: 185px; } /* Left Leg (Max 18%) */
+
+    /* Hidden Position Display */
+    .footer {
+      display: none; /* Hide position display */
+    }
+
+    /* Ensure mobile responsiveness */
+    @media (max-width: 768px) {
+      .input-field {
+        font-size: 0.8em;
+        border: 2px solid black;
+      }
+    }
+  /* Navigation Buttons Styling */
+.nav-buttons {
+  position: absolute; /* Ensures it stays within .image-container */
+  bottom: 0px; /* Moves it below the image */
+  left: 50%; /* Center horizontally */
+  transform: translateX(-50%); /* Corrects centering */
+  display: flex;
+  justify-content: center; /* Ensures proper alignment */
+  width: 60vw; /* Responsive width */
+  max-width: 400px;
+  gap: 190px; /* Space between buttons */
+  z-index: 1000;
+}
+
+/* Style for the navigation buttons */
+.nav-buttons img {
+  width: 100px; /* Icon width */
+  height: 75px; /* Icon height */
+  cursor: pointer;
+  border-radius: 10px;
+  opacity: 0.9;
+  transition: transform 0.2s ease, opacity 0.2s ease;
+}
+
+/* Button Press Effect */
+.nav-buttons img:active {
+  transform: scale(1.1);
+  opacity: 1;
+}
+
+
+  </style>
+</head>
+<body>
+
+<!-- Fixed Header -->
+<div class="header">Total Body Surface Area Burned</div>
+
+<!-- Image and Inputs Container -->
+<div class="image-container">
+    <img src="https://raw.githubusercontent.com/concussed8/IOS-test/main/images/2_ref_tbsa.png" alt="Rule of 9 2year">
+    
+    <!-- Input Fields -->
+    <input type="tel" class="input-field field1" data-max="9" value="0%" maxlength="3">
+    <input type="tel" class="input-field field2" data-max="36" value="0%" maxlength="3">
+    <input type="tel" class="input-field field3" data-max="1" value="0%" maxlength="2">
+    <input type="tel" class="input-field field4" data-max="9" value="0%" maxlength="3">
+    <input type="tel" class="input-field field5" data-max="9" value="0%" maxlength="3">
+    <input type="tel" class="input-field field6" data-max="18" value="0%" maxlength="3">
+    <input type="tel" class="input-field field7" data-max="18" value="0%" maxlength="3">
+</div>
+
+<!-- Navigation Buttons (OUTSIDE image-container) -->
+<div class="nav-buttons">
+    <img src="https://raw.githubusercontent.com/concussed8/Android-App/main/images/prev.png" id="prevBtn" alt="Previous">
+    <img src="https://raw.githubusercontent.com/concussed8/Android-App/main/images/next.png" id="nextBtn" alt="Next">
+</div>
+
+  <script>
+ // Function to retrieve a session cookie value
+function getSessionCookie(name) {
+    let cookies = document.cookie.split('; ');
+    for (let cookie of cookies) {
+        let [cookieName, cookieValue] = cookie.split('=');
+        if (cookieName === name) {
+            return decodeURIComponent(cookieValue);
+        }
+    }
+    return "";
+}
+
+// Function to set a session cookie
+function setSessionCookie(name, value) {
+    document.cookie = `${name}=${encodeURIComponent(value)}; path=/; SameSite=Lax; max-age=3600`; // 1-hour expiry
+}
+
+// Function to store input field values in "adultTBSA" cookie
+function saveAdultTBSACookie() {
+    let tbsaData = {};
+
+    document.querySelectorAll(".input-field").forEach(input => {
+        tbsaData[input.classList[1]] = input.value; // Store field class and value
+    });
+
+    setSessionCookie("adultTBSA", JSON.stringify(tbsaData)); // Save JSON data as a cookie
+}
+
+// Function to update background color based on selected burn type (also updates header color)
+function updateBackgroundColor() {
+    setTimeout(() => {  
+        let burnType = getSessionCookie("selectedIcon");
+
+        console.log("Applying Background Color for:", burnType);
+
+        let backgroundColor = "";
+        let headerColor = "";
+
+        if (burnType) {
+            switch (burnType) {
+                case "thermal":
+                    backgroundColor = "#800000";
+                    headerColor = "#800000";
+                    break;
+                case "chemical":
+                    backgroundColor = "#90EE90";
+                    headerColor = "#90EE90";
+                    break;
+                case "electrical":
+                    backgroundColor = "#ADD8E6";
+                    headerColor = "#ADD8E6";
+                    break;
+                default:
+                    console.warn("Unexpected burn type:", burnType);
+                    return;
+            }
+
+            document.body.style.backgroundColor = backgroundColor;
+            document.querySelector(".header").style.color = headerColor;
+        }
+    }, 200);
+}
+
+// Function to handle input validation for TBSA percentage
+document.querySelectorAll(".input-field").forEach(input => {
+    input.addEventListener("focus", function () {
+        if (this.value === "0%") {
+            this.value = "";
+        }
+    });
+
+    input.addEventListener("blur", function () {
+        if (this.value === "" || this.value === "%") {
+            this.value = "0%";
+            this.classList.remove("red-bold");
+        }
+    });
+
+    input.addEventListener("input", function () {
+        let value = this.value.replace(/\D/g, "");
+        let maxVal = parseInt(this.dataset.max);
+
+        if (value.length > 0) {
+            if (parseInt(value) > maxVal) {
+                alert(`Value cannot exceed ${maxVal}%. Please re-enter a valid amount.`);
+                this.value = "";
+                this.classList.remove("red-bold");
+                return;
+            } else {
+                this.value = value + "%";
+                this.classList.add("red-bold");
+            }
+        }
+
+        saveAdultTBSACookie();
+    });
+
+    input.addEventListener("keypress", function (e) {
+        if (!/[0-9]/.test(e.key)) {
+            e.preventDefault();
+        }
+    });
+
+    input.addEventListener("keydown", function (e) {
+        if (e.key === "Backspace") {
+            if (this.value.length <= 2) {
+                this.value = "";
+                e.preventDefault();
+                this.classList.remove("red-bold");
+            } else {
+                this.value = this.value.slice(0, -2) + "%";
+            }
+        }
+    });
+
+    input.addEventListener("focus", function () {
+        setTimeout(() => {
+            this.setSelectionRange(0, this.value.length - 1);
+        }, 50);
+    });
+});
+
+// Function to handle landscape mode prevention
+function checkOrientation() {
+    if (window.matchMedia("(orientation: landscape)").matches) {
+        document.body.style.display = "none";
+    } else {
+        document.body.style.display = "flex";
+    }
+}
+
+// Listen for orientation changes
+window.addEventListener("resize", checkOrientation);
+window.addEventListener("orientationchange", checkOrientation);
+
+// ✅ Store the previous page in a cookie when navigating here
+document.addEventListener("DOMContentLoaded", function () {
+    updateBackgroundColor();
+    checkOrientation();
+
+    // ✅ Save the previous page URL when this page loads
+    if (document.referrer) {
+        setSessionCookie("previousPage", document.referrer);
+    }
+
+    let prevBtn = document.getElementById("prevBtn");
+    if (prevBtn) {
+        prevBtn.addEventListener("click", function () {
+            let prevPage = getSessionCookie("previousPage");
+
+            if (prevPage) {
+                console.log("Navigating to Previous Page:", prevPage);
+                window.location.href = prevPage;
+            } else {
+                console.warn("No previous page stored.");
+            }
+        });
+    }
+
+    // ✅ Next Button Function (Redirect to parkland.html)
+    let nextBtn = document.getElementById("nextBtn");
+    if (nextBtn) {
+        nextBtn.addEventListener("click", function () {
+            console.log("Navigating to Next Page: Parkland Calculation");
+            window.location.href = "https://concussed8.github.io/Android-App/pages/modified_parkland/parkland.html";
+        });
+    }
+});
+
+  </script>
+
+</body>
+</html>
