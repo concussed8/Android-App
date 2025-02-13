@@ -22,9 +22,11 @@ body {
   overflow-y: auto; /* Allows scrolling and pull-to-refresh on mobile */
 }
 
-/* Simulate Mobile Viewport on Desktop */
-/* Uncomment to test on a larger screen like a mobile layout */
+/* ==========================
+   Simulate Mobile Viewport on Desktop
+   ========================== */
 
+/*
 @media screen and (min-width: 769px) { 
   body {
     transform: scale(0.7); /* Adjust the scale factor as needed */
@@ -34,6 +36,8 @@ body {
     overflow: hidden; /* Prevents extra scrollbars */
   }
 }
+*/
+
 
 
 /* ==========================
@@ -47,28 +51,26 @@ body {
   }
 }
 
-/* ==========================
-   Fixed Header (Full Width of Container)
-   ========================== */
 
+/* ==========================
+   Fixed Header (Main Body, Full Width)
+   ========================== */
 .header {
-  position: absolute; /* Keeps header fixed */
-  top: 31px; /* Positions header from top */
-  left: 0; /* Aligns with the left of the container */
-  width: 100%; /* Stretches header to match container width */
-  max-width: 488px; /* Ensures it doesn't exceed container width */
+  position: relative; /* Keeps header within normal document flow */
+  width: 100%; /* Stretches header across the full page width */
   text-align: center; /* Centers text */
-  background-color: white; /* Matches container background */
-  padding: 8px 0; /* Adds spacing inside the header */
-  color: maroon; /* Sets text color */
-  font-size: 22px; /* Sets readable font size */
+  background-color: #FF66B2; /* Contrasting pink background */
+  padding: 12px 0; /* Adds vertical spacing */
+  color: white; /* White text for contrast */
+  font-size: 24px; /* Large text for readability */
   font-weight: bold; /* Bold text */
-  font-family: Arial, sans-serif; /* Standard font */
-  cursor: default; /* Prevents selection */
+  font-family: "Courier New", Courier, monospace; /* Monospace font */
   user-select: none; /* Disables text selection */
-  z-index: 1000; /* Keeps header in front of other elements */
-  border-bottom: 2px solid #FF66B2; /* Optional: Adds pink bottom border */
+  z-index: 1000; /* Keeps header above other elements */
+  border-bottom: 0px solid black; /* Optional: Adds a bold black bottom border */
+margin-bottom: 20px; /* ✅ Creates space between the header and the container */
 }
+
 
 
 
