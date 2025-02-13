@@ -216,7 +216,7 @@ margin-bottom: 20px; /* ✅ Creates space between the header and the container *
 </div>
 
   <script>
-    // ✅ Function: Retrieve a session cookie value
+ // ✅ Function: Retrieve a session cookie value
 function getSessionCookie(name) {
     let cookies = document.cookie.split('; ');
     for (let cookie of cookies) {
@@ -236,12 +236,29 @@ function setSessionCookie(name, value) {
 // ✅ Function: Store input field values in "adultTBSA" cookie
 function saveAdultTBSACookie() {
     let tbsaData = {};
-
     document.querySelectorAll(".input-field").forEach(input => {
         tbsaData[input.classList[1]] = input.value; // Store field class and value
     });
 
     setSessionCookie("adultTBSA", JSON.stringify(tbsaData));
+}
+
+// ✅ Function: Populate TBSA input fields from cookies (when returning to the TBSA page)
+function populateTBSAFromCookies() {
+    let storedTBSA = getSessionCookie("adultTBSA");
+    if (storedTBSA) {
+        let tbsaData = JSON.parse(storedTBSA); // Convert back to object
+        document.querySelectorAll(".input-field").forEach(input => {
+            let classKey = input.classList[1]; // Extract class identifier
+            if (tbsaData[classKey]) {
+                input.value = tbsaData[classKey]; // Restore previous value
+                input.classList.add("red-bold"); // Keep red-bold styling if needed
+            }
+        });
+        console.log("TBSA Values Restored from Cookie:", tbsaData);
+    } else {
+        console.warn("No TBSA values found in cookies.");
+    }
 }
 
 // ✅ Function: Update background and header color based on selected burn type
@@ -292,7 +309,7 @@ function setupTBSAInputValidation() {
                 this.classList.add("red-bold");
             }
 
-            saveAdultTBSACookie();
+            saveAdultTBSACookie(); // ✅ Save values after user inputs
         });
 
         input.addEventListener("keypress", function (e) {
@@ -344,6 +361,7 @@ function setupNextButtonNavigation() {
 document.addEventListener("DOMContentLoaded", function () {
     updateBackgroundColor();
     checkOrientation();
+    populateTBSAFromCookies(); // ✅ Restores input values when returning to TBSA page
     setupTBSAInputValidation();
     setupNextButtonNavigation();
 });
