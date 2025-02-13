@@ -231,26 +231,7 @@ body {
   margin-top: 25px; /* Change this value to move the box up/down */
 }
 
-/* Pseudo-element for animated border */
-.calcbox::before {
-  content: "";
-  position: absolute;
-  top: -4px;
-  left: -4px;
-  right: -4px;
-  bottom: -4px;
-  border: 4px dashed black; /* Dashed border */
-  background: linear-gradient(90deg, black 50%, transparent 50%);
-  background-size: 12px 100%; /* Dash size */
-  animation: slideBorder 2s linear infinite;
-  pointer-events: none;
-}
 
-/* Adjustable Speed */
-@keyframes slideBorder {
-  0% { transform: translateX(0); }
-  100% { transform: translateX(12px); } /* Moves by one dash width */
-}
 
 
 /* Output field (left side) */
