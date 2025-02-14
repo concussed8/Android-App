@@ -175,6 +175,44 @@ html, body {
   background: linear-gradient(145deg, #003366, #1E5799);
   box-shadow: inset -2px 2px 5px rgba(0, 0, 0, 0.5), inset 2px -2px 5px rgba(255, 255, 255, 0.2);
 }
+/* ✅ Step Text Boxes Container */
+.step-text-container {
+  display: flex;
+  flex-direction: column; /* ✅ Stacks them vertically */
+  align-items: center;
+  gap: 15px; /* ✅ Spacing between text boxes */
+  margin-top: 20px; /* ✅ Adjust vertical position */
+}
+
+/* ✅ Individual Step Text Box */
+.step-text {
+  position: relative;
+  width: 180px; /* ✅ Width of text box */
+  height: 50px; /* ✅ Height of text box */
+  font-size: 18px; /* ✅ Font size */
+  font-family: "Courier New", Courier, monospace; /* ✅ Font */
+  font-weight: bold; /* ✅ Bold Text */
+  color: white; /* ✅ White text */
+  text-align: center;
+  line-height: 50px; /* ✅ Centers text vertically */
+  
+  /* ✅ No Background Fill */
+  background: transparent;
+  border: 2px solid white; /* ✅ White outline */
+  border-radius: 8px; /* ✅ Slight rounding */
+  
+  /* ✅ Slanted Look */
+  transform: skewX(-15deg);
+  
+  /* ✅ Shadow Effect */
+  box-shadow: -2px 2px 4px rgba(0, 0, 0, 0.5);
+}
+
+/* ✅ Optional Hover Effect */
+.step-text:hover {
+  border-color: #FFD700; /* ✅ Changes border color on hover */
+  transform: skewX(-15deg) scale(1.05);
+}
 
 
 
@@ -207,6 +245,13 @@ html, body {
     <button class="step-button" id="step2">Step 2</button>
     <button class="step-button" id="step3">Step 3</button>
     <button class="step-button" id="step4">Step 4</button>
+</div>
+<!-- ✅ Step Text Boxes (Stacked Above Buttons) -->
+<div class="step-text-container">
+    <div class="step-text">Step 1 Info</div>
+    <div class="step-text">Step 2 Info</div>
+    <div class="step-text">Step 3 Info</div>
+    <div class="step-text">Step 4 Info</div>
 </div>
 
 <!-- Next & Prev Buttons -->
