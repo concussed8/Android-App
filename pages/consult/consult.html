@@ -215,6 +215,44 @@ html, body {
   /* ✅ Manual Vertical Control */
   margin-top: -5px; /* ✅ Adjust this value to move the header up/down */
 }
+/* ✅ Step Popups (Hidden by Default) */
+.step-popup {
+    position: absolute;
+    top: 16%;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 82%;
+    max-width: 488px;
+    background: rgba(255, 0, 0, 1);
+    color: white;
+    font-family: "Courier New", Courier, monospace;
+    font-size: 26px;
+    font-weight: bold;
+    border: 6px solid black;
+    border-radius: 8px;
+    text-align: center;
+    display: none; /* ✅ Hidden initially */
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    padding: 20px;
+    box-shadow: 0px 4px 10px rgba(0,0,0,0.5);
+    z-index: 10000;
+}
+
+/* ✅ Close Button for Step Popups */
+.close-popup {
+    padding: 10px 20px;
+    font-size: 18px;
+    font-weight: bold;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    background: white;
+    color: black;
+    box-shadow: 0px 2px 5px rgba(0,0,0,0.3);
+    margin-top: 20px;
+}
 
 
 
@@ -249,6 +287,28 @@ html, body {
     <button class="step-button" id="step3">Step 3</button>
     <button class="step-button" id="step4">Step 4</button>
 </div>
+
+<!-- ✅ Step Popups (Initially Hidden) -->
+<div id="stepPopup1" class="step-popup">
+    <p><strong>Step 1:</strong> Begin IV access and ensure proper fluid resuscitation.</p>
+    <button class="close-popup" onclick="closePopup('stepPopup1')">CLOSE</button>
+</div>
+
+<div id="stepPopup2" class="step-popup">
+    <p><strong>Step 2:</strong> Monitor urinary output and assess foley catheter placement.</p>
+    <button class="close-popup" onclick="closePopup('stepPopup2')">CLOSE</button>
+</div>
+
+<div id="stepPopup3" class="step-popup">
+    <p><strong>Step 3:</strong> Conduct a thorough patient assessment including TBSA estimation.</p>
+    <button class="close-popup" onclick="closePopup('stepPopup3')">CLOSE</button>
+</div>
+
+<div id="stepPopup4" class="step-popup">
+    <p><strong>Step 4:</strong> Prepare patient for transfer if required. Contact burn center.</p>
+    <button class="close-popup" onclick="closePopup('stepPopup4')">CLOSE</button>
+</div>
+
 <!-- ✅ Main Adjustable Container -->
 <div class="adjustable-container">
     <!-- ✅ Container Header -->
@@ -391,13 +451,37 @@ function checkOrientation() {
     }
 }
 
+// ✅ Step Popup Functions (Place Before Page Load Event Listener)
+function openPopup(stepId) {
+    document.querySelectorAll(".step-popup").forEach(popup => popup.style.display = "none");
+    document.getElementById(stepId).style.display = "flex";
+}
+
+function closePopup(stepId) {
+    document.getElementById(stepId).style.display = "none";
+}
+
+// ✅ Attach Event Listeners to Step Buttons
+document.getElementById("step1").addEventListener("click", function () {
+    openPopup("stepPopup1");
+});
+document.getElementById("step2").addEventListener("click", function () {
+    openPopup("stepPopup2");
+});
+document.getElementById("step3").addEventListener("click", function () {
+    openPopup("stepPopup3");
+});
+document.getElementById("step4").addEventListener("click", function () {
+    openPopup("stepPopup4");
+});
+
 // ✅ Function: Run All Functions When Page Loads
 document.addEventListener("DOMContentLoaded", function () {
-    updateBackgroundColor(); // Set background color dynamically
-    updateHeaderTitle(); // Update header text dynamically
-    disableNextButton(); // Ensure next button is disabled initially
-    setupPreviousButton(); // Allow navigation to Initial Management page
-    setupNextButton(); // Next button remains disabled until Acknowledge is clicked
+    updateBackgroundColor();
+    updateHeaderTitle();
+    disableNextButton();
+    setupPreviousButton();
+    setupNextButton();
     showMessage("ATTENTION!! DO NOT DELAY TREATMENT! Initial management may occur before TBSA calculation or burn centre consultation.");
 });
 
