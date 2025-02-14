@@ -126,6 +126,43 @@ html, body {
 .nav-buttons img:active {
   transform: scale(1.1);
 }
+    /* ✅ Step Buttons Container */
+.step-buttons {
+  position: absolute;
+  top: 50px; /* ✅ Adjust vertical position */
+  left: 50px; /* ✅ Adjust horizontal position */
+  display: flex;
+  flex-direction: column; /* ✅ Stack buttons vertically */
+  gap: 10px; /* ✅ Space between buttons */
+  z-index: 1000; /* ✅ Ensures they stay on top */
+}
+
+/* ✅ Individual Step Button Styling */
+.step-button {
+  width: 120px; /* ✅ Button width */
+  height: 40px; /* ✅ Button height */
+  font-size: 16px; /* ✅ Text size */
+  font-weight: bold;
+  text-align: center;
+  background-color: #0047AB; /* ✅ Dark blue */
+  color: white; /* ✅ Text color */
+  border: 2px solid black; /* ✅ Border styling */
+  border-radius: 8px; /* ✅ Rounded corners */
+  cursor: pointer;
+  transition: all 0.2s ease-in-out;
+}
+
+/* ✅ Hover Effect */
+.step-button:hover {
+  background-color: #002D62; /* ✅ Darker blue on hover */
+  transform: scale(1.05); /* ✅ Slight grow effect */
+}
+
+/* ✅ Button Click Effect */
+.step-button:active {
+  transform: scale(0.95); /* ✅ Slight shrink on click */
+}
+
 
   </style>
 </head>
@@ -149,6 +186,13 @@ html, body {
     
     <!-- TBSA Total Box -->
     <input type="text" class="input-field field8" readonly value="0%">
+</div>
+<!-- ✅ Step Buttons Container -->
+<div class="step-buttons">
+    <button class="step-button" id="step1">Step 1</button>
+    <button class="step-button" id="step2">Step 2</button>
+    <button class="step-button" id="step3">Step 3</button>
+    <button class="step-button" id="step4">Step 4</button>
 </div>
 
 <!-- Next & Prev Buttons -->
