@@ -37,21 +37,22 @@ html, body {
   padding-bottom: 10px;
 }
 
-/* Main Container */
+/* ✅ Main Container: Adjustable Size */
 .content-container {
-  position: relative; /* ✅ Allows input fields to position correctly */
-  width: 80%;
-  max-width: 488px;
+  position: relative;
+  width: 80%;  /* ✅ You can adjust this */
+  max-width: 488px; /* ✅ Adjust as needed */
+  height: auto; /* ✅ Adjust height manually */
+  min-height: 600px; /* ✅ Ensures space for image & input fields */
   background-color: white;
   border: 3px solid black;
   border-radius: 8px;
   margin-top: -10px;
   padding: 20px;
   text-align: center;
-  min-height: 600px; /* ✅ Ensures image & fields fit properly */
 }
 
-/* Consult Image */
+/* ✅ Consult Image */
 #consultImage {
   width: 100%;
   max-width: 400px;
@@ -59,15 +60,15 @@ html, body {
   margin: 0 auto;
 }
 
-/* Positioning for input fields */
+/* ✅ Positioning & Styling for Input Fields */
 .input-field {
   position: absolute;
-  width: 22%;  /* ✅ Slightly smaller for better fit */
-  height: 7%; 
+  width: 22%;  /* ✅ Adjustable */
+  height: 7%;  /* ✅ Adjustable */
   background: white;
-  border: 3px solid black; /* ✅ Thicker for visibility */
+  border: 3px solid black; /* ✅ Adjustable thickness */
   text-align: center;
-  font-size: 1em;
+  font-size: 1em; /* ✅ Adjustable */
   font-weight: bold;
   color: black;
   cursor: default;
@@ -76,7 +77,7 @@ html, body {
   z-index: 10;
 }
 
-/* TBSA Total Box */
+/* ✅ TBSA Total Box */
 .field8 { 
   width: 40%;
   bottom: 5px;
@@ -84,7 +85,7 @@ html, body {
   transform: translateX(-50%);
 }
 
-/* Default input field positions */
+/* ✅ Input Field Positions (Modify Manually) */
 .field1 { top: 9%; left: 38%; }  /* Head */
 .field2 { top: 35%; left: 38%; } /* Chest/Trunk */
 .field3 { top: 55%; left: 38%; } /* Groin */
@@ -93,7 +94,7 @@ html, body {
 .field6 { top: 75%; left: 22%; } /* Right Leg */
 .field7 { top: 75%; left: 55%; } /* Left Leg */
 
-/* Next & Prev Buttons */
+/* ✅ Navigation Buttons */
 .nav-buttons {
   position: absolute;
   bottom: 20px;
@@ -108,7 +109,7 @@ html, body {
   z-index: 1000;
 }
 
-/* Style for the navigation buttons */
+/* ✅ Styling for Navigation Buttons */
 .nav-buttons img {
   width: 100px;
   height: 75px;
@@ -118,10 +119,11 @@ html, body {
   transition: transform 0.2s ease;
 }
 
-/* Button Press Effect */
+/* ✅ Button Press Effect */
 .nav-buttons img:active {
   transform: scale(1.1);
 }
+
   </style>
 </head>
 <body>
