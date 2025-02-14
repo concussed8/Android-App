@@ -305,13 +305,11 @@ html, body {
 </div>
 
 <!-- ✅ Step 1 Popup -->
-<div id="stepPopup1" class="step1-popup"> <!-- ✅ Updated to match CSS -->
-    <!-- ✅ Question 1: FULL Thickness Burns -->
+<div id="stepPopup1" class="step1-popup"> <!-- ✅ Matches .step1-popup -->
     <p>Does your patient have any % of FULL thickness burns?</p>
     <label><input type="checkbox" name="fullThickness" value="yes"> Yes</label>
     <label><input type="checkbox" name="fullThickness" value="no"> No</label>
 
-    <!-- ✅ Question 2: PARTIAL Thickness Burns ≥ 10% TBSA -->
     <p>Does your patient have PARTIAL thickness burns greater than or equal to ≥ 10% TBSA?</p>
     <label><input type="checkbox" name="partialThickness" value="yes"> Yes</label>
     <label><input type="checkbox" name="partialThickness" value="no"> No</label>
@@ -319,23 +317,24 @@ html, body {
     <button class="close-popup" onclick="closePopup('stepPopup1')">CLOSE</button>
 </div>
 
-
-
-
-<div id="stepPopup2" class="step-popup">
-    <p><strong>Step 2:</strong> Monitor urinary output and assess foley catheter placement.</p>
+<!-- ✅ Step 2 Popup (Fix Naming) -->
+<div id="stepPopup2" class="step2-popup"> <!-- ✅ Now Matches .step2-popup -->
+    <p>Monitor urinary output and assess foley catheter placement.</p>
     <button class="close-popup" onclick="closePopup('stepPopup2')">CLOSE</button>
 </div>
 
-<div id="stepPopup3" class="step-popup">
-    <p><strong>Step 3:</strong> Conduct a thorough patient assessment including TBSA estimation.</p>
+<!-- ✅ Step 3 Popup (Fix Naming) -->
+<div id="stepPopup3" class="step3-popup"> <!-- ✅ Now Matches .step3-popup -->
+    <p>Conduct a thorough patient assessment including TBSA estimation.</p>
     <button class="close-popup" onclick="closePopup('stepPopup3')">CLOSE</button>
 </div>
 
-<div id="stepPopup4" class="step-popup">
-    <p><strong>Step 4:</strong> Prepare patient for transfer if required. Contact burn center.</p>
+<!-- ✅ Step 4 Popup (Fix Naming) -->
+<div id="stepPopup4" class="step4-popup"> <!-- ✅ Now Matches .step4-popup -->
+    <p>Prepare patient for transfer if required. Contact burn center.</p>
     <button class="close-popup" onclick="closePopup('stepPopup4')">CLOSE</button>
 </div>
+
 
 <!-- ✅ Main Adjustable Container -->
 <div class="adjustable-container">
