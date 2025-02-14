@@ -240,19 +240,6 @@ html, body {
     z-index: 10000;
 }
 
-/* ✅ Close Button for Step Popups */
-.close-popup {
-    padding: 10px 20px;
-    font-size: 18px;
-    font-weight: bold;
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
-    background: white;
-    color: black;
-    box-shadow: 0px 2px 5px rgba(0,0,0,0.3);
-    margin-top: 20px;
-}
 
 
 
@@ -290,9 +277,19 @@ html, body {
 
 <!-- ✅ Step Popups (Initially Hidden) -->
 <div id="stepPopup1" class="step-popup">
-    <p><strong>Step 1:</strong> Begin IV access and ensure proper fluid resuscitation.</p>
+    <!-- ✅ Question 1: FULL Thickness Burns -->
+    <p>Does your patient have any % of FULL thickness burns?</p>
+    <label><input type="checkbox" name="fullThickness" value="yes"> Yes</label>
+    <label><input type="checkbox" name="fullThickness" value="no"> No</label>
+
+    <!-- ✅ Question 2: PARTIAL Thickness Burns ≥ 10% TBSA -->
+    <p>Does your patient have PARTIAL thickness burns greater than or equal to ≥ 10% TBSA?</p>
+    <label><input type="checkbox" name="partialThickness" value="yes"> Yes</label>
+    <label><input type="checkbox" name="partialThickness" value="no"> No</label>
+
     <button class="close-popup" onclick="closePopup('stepPopup1')">CLOSE</button>
 </div>
+
 
 <div id="stepPopup2" class="step-popup">
     <p><strong>Step 2:</strong> Monitor urinary output and assess foley catheter placement.</p>
