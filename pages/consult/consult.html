@@ -128,40 +128,51 @@ html, body {
 }
     /* ✅ Step Buttons Container */
 .step-buttons {
-  position: absolute;
-  top: 50px; /* ✅ Adjust vertical position */
-  left: 50px; /* ✅ Adjust horizontal position */
   display: flex;
-  flex-direction: column; /* ✅ Stack buttons vertically */
-  gap: 10px; /* ✅ Space between buttons */
-  z-index: 1000; /* ✅ Ensures they stay on top */
+  justify-content: center;
+  gap: 15px; /* Space between buttons */
+  margin-top: 20px; /* Adjust vertical positioning */
 }
 
 /* ✅ Individual Step Button Styling */
 .step-button {
-  width: 120px; /* ✅ Button width */
-  height: 40px; /* ✅ Button height */
-  font-size: 16px; /* ✅ Text size */
+  position: relative;
+  width: 100px;  /* ✅ Button Width */
+  height: 50px;  /* ✅ Button Height */
+  font-size: 16px;
   font-weight: bold;
-  text-align: center;
-  background-color: #0047AB; /* ✅ Dark blue */
-  color: white; /* ✅ Text color */
-  border: 2px solid black; /* ✅ Border styling */
-  border-radius: 8px; /* ✅ Rounded corners */
+  color: white;
+  border: none;
   cursor: pointer;
+  text-transform: uppercase;
+  user-select: none;
   transition: all 0.2s ease-in-out;
+  
+  /* ✅ Slant Effect */
+  transform: skewX(-15deg);
+  
+  /* ✅ Cool Gradient Background for 3D Effect */
+  background: linear-gradient(145deg, #4A90E2, #1E5799);
+  
+  /* ✅ Beveled Edges with Box Shadows */
+  box-shadow: -3px 3px 6px rgba(0, 0, 0, 0.4), 3px -3px 6px rgba(255, 255, 255, 0.3);
+  
+  /* ✅ Border Radius for Soft Edges */
+  border-radius: 8px;
 }
 
-/* ✅ Hover Effect */
+/* ✅ Button Hover Effect */
 .step-button:hover {
-  background-color: #002D62; /* ✅ Darker blue on hover */
-  transform: scale(1.05); /* ✅ Slight grow effect */
+  background: linear-gradient(145deg, #1E5799, #4A90E2);
+  transform: skewX(-15deg) scale(1.05);
 }
 
-/* ✅ Button Click Effect */
+/* ✅ Button Active (Click) Effect */
 .step-button:active {
-  transform: scale(0.95); /* ✅ Slight shrink on click */
+  background: linear-gradient(145deg, #003366, #1E5799);
+  box-shadow: inset -2px 2px 5px rgba(0, 0, 0, 0.5), inset 2px -2px 5px rgba(255, 255, 255, 0.2);
 }
+
 
 
   </style>
