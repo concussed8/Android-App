@@ -215,34 +215,63 @@ html, body {
   /* ✅ Manual Vertical Control */
   margin-top: -5px; /* ✅ Adjust this value to move the header up/down */
 }
-/* ✅ Step Popups (Hidden by Default) */
-.step-popup {
-    position: absolute;
-    top: 16%;
-    left: 50%;
-    transform: translateX(-50%);
-    width: 82%;
-    max-width: 488px;
-    background: rgba(255, 0, 0, 1);
-    color: white;
-    font-family: "Courier New", Courier, monospace;
-    font-size: 26px;
-    font-weight: bold;
-    border: 6px solid black;
-    border-radius: 8px;
-    text-align: center;
-    display: none; /* ✅ Hidden initially */
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    padding: 20px;
-    box-shadow: 0px 4px 10px rgba(0,0,0,0.5);
-    z-index: 10000;
+/* ✅ Step 1 Popup Styling */
+.step1-popup {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 85%; /* ✅ Adjustable width */
+  max-width: 500px; /* ✅ Prevents excessive size */
+  background: rgba(255, 255, 255, 0.95); /* ✅ Slightly transparent white */
+  border: 5px solid black; /* ✅ Bold border */
+  border-radius: 10px; /* ✅ Rounded corners */
+  padding: 20px;
+  text-align: center;
+  font-family: "Courier New", Courier, monospace;
+  font-size: 18px;
+  font-weight: bold;
+  color: black;
+  box-shadow: 5px 5px 15px rgba(0, 0, 0, 0.5); /* ✅ Shadow effect */
+  z-index: 10000; /* ✅ Keeps it above other elements */
+  display: none; /* ✅ Hidden by default */
 }
 
+/* ✅ Close Button for Step 1 Popup */
+.step1-popup .close-popup {
+  margin-top: 15px;
+  padding: 10px 15px;
+  font-size: 16px;
+  font-weight: bold;
+  background: red; /* ✅ Red for emphasis */
+  color: white;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.3);
+  transition: all 0.2s ease-in-out;
+}
 
+/* ✅ Hover & Click Effects */
+.step1-popup .close-popup:hover {
+  background: darkred;
+}
+.step1-popup .close-popup:active {
+  transform: scale(0.95);
+}
 
+/* ✅ Step 1 Checkbox Styling */
+.step1-popup label {
+  display: block;
+  margin: 8px 0;
+  font-size: 18px;
+}
 
+/* ✅ Centering Checkboxes */
+.step1-popup input[type="checkbox"] {
+  transform: scale(1.3); /* ✅ Makes checkboxes larger */
+  margin-right: 8px;
+}
 
   </style>
 </head>
@@ -275,8 +304,8 @@ html, body {
     <button class="step-button" id="step4">Step 4</button>
 </div>
 
-<!-- ✅ Step Popups (Initially Hidden) -->
-<div id="stepPopup1" class="step-popup">
+<!-- ✅ Step 1 Popup -->
+<div id="stepPopup1" class="step1-popup"> <!-- ✅ Updated to match CSS -->
     <!-- ✅ Question 1: FULL Thickness Burns -->
     <p>Does your patient have any % of FULL thickness burns?</p>
     <label><input type="checkbox" name="fullThickness" value="yes"> Yes</label>
@@ -289,6 +318,8 @@ html, body {
 
     <button class="close-popup" onclick="closePopup('stepPopup1')">CLOSE</button>
 </div>
+
+
 
 
 <div id="stepPopup2" class="step-popup">
