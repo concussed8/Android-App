@@ -563,12 +563,24 @@ html, body {
 </div>
 
 <!-- ✅ Step 4 Popup -->
-<div id="stepPopup4" class="step4-popup"> <!-- ✅ Fixed class name -->
-    <p>Prepare patient for transfer if required. Contact burn center.</p>
+<div id="stepPopup4" class="step4-popup">
+    <!-- ✅ High-Risk Considerations Question -->
+    <p>Does your patient have any of the following HIGH-RISK CONSIDERATIONS?</p>
+
+    <!-- ✅ High-Risk Checkboxes -->
+    <label><input type="checkbox" name="highRisk" value="age"> ≥ 50 years of age</label>
+    <label><input type="checkbox" name="highRisk" value="anticoagulated"> Anticoagulated</label>
+    <label><input type="checkbox" name="highRisk" value="immunosuppressed"> Immunosuppression</label>
+    <label><input type="checkbox" name="highRisk" value="pregnancy"> Pregnancy</label>
+    <label><input type="checkbox" name="highRisk" value="diabetes"> Diabetes</label>
+    <label><input type="checkbox" name="highRisk" value="social_care"> Patients with burns requiring special social, emotional, or rehabilitation care</label>
+    <label><input type="checkbox" name="highRisk" value="ed_assessment"> Patients requiring more care based on the assessment of the ED physician</label>
+    <label><input type="checkbox" name="highRisk" value="significant_problems"> Significant medical problems</label>
+    <label><input type="checkbox" name="highRisk" value="none"> None</label>
+
+    <!-- ✅ Close Button -->
     <button class="close-popup" onclick="closePopup('stepPopup4')">CLOSE</button>
 </div>
-
-
 
 <!-- ✅ Main Adjustable Container -->
 <div class="adjustable-container">
