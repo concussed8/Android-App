@@ -305,17 +305,20 @@ html, body {
 </div>
 
 <!-- ✅ Step 1 Popup -->
-<div id="stepPopup1" class="step1-popup"> <!-- ✅ Matches .step1-popup -->
+<div id="stepPopup1" class=".step1-popup"> <!-- 🔹 Updated class name here -->
+    <!-- ✅ Question 1: FULL Thickness Burns -->
     <p>Does your patient have any % of FULL thickness burns?</p>
     <label><input type="checkbox" name="fullThickness" value="yes"> Yes</label>
     <label><input type="checkbox" name="fullThickness" value="no"> No</label>
 
+    <!-- ✅ Question 2: PARTIAL Thickness Burns ≥ 10% TBSA -->
     <p>Does your patient have PARTIAL thickness burns greater than or equal to ≥ 10% TBSA?</p>
     <label><input type="checkbox" name="partialThickness" value="yes"> Yes</label>
     <label><input type="checkbox" name="partialThickness" value="no"> No</label>
 
     <button class="close-popup" onclick="closePopup('stepPopup1')">CLOSE</button>
 </div>
+
 
 <!-- ✅ Step 2 Popup (Fix Naming) -->
 <div id="stepPopup2" class="step2-popup"> <!-- ✅ Now Matches .step2-popup -->
