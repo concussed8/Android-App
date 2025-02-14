@@ -37,18 +37,17 @@ html, body {
   padding-bottom: 10px;
 }
 
-/* ✅ Main Container: Now Moves the Entire Layout */
+/* ✅ Main Container: Adjustable Size */
 .content-container {
-  position: absolute;  /* ✅ Allows manual movement */
-  top: 120px;  /* ✅ Adjust for vertical positioning */
-  left: 150px; /* ✅ Adjust for horizontal positioning */
-  
-  width: 200px;  /* ✅ Fixed size */
-  height: 300px; /* ✅ Taller to fit inputs */
-  
+  position: relative;
+  width: 35%;  /* ✅ You can adjust this */
+  max-width: 165px; /* ✅ Adjust as needed */
+  height: auto; /* ✅ Adjust height manually */
+  min-height: 175px; /* ✅ Ensures space for image & input fields */
   background-color: white;
   border: 3px solid black;
   border-radius: 8px;
+  margin-top: 100px;
   padding: 20px;
   text-align: center;
 }
@@ -56,46 +55,46 @@ html, body {
 /* ✅ Consult Image */
 #consultImage {
   width: 100%;
-  max-width: 100%;
+  max-width: 400px;
   display: block;
   margin: 0 auto;
 }
 
 /* ✅ Positioning & Styling for Input Fields */
 .input-field {
-  position: absolute; /* ✅ Now truly relative to .content-container */
-  width: 30px;  
-  height: 20px;  
+  position: absolute;
+  width: 40px;  /* ✅ Adjustable width */
+  height: 20px;  /* ✅ Adjustable height */
   background: white;
-  border: 2px solid black;
+  border: 2px solid black; /* ✅ Adjustable thickness */
   text-align: center;
-  font-size: 12px;
+  font-size: 12px; /* ✅ Adjustable font size */
   font-weight: bold;
   color: black;
   cursor: default;
   user-select: none;
-  pointer-events: none; 
+  pointer-events: none; /* ✅ Prevents user interaction */
   z-index: 10;
 }
 
 /* ✅ TBSA Total Box */
 .field8 { 
-  width: 50px;  
-  height: 25px;  
-  bottom: 5%;
+  width: 80px; /* ✅ Adjustable */
+  height: 25px; /* ✅ Adjustable */
+  bottom: 15px;
   left: 50%;
   transform: translateX(-50%);
 }
 
-/* ✅ Input Field Positions (NOW MOVES WITH CONTAINER) */
-.field1 { top: 10%; left: 42%; }  /* Head */
-.field2 { top: 35%; left: 42%; } /* Chest/Trunk */
-.field3 { top: 55%; left: 42%; } /* Groin */
-.field4 { top: 38%; left: 5%; }  /* Right Arm */
-.field5 { top: 38%; left: 78%; } /* Left Arm */
-.field6 { top: 85%; left: 20%; } /* Right Leg */
-.field7 { top: 85%; left: 60%; } /* Left Leg */
- 
+/* ✅ Input Field Positions (Modify Manually) */
+.field1 { top: 35px; left: 62px; }  /* Head */
+.field2 { top: 90px; left: 61px; } /* Chest/Trunk */
+.field3 { top: 155px; left: 63px; } /* Groin */
+.field4 { top: 114px; left: 18px; }  /* Right Arm */
+.field5 { top: 114px; left: 106px; } /* Left Arm */
+.field6 { top: 215px; left: 45px; } /* Right Leg */
+.field7 { top: 215px; left: 88px; } /* Left Leg */
+
 /* ✅ Navigation Buttons */
 .nav-buttons {
   position: absolute;
