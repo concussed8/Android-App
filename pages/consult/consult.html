@@ -175,6 +175,43 @@ html, body {
   background: linear-gradient(145deg, #003366, #1E5799);
   box-shadow: inset -2px 2px 5px rgba(0, 0, 0, 0.5), inset 2px -2px 5px rgba(255, 255, 255, 0.2);
 }
+/* ✅ Main Adjustable Container */
+.adjustable-container {
+  position: absolute; /* ✅ Allows precise manual positioning */
+  width: 50vw; /* ✅ Adjustable width relative to viewport */
+  height: 60vh; /* ✅ Adjustable height relative to viewport */
+  max-width: 600px; /* ✅ Prevents container from getting too large */
+  max-height: 500px; /* ✅ Prevents excessive height */
+  
+  /* ✅ Manual Positioning */
+  top: 100px; /* ✅ Adjust vertical position */
+  left: 150px; /* ✅ Adjust horizontal position */
+
+  /* ✅ Styling */
+  background-color: white; /* ✅ Default container background */
+  border: 3px solid black; /* ✅ Visible border */
+  border-radius: 10px; /* ✅ Rounded corners */
+  padding: 20px; /* ✅ Inner spacing */
+  box-shadow: 4px 4px 10px rgba(0, 0, 0, 0.3); /* ✅ Subtle shadow */
+  display: flex;
+  flex-direction: column; /* ✅ Ensures content stacks inside */
+  align-items: center;
+  text-align: center;
+}
+
+/* ✅ Container Header */
+.container-header {
+  width: 100%; /* ✅ Stretches across the container */
+  padding: 12px 0; /* ✅ Adjust height */
+  font-size: 20px; /* ✅ Font size */
+  font-family: "Courier New", Courier, monospace; /* ✅ Monospace font */
+  font-weight: bold; /* ✅ Bold text */
+  color: white; /* ✅ Text color */
+  background-color: #0047AB; /* ✅ Blue header background */
+  border-bottom: 3px solid black; /* ✅ Bottom border for definition */
+  border-radius: 8px 8px 0 0; /* ✅ Rounds only top corners */
+  user-select: none; /* ✅ Prevents text selection */
+}
 
 
 
@@ -207,6 +244,14 @@ html, body {
     <button class="step-button" id="step2">Step 2</button>
     <button class="step-button" id="step3">Step 3</button>
     <button class="step-button" id="step4">Step 4</button>
+</div>
+<!-- ✅ Main Adjustable Container -->
+<div class="adjustable-container">
+    <!-- ✅ Container Header -->
+    <div class="container-header">Custom Header</div>
+
+    <!-- ✅ Content Area (You can add more elements here) -->
+    <p>Container Content Goes Here...</p>
 </div>
 
 
