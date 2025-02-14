@@ -37,23 +37,20 @@ html, body {
   padding-bottom: 10px;
 }
 
-/* ✅ Main Container: Manual Positioning */
+/* ✅ Main Container: Adjustable Size */
 .content-container {
-  position: absolute;
-  top: 120px;  /* ✅ Manually adjust vertical position */
-  left: 150px; /* ✅ Manually adjust horizontal position */
-
-  width: 165px;  /* ✅ Fixed width (Adjust as needed) */
-  height: auto;  /* ✅ Adjust height manually */
+  position: relative;
+  width: 35%;  /* ✅ You can adjust this */
+  max-width: 165px; /* ✅ Adjust as needed */
+  height: auto; /* ✅ Adjust height manually */
   min-height: 175px; /* ✅ Ensures space for image & input fields */
-
   background-color: white;
   border: 3px solid black;
   border-radius: 8px;
+  margin-top: 100px;
   padding: 20px;
   text-align: center;
 }
-
 
 /* ✅ Consult Image */
 #consultImage {
