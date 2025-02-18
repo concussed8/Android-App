@@ -703,25 +703,32 @@ function populateFieldsFromCookies() {
     let storedTBSA = getSessionCookie("adultTBSA"); // Retrieve TBSA data from cookies
 
     if (storedTBSA) {
-        let tbsaData = JSON.parse(decodeURIComponent(storedTBSA)); // Parse JSON data
-        
-        for (let i = 1; i <= 7; i++) { // Loop through all 7 fields
-            let fieldName = `field${i}`;
-            let inputField = document.querySelector(`.input-field.${fieldName}`);
+        try {
+            let tbsaData = JSON.parse(decodeURIComponent(storedTBSA)); // Parse JSON safely
             
-            if (inputField) {
-                let value = tbsaData[fieldName] || "0%"; // Use stored value or default to "0%"
-                console.log(`✅ Updating ${fieldName} with value: ${value}`);
-                inputField.value = value;
-                inputField.readOnly = true; // Make it non-editable
-            } else {
-                console.warn(`⚠️ Input field ${fieldName} not found in DOM`);
+            for (let i = 1; i <= 7; i++) { // Loop through all 7 fields
+                let fieldName = `field${i}`;
+                let inputField = document.querySelector(`.input-field.${fieldName}`);
+                
+                if (inputField) {
+                    let value = tbsaData[fieldName] || "0%"; // Use stored value or default to "0%"
+                    console.log(`✅ Updating ${fieldName} with value: ${value}`);
+                    inputField.value = value;
+                    inputField.readOnly = true; // Make it non-editable
+                } else {
+                    console.warn(`⚠️ Input field ${fieldName} not found in DOM`);
+                }
             }
+        } catch (error) {
+            console.error("❌ Error parsing TBSA cookie:", error);
+            console.warn("⚠️ Invalid TBSA data detected. Clearing the corrupted cookie...");
+            setSessionCookie("adultTBSA", ""); // Reset the cookie if it's malformed
         }
     } else {
         console.warn("⚠️ No TBSA data found in cookies.");
     }
 }
+
 
 
 // ✅ Function: Open a step popup
