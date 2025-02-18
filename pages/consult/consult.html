@@ -501,6 +501,13 @@ html, body {
 .step4-popup .close-popup:active {
   transform: scale(0.95);
 }
+/* ✅ Step Completion Styling */
+.step-status {
+  margin-top: 5px; /* ✅ Adds single line spacing between each step */
+  font-size: 16px; /* ✅ Adjust font size */
+  font-weight: bold;
+  text-align: center;
+}
 
   </style>
 </head>
@@ -665,13 +672,19 @@ function updateBackgroundColor() {
     }, 200);
 }
 
-// ✅ Function: Update Header Title Dynamically
+// ✅ Function: Update Header Title Dynamically (Ensures Header is Visible)
 function updateHeaderTitle() {
     let selectedIcon = getSessionCookie("selectedIcon");
     let headerElement = document.querySelector(".header");
 
-    if (selectedIcon && headerElement) {
-        headerElement.innerHTML = `<u>${selectedIcon.toUpperCase()} BURN</u><br> Consult Summary`;
+    if (headerElement) { // ✅ Ensure the header element exists
+        if (selectedIcon) {
+            headerElement.innerHTML = `<u>${selectedIcon.toUpperCase()} BURN</u><br> Consult Summary`;
+        } else {
+            headerElement.innerHTML = "<u>THERMAL BURN</u><br> Consult Summary"; // ✅ Default if no icon is selected
+        }
+    } else {
+        console.error("Header element not found!");
     }
 }
 
@@ -715,7 +728,7 @@ function restoreStepCheckboxes(stepId) {
     }
 }
 
-// ✅ Function: Mark Step as "COMPLETED" or "PENDING"
+// ✅ Function: Mark Step as "COMPLETED" or "PENDING" with Proper Spacing
 function updateStepStatus(stepNumber) {
     let stepElement = document.getElementById(`stepStatus${stepNumber}`);
     let checkboxes = document.querySelectorAll(`#stepPopup${stepNumber} input[type="checkbox"]`);
@@ -731,8 +744,10 @@ function updateStepStatus(stepNumber) {
             stepElement.style.color = "red";
             stepElement.style.fontWeight = "bold";
         }
+        stepElement.classList.add("step-status"); // ✅ Apply single spacing styling
     }
 }
+
 
 // ✅ Function: Disable Next Button Initially
 function disableNextButton() {
