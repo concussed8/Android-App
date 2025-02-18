@@ -734,6 +734,21 @@ function populateFieldsFromCookies() {
     }
 }
 
+// ✅ Function: Prevent Selecting Both "Yes" and "No" at the Same Time
+function enforceSingleSelection() {
+    document.querySelectorAll('input[type="checkbox"]').forEach(checkbox => {
+        checkbox.addEventListener("change", function () {
+            let groupName = this.name; // ✅ Get name attribute (same for Yes/No pairs)
+            let checkboxes = document.querySelectorAll(`input[name="${groupName}"]`);
+
+            // ✅ Uncheck the other option in the same question group
+            checkboxes.forEach(cb => {
+                if (cb !== this) cb.checked = false;
+            });
+        });
+    });
+}
+
 // ✅ Function: Open a step popup
 function openPopup(stepId) {
     document.getElementById(stepId).style.display = "block";
@@ -801,22 +816,11 @@ function updateStepStatus(stepNumber) {
     enableNextButton(); // ✅ Check if all steps are completed
 }
 
-
-// ✅ Function: Disable Next Button Initially
-function disableNextButton() {
-    let nextBtn = document.getElementById("nextBtn");
-    if (nextBtn) {
-        nextBtn.style.pointerEvents = "none";
-        nextBtn.style.opacity = "0.5";
-    }
-}
-
 // ✅ Function: Enable Next Button Only If All Steps Are Completed
 function enableNextButton() {
     let nextBtn = document.getElementById("nextBtn");
     if (!nextBtn) return;
 
-    // ✅ Check if all 4 steps have "COMPLETED" status
     let allCompleted = true;
     for (let i = 1; i <= 4; i++) {
         let stepStatus = document.getElementById(`stepStatus${i}`);
@@ -826,81 +830,35 @@ function enableNextButton() {
         }
     }
 
-    // ✅ Enable Next Button only if all steps are completed
-    if (allCompleted) {
-        nextBtn.style.pointerEvents = "auto";
-        nextBtn.style.opacity = "1";
-    } else {
-        nextBtn.style.pointerEvents = "none";
-        nextBtn.style.opacity = "0.5";
-    }
+    nextBtn.style.pointerEvents = allCompleted ? "auto" : "none";
+    nextBtn.style.opacity = allCompleted ? "1" : "0.5";
 }
-
-// ✅ Function: Handle Previous Button Click
-function setupPreviousButton() {
-    let prevBtn = document.getElementById("prevBtn");
-    if (prevBtn) {
-        prevBtn.addEventListener("click", function () {
-          window.location.href = "https://concussed8.github.io/Android-App/pages/modified_parkland/parkland.html";
-        });
-    }
-}
-
-// ✅ Function: Handle Next Button Click
-function setupNextButton() {
-    let nextBtn = document.getElementById("nextBtn");
-    if (nextBtn) {
-        nextBtn.addEventListener("click", function () {
-            window.location.href = "https://concussed8.github.io/Android-App/pages/modified_parkland/parkland.html";
-        });
-    }
-}
-
-// ✅ Attach Event Listeners to Step Buttons
-document.getElementById("step1").addEventListener("click", function () {
-    openPopup("stepPopup1");
-});
-document.getElementById("step2").addEventListener("click", function () {
-    openPopup("stepPopup2");
-});
-document.getElementById("step3").addEventListener("click", function () {
-    openPopup("stepPopup3");
-});
-document.getElementById("step4").addEventListener("click", function () {
-    openPopup("stepPopup4");
-});
-
-// ✅ Attach Event Listeners to Close Buttons
-document.querySelector("#stepPopup1 .close-popup").addEventListener("click", closeStep1Popup);
-document.querySelector("#stepPopup2 .close-popup").addEventListener("click", function () {
-    closePopup("stepPopup2", 2);
-});
-document.querySelector("#stepPopup3 .close-popup").addEventListener("click", function () {
-    closePopup("stepPopup3", 3);
-});
-document.querySelector("#stepPopup4 .close-popup").addEventListener("click", function () {
-    closePopup("stepPopup4", 4);
-});
 
 // ✅ Function: Restore Completion Status & Fields on Page Load
 document.addEventListener("DOMContentLoaded", function () {
     updateBackgroundColor();
     updateHeaderTitle();
+    enforceSingleSelection();
     disableNextButton();
-    setupPreviousButton();
-    setupNextButton();
+    populateFieldsFromCookies();
 
     for (let i = 1; i <= 4; i++) {
         restoreStepCheckboxes(`stepPopup${i}`);
         updateStepStatus(i);
     }
-
-    populateFieldsFromCookies();
 });
 
-// ✅ Listen for Orientation Changes
-window.addEventListener("resize", checkOrientation);
-window.addEventListener("orientationchange", checkOrientation);
+// ✅ Attach Event Listeners to Step Buttons
+document.getElementById("step1").addEventListener("click", function () { openPopup("stepPopup1"); });
+document.getElementById("step2").addEventListener("click", function () { openPopup("stepPopup2"); });
+document.getElementById("step3").addEventListener("click", function () { openPopup("stepPopup3"); });
+document.getElementById("step4").addEventListener("click", function () { openPopup("stepPopup4"); });
+
+// ✅ Attach Event Listeners to Close Buttons
+document.querySelector("#stepPopup1 .close-popup").addEventListener("click", closeStep1Popup);
+document.querySelector("#stepPopup2 .close-popup").addEventListener("click", function () { closePopup("stepPopup2", 2); });
+document.querySelector("#stepPopup3 .close-popup").addEventListener("click", function () { closePopup("stepPopup3", 3); });
+document.querySelector("#stepPopup4 .close-popup").addEventListener("click", function () { closePopup("stepPopup4", 4); });
 
    </script>
 
