@@ -797,7 +797,10 @@ function updateStepStatus(stepNumber) {
         stepElement.style.color = isCompleted ? "darkgreen" : "red";
         stepElement.style.fontWeight = "bold";
     }
+
+    enableNextButton(); // ✅ Check if all steps are completed
 }
+
 
 // ✅ Function: Disable Next Button Initially
 function disableNextButton() {
