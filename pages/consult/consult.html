@@ -614,9 +614,15 @@ html, body {
     <!-- ✅ Container Header -->
     <div class="container-header">Consult Checklist Completion</div>
 
-    <!-- ✅ Content Area (You can add more elements here) -->
-    <p>Step 1:<br>Step 2:<br>Step 3:<br>Step 4:</p>
+  <div class="adjustable-container">
+    <div class="container-header">Consult Checklist Completion</div>
+
+    <p>Step 1: <span id="stepStatus1">PENDING</span></p>
+    <p>Step 2: <span id="stepStatus2">PENDING</span></p>
+    <p>Step 3: <span id="stepStatus3">PENDING</span></p>
+    <p>Step 4: <span id="stepStatus4">PENDING</span></p>
 </div>
+
 
 
 <!-- Next & Prev Buttons -->
@@ -626,7 +632,7 @@ html, body {
 </div>
 
 <script>
-  // ✅ Function: Retrieve a session cookie value
+ // ✅ Function: Retrieve a session cookie value
 function getSessionCookie(name) {
     let cookies = document.cookie.split('; ');
     for (let cookie of cookies) {
@@ -636,6 +642,11 @@ function getSessionCookie(name) {
         }
     }
     return "";
+}
+
+// ✅ Function: Set a session cookie with expiration
+function setSessionCookie(name, value) {
+    document.cookie = `${name}=${encodeURIComponent(value)}; path=/; SameSite=Lax; max-age=86400`; // Expires in 1 day
 }
 
 // ✅ Function: Update Background Color Based on Burn Type
@@ -676,7 +687,7 @@ function showMessage(message) {
         top: "16%", left: "50%", transform: "translateX(-50%)",
         width: "82%", maxWidth: "488px",
         background: "rgba(255, 0, 0, 1)", color: "white",
-        fontFamily: "Courier New, Courier, monospace",
+        fontFamily: "Courier New", Courier, monospace,
         fontSize: "26px", fontWeight: "bold",
         border: "6px solid black", borderRadius: "8px",
         textAlign: "center", display: "flex",
@@ -750,58 +761,66 @@ function checkOrientation() {
         document.body.innerHTML = "<div style='display:flex;justify-content:center;align-items:center;height:100vh;font-size:24px;color:red;'>Return to Portrait Mode</div>";
     }
 }
-// ✅ Function: Open Popup by ID
-function openPopup(popupId) {
-    document.getElementById(popupId).style.display = "block";
+
+// ✅ Function: Save Checkbox State for a Given Step
+function saveStepCheckboxes(stepId) {
+    let checkboxes = document.querySelectorAll(`#${stepId} input[type="checkbox"]`);
+    let stepData = {};
+
+    checkboxes.forEach(checkbox => {
+        stepData[checkbox.name] = checkbox.checked ? "checked" : "unchecked";
+    });
+
+    setSessionCookie(stepId, JSON.stringify(stepData)); // ✅ Save the state as a JSON string
 }
 
-// ✅ Function: Close Popup by ID
-function closePopup(popupId) {
-    document.getElementById(popupId).style.display = "none";
+// ✅ Function: Restore Checkbox State for a Given Step
+function restoreStepCheckboxes(stepId) {
+    let storedData = getSessionCookie(stepId);
+    if (storedData) {
+        let stepData = JSON.parse(storedData);
+        let checkboxes = document.querySelectorAll(`#${stepId} input[type="checkbox"]`);
+
+        checkboxes.forEach(checkbox => {
+            if (stepData[checkbox.name] === "checked") {
+                checkbox.checked = true;
+            }
+        });
+    }
 }
 
-// ✅ Add Click Listeners to Each Step Button
-document.getElementById("step1").addEventListener("click", function () {
-    openPopup("stepPopup1");
-});
-
-document.getElementById("step2").addEventListener("click", function () {
-    openPopup("stepPopup2");
-});
-
-document.getElementById("step3").addEventListener("click", function () {
-    openPopup("stepPopup3");
-});
-
-document.getElementById("step4").addEventListener("click", function () {
-    openPopup("stepPopup4");
-});
-
-// ✅ Step Popup Functions (Place Before Page Load Event Listener)
-function openPopup(stepId) {
-    document.querySelectorAll(".step-popup").forEach(popup => popup.style.display = "none");
-    document.getElementById(stepId).style.display = "flex";
+// ✅ Function: Mark Step as "COMPLETED" in Dark Green
+function markStepCompleted(stepNumber) {
+    let stepElement = document.getElementById(`stepStatus${stepNumber}`);
+    if (stepElement) {
+        stepElement.innerText = "COMPLETED";
+        stepElement.style.color = "darkgreen";
+        stepElement.style.fontWeight = "bold";
+    }
 }
 
-function closePopup(stepId) {
+// ✅ Function: Close Step Popup, Save Checkboxes, and Mark as Completed
+function closePopup(stepId, stepNumber) {
+    saveStepCheckboxes(stepId); // ✅ Save checkbox states
+    markStepCompleted(stepNumber); // ✅ Mark the step as completed
     document.getElementById(stepId).style.display = "none";
 }
 
-// ✅ Attach Event Listeners to Step Buttons
-document.getElementById("step1").addEventListener("click", function () {
-    openPopup("stepPopup1");
+// ✅ Attach Event Listeners to Close Buttons
+document.querySelector("#stepPopup1 .close-popup").addEventListener("click", function () {
+    closePopup("stepPopup1", 1);
 });
-document.getElementById("step2").addEventListener("click", function () {
-    openPopup("stepPopup2");
+document.querySelector("#stepPopup2 .close-popup").addEventListener("click", function () {
+    closePopup("stepPopup2", 2);
 });
-document.getElementById("step3").addEventListener("click", function () {
-    openPopup("stepPopup3");
+document.querySelector("#stepPopup3 .close-popup").addEventListener("click", function () {
+    closePopup("stepPopup3", 3);
 });
-document.getElementById("step4").addEventListener("click", function () {
-    openPopup("stepPopup4");
+document.querySelector("#stepPopup4 .close-popup").addEventListener("click", function () {
+    closePopup("stepPopup4", 4);
 });
 
-// ✅ Function: Run All Functions When Page Loads
+// ✅ Restore Completion Status on Page Load
 document.addEventListener("DOMContentLoaded", function () {
     updateBackgroundColor();
     updateHeaderTitle();
@@ -809,12 +828,17 @@ document.addEventListener("DOMContentLoaded", function () {
     setupPreviousButton();
     setupNextButton();
     showMessage("ATTENTION!! DO NOT DELAY TREATMENT! Initial management may occur before TBSA calculation or burn centre consultation.");
+
+    for (let i = 1; i <= 4; i++) {
+        if (getSessionCookie(`stepPopup${i}`)) {
+            markStepCompleted(i);
+        }
+    }
 });
 
 // ✅ Listen for Orientation Changes
 window.addEventListener("resize", checkOrientation);
 window.addEventListener("orientationchange", checkOrientation);
-
 </script>
 
 </body>
