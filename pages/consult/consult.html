@@ -690,23 +690,20 @@ function updateHeaderTitle() {
     let headerElement = document.querySelector(".header");
 
     if (headerElement) {
-        if (selectedIcon) {
-            headerElement.innerHTML = `<u>${selectedIcon.toUpperCase()} BURN</u><br> Consult Summary`;
-        } else {
-            headerElement.innerHTML = "<u>THERMAL BURN</u><br> Consult Summary"; // Default if no icon is selected
-        }
+        headerElement.innerHTML = selectedIcon
+            ? `<u>${selectedIcon.toUpperCase()} BURN</u><br> Consult Summary`
+            : "<u>THERMAL BURN</u><br> Consult Summary"; // Default if no icon is selected
     }
 }
 
-// ✅ Function: Populate Input Fields from Cookies (Fields 1-7)
+// ✅ Function: Populate Input Fields from Cookies (Fields 1-7) & Calculate TBSA Total
 function populateFieldsFromCookies() {
-    console.log("🔍 Populating input fields from cookies...");
     let storedTBSA = getSessionCookie("adultTBSA"); // Retrieve TBSA data from cookies
+    let totalTBSA = 0;
 
     if (storedTBSA) {
         try {
             let tbsaData = JSON.parse(storedTBSA);
-            console.log("✅ Parsed TBSA Data:", tbsaData);
 
             for (let i = 1; i <= 7; i++) {
                 let fieldName = `field${i}`;
@@ -714,13 +711,21 @@ function populateFieldsFromCookies() {
 
                 if (inputField) {
                     let value = tbsaData[fieldName] || "0%"; // Use stored value or default to "0%"
-                    console.log(`✅ Updating ${fieldName} with value: ${value}`);
                     inputField.value = value;
                     inputField.readOnly = true; // Ensure it's non-editable
-                } else {
-                    console.warn(`⚠️ Input field ${fieldName} not found in DOM`);
+
+                    // ✅ Add value to total (removing '%')
+                    totalTBSA += parseFloat(value.replace("%", "")) || 0;
                 }
             }
+
+            // ✅ Display Total TBSA in Field 8
+            let totalField = document.querySelector(".input-field.field8");
+            if (totalField) {
+                totalField.value = totalTBSA.toFixed(1) + "%"; // ✅ Show as percentage
+                totalField.readOnly = true; // ✅ Make non-editable
+            }
+
         } catch (error) {
             console.error("❌ Error parsing TBSA cookie:", error);
         }
@@ -861,7 +866,7 @@ document.addEventListener("DOMContentLoaded", function () {
         updateStepStatus(i);
     }
 
-    // ✅ Populate input fields from session cookies (Fields 1-7)
+    // ✅ Populate input fields and update total TBSA
     populateFieldsFromCookies();
 });
 
