@@ -734,9 +734,9 @@ function populateFieldsFromCookies() {
     }
 }
 
-// ✅ Function: Prevent Selecting Both "Yes" and "No" at the Same Time
+// ✅ Function: Prevent Selecting Both "Yes" and "No" at the Same Time (Only Steps 1-3)
 function enforceSingleSelection() {
-    document.querySelectorAll('input[type="checkbox"]').forEach(checkbox => {
+    document.querySelectorAll('#stepPopup1 input[type="checkbox"], #stepPopup2 input[type="checkbox"], #stepPopup3 input[type="checkbox"]').forEach(checkbox => {
         checkbox.addEventListener("change", function () {
             let groupName = this.name; // ✅ Get name attribute (same for Yes/No pairs)
             let checkboxes = document.querySelectorAll(`input[name="${groupName}"]`);
@@ -838,7 +838,7 @@ function enableNextButton() {
 document.addEventListener("DOMContentLoaded", function () {
     updateBackgroundColor();
     updateHeaderTitle();
-    enforceSingleSelection();
+    enforceSingleSelection(); // ✅ Only restricts Steps 1-3
     disableNextButton();
     populateFieldsFromCookies();
 
@@ -859,7 +859,6 @@ document.querySelector("#stepPopup1 .close-popup").addEventListener("click", clo
 document.querySelector("#stepPopup2 .close-popup").addEventListener("click", function () { closePopup("stepPopup2", 2); });
 document.querySelector("#stepPopup3 .close-popup").addEventListener("click", function () { closePopup("stepPopup3", 3); });
 document.querySelector("#stepPopup4 .close-popup").addEventListener("click", function () { closePopup("stepPopup4", 4); });
-
    </script>
 
 </body>
