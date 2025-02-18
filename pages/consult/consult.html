@@ -429,7 +429,7 @@ html, body {
 .step3-popup .close-popup:active {
   transform: scale(0.95);
 }
-/* ✅ Step 4 Popup - Adjusted for Paragraph Alignment */
+/* ✅ Step 4 Popup - Ensures Checkboxes Align Properly */
 .step4-popup {
   position: absolute;
   top: 50%;
@@ -448,62 +448,49 @@ html, body {
   box-shadow: 5px 5px 15px rgba(0, 0, 0, 0.5); /* ✅ Shadow effect */
   z-index: 10000; /* ✅ Keeps it above other elements */
   display: none; /* ✅ Hidden by default */
- 
-  flex-direction: column; /* ✅ Ensures proper spacing */
-  justify-content: space-between; /* ✅ Pushes close button to the bottom */
-  align-items: flex-start; /* ✅ Aligns content to the left */
+  flex-direction: column;
+  justify-content: space-between;
+  align-items: flex-start;
 }
 
-/* ✅ Paragraph Formatting for Questions */
-.step4-popup p {
-  text-align: left; /* ✅ Aligns text to the left */
-  margin-bottom: 12px; /* ✅ Adds spacing below each question */
-  line-height: 1.5; /* ✅ Adjust line spacing for better readability */
+/* ✅ Ensures the Checkboxes Align with the Start of the Question */
+.step4-popup .checkbox-container {
+  display: flex;
+  align-items: center;
+  margin-bottom: 5px; /* ✅ Controls spacing */
 }
 
-/* ✅ Checkbox Styling - Ensures Perfect Alignment */
+/* ✅ Properly Spaces and Aligns Checkbox & Text */
+.step4-popup input[type="checkbox"] {
+  margin-right: 10px; /* ✅ Moves checkbox away from text */
+  transform: scale(1.3); /* ✅ Increases checkbox size */
+}
+
+/* ✅ Prevents Wrapping Issues & Keeps Labels Aligned */
 .step4-popup label {
   display: flex;
-  align-items: center; /* ✅ Ensures text aligns with checkboxes */
-  font-size: 16px; /* ✅ Standardized text size */
-  line-height: 1.5; /* ✅ Adjusts text spacing */
-  margin-left: 25px; /* ✅ Uniform left margin */
-  text-indent: 0; /* ✅ Reset indent */
-  white-space: nowrap; /* ✅ Prevents text from wrapping */
+  align-items: center;
+  width: 100%; /* ✅ Ensures alignment */
+  text-align: left;
 }
 
-/* ✅ Ensures Multi-Line Text Aligns with First Word */
-.step4-popup label span {
-  display: inline-block;
-  padding-left: 8px; /* ✅ Moves text away from checkbox */
-  max-width: 90%; /* ✅ Ensures text stays in the box */
-  white-space: normal; /* ✅ Allows wrapping if needed */
-}
-
-/* ✅ Checkbox Sizing */
-.step4-popup input[type="checkbox"] {
-  flex-shrink: 0; /* ✅ Prevents checkbox from shrinking */
-  transform: scale(1.3); /* ✅ Enlarges checkbox for better visibility */
-  margin-right: 8px; /* ✅ Adds spacing between checkbox and text */
-}
-
-/* ✅ Close Button Styling */
+/* ✅ Close Button at the Bottom */
 .step4-popup .close-popup {
-  width: 65%; /* ✅ Adjustable width */
-  max-width: 220px; /* ✅ Prevents excessive size */
-  padding: 14px 22px; /* ✅ Adjust button padding */
-  font-size: 16px; /* ✅ Readable text */
+  width: 60%;
+  max-width: 200px;
+  padding: 12px 20px;
+  font-size: 16px;
   font-weight: bold;
-  background: red; /* ✅ Red for emphasis */
+  background: red;
   color: white;
   border: none;
   border-radius: 5px;
   cursor: pointer;
   box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.3);
   transition: all 0.2s ease-in-out;
-  margin-top: 20px; /* ✅ Ensures spacing above button */
-  margin-bottom: 15px; /* ✅ Adjustable bottom margin */
-  align-self: center; /* ✅ Centers button */
+  margin-top: 20px;
+  margin-bottom: 15px;
+  align-self: center;
 }
 
 /* ✅ Close Button Hover & Click Effects */
@@ -576,19 +563,45 @@ html, body {
 
 <!-- ✅ Step 4 Popup -->
 <div id="stepPopup4" class="step4-popup">
-    <!-- ✅ High-Risk Considerations Question -->
     <p>Does your patient have any of the following HIGH-RISK CONSIDERATIONS?</p>
 
-    <!-- ✅ High-Risk Checkboxes (Properly Aligned) -->
-    <label><input type="checkbox" name="highRisk" value="age"><span>≥ 50 years of age</span></label>
-    <label><input type="checkbox" name="highRisk" value="anticoagulated"><span>Anticoagulated</span></label>
-    <label><input type="checkbox" name="highRisk" value="immunosuppressed"><span>Immunosuppression</span></label>
-    <label><input type="checkbox" name="highRisk" value="pregnancy"><span>Pregnancy</span></label>
-    <label><input type="checkbox" name="highRisk" value="diabetes"><span>Diabetes</span></label>
-    <label><input type="checkbox" name="highRisk" value="social_care"><span>Patients with burns requiring special social, emotional, or rehabilitation care</span></label>
-    <label><input type="checkbox" name="highRisk" value="ed_assessment"><span>Patients requiring more care based on the assessment of the ED physician</span></label>
-    <label><input type="checkbox" name="highRisk" value="significant_problems"><span>Significant medical problems</span></label>
-    <label><input type="checkbox" name="highRisk" value="none"><span>None</span></label>
+    <!-- ✅ High-Risk Checkboxes -->
+    <div class="checkbox-container">
+        <input type="checkbox" name="highRisk" value="age">
+        <label>≥ 50 years of age</label>
+    </div>
+    <div class="checkbox-container">
+        <input type="checkbox" name="highRisk" value="anticoagulated">
+        <label>Anticoagulated</label>
+    </div>
+    <div class="checkbox-container">
+        <input type="checkbox" name="highRisk" value="immunosuppressed">
+        <label>Immunosuppression</label>
+    </div>
+    <div class="checkbox-container">
+        <input type="checkbox" name="highRisk" value="pregnancy">
+        <label>Pregnancy</label>
+    </div>
+    <div class="checkbox-container">
+        <input type="checkbox" name="highRisk" value="diabetes">
+        <label>Diabetes</label>
+    </div>
+    <div class="checkbox-container">
+        <input type="checkbox" name="highRisk" value="social_care">
+        <label>Patients with burns requiring special social, emotional, or rehabilitation care</label>
+    </div>
+    <div class="checkbox-container">
+        <input type="checkbox" name="highRisk" value="ed_assessment">
+        <label>Patients requiring more care based on the assessment of the ED physician</label>
+    </div>
+    <div class="checkbox-container">
+        <input type="checkbox" name="highRisk" value="significant_problems">
+        <label>Significant medical problems</label>
+    </div>
+    <div class="checkbox-container">
+        <input type="checkbox" name="highRisk" value="none">
+        <label>None</label>
+    </div>
 
     <!-- ✅ Close Button -->
     <button class="close-popup" onclick="closePopup('stepPopup4')">CLOSE</button>
