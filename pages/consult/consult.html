@@ -501,16 +501,25 @@ html, body {
 .step4-popup .close-popup:active {
   transform: scale(0.95);
 }
-/* ✅ Step Completion Styling (Inline Display - No Extra Spaces) */
-.step-status {
-  display: inline-block; /* ✅ Keeps text on the same line */
-  margin-left: 10px; /* ✅ Adds space between "Step #" and status */
-  font-size: 16px; /* ✅ Adjust font size */
+/* ✅ Step Item - Keeps Step # and Status Inline */
+.step-item {
+  display: flex;  /* ✅ Ensures "Step #" and status stay in one line */
+  align-items: center; /* ✅ Centers vertically */
+  justify-content: flex-start; /* ✅ Left-aligns content */
+  font-size: 18px; /* ✅ Adjusts font size */
   font-weight: bold;
-  color: red; /* ✅ Default to "PENDING" color */
-  text-align: left; /* ✅ Ensures alignment */
-  white-space: nowrap; /* ✅ Prevents line breaks */
+  margin-bottom: 2px; /* ✅ Reduce gap between steps */
+  white-space: nowrap; /* ✅ Prevents line wrapping */
 }
+
+/* ✅ Step Completion Status */
+.step-status {
+  margin-left: 10px; /* ✅ Keeps space between "Step #" and status */
+  font-size: 18px;
+  font-weight: bold;
+  color: red; /* ✅ Default to "PENDING" */
+}
+
 
 
   </style>
