@@ -651,7 +651,7 @@ html, body {
 </div>
 
 <script>
-  // ✅ Function: Retrieve a session cookie value
+// ✅ Function: Retrieve a session cookie value
 function getSessionCookie(name) {
     let cookies = document.cookie.split('; ');
     for (let cookie of cookies) {
@@ -671,11 +671,11 @@ function setSessionCookie(name, value) {
 // ✅ Function: Update Background Color Based on Burn Type
 function updateBackgroundColor() {
     setTimeout(() => {
-        let burnType = getSessionCookie("selectedIcon") || "thermal"; // Default to thermal
+        let burnType = getSessionCookie("selectedIcon") || "thermal";
         let colors = {
-            "thermal": "#800000",   // Dark Red
-            "chemical": "#90EE90",  // Light Green
-            "electrical": "#ADD8E6" // Light Blue
+            "thermal": "#800000",
+            "chemical": "#90EE90",
+            "electrical": "#ADD8E6"
         };
 
         if (colors[burnType]) {
@@ -808,8 +808,8 @@ function closePopup(popupId, stepNumber) {
     // Update step completion status
     let stepStatus = document.getElementById(`stepStatus${stepNumber}`);
     if (stepStatus) {
-        stepStatus.innerText = "COMPLETED";
-        stepStatus.style.color = "green";
+        stepStatus.innerText = checkedValues.length > 0 ? "COMPLETED" : "PENDING";
+        stepStatus.style.color = checkedValues.length > 0 ? "green" : "red";
     }
 }
 
@@ -833,9 +833,9 @@ function restoreStepCompletion() {
         let stepStatus = document.getElementById(`stepStatus${i}`);
         let savedCompletion = getSessionCookie(`step${i}Completed`);
 
-        if (stepStatus && savedCompletion) {
-            stepStatus.innerText = "COMPLETED";
-            stepStatus.style.color = "green";
+        if (stepStatus) {
+            stepStatus.innerText = savedCompletion ? "COMPLETED" : "PENDING";
+            stepStatus.style.color = savedCompletion ? "green" : "red";
         }
     }
 }
@@ -855,6 +855,7 @@ document.addEventListener("DOMContentLoaded", function () {
 // ✅ Listen for Orientation Changes
 window.addEventListener("resize", checkOrientation);
 window.addEventListener("orientationchange", checkOrientation);
+
 
    </script>
 
