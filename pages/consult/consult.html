@@ -650,8 +650,7 @@ html, body {
     <img src="https://raw.githubusercontent.com/concussed8/Android-App/main/images/next.png" id="nextBtn" alt="Next">
 </div>
 
-<script>
-// ✅ Function: Retrieve a session cookie value
+<// ✅ Function: Retrieve a session cookie value
 function getSessionCookie(name) {
     let cookies = document.cookie.split('; ');
     for (let cookie of cookies) {
@@ -700,32 +699,15 @@ function updateHeaderTitle() {
 
 // ✅ Function: Populate Input Fields from Cookies (Fields 1-7)
 function populateFieldsFromCookies() {
-    let storedTBSA = getSessionCookie("adultTBSA"); // Retrieve TBSA data from cookies
+    for (let i = 1; i <= 7; i++) {
+        let fieldName = `field${i}`;
+        let storedValue = getSessionCookie(fieldName);
+        let inputField = document.querySelector(`.input-field.field${i}`);
 
-    if (storedTBSA) {
-        try {
-            let tbsaData = JSON.parse(decodeURIComponent(storedTBSA)); // Parse JSON safely
-            
-            for (let i = 1; i <= 7; i++) { // Loop through all 7 fields
-                let fieldName = `field${i}`;
-                let inputField = document.querySelector(`.input-field.${fieldName}`);
-                
-                if (inputField) {
-                    let value = tbsaData[fieldName] || "0%"; // Use stored value or default to "0%"
-                    console.log(`✅ Updating ${fieldName} with value: ${value}`);
-                    inputField.value = value;
-                    inputField.readOnly = true; // Make it non-editable
-                } else {
-                    console.warn(`⚠️ Input field ${fieldName} not found in DOM`);
-                }
-            }
-        } catch (error) {
-            console.error("❌ Error parsing TBSA cookie:", error);
-            console.warn("⚠️ Invalid TBSA data detected. Clearing the corrupted cookie...");
-            setSessionCookie("adultTBSA", ""); // Reset the cookie if it's malformed
+        if (inputField) {
+            inputField.value = storedValue ? storedValue + "%" : "0%"; // Default to "0%" if no cookie
+            inputField.readOnly = true;
         }
-    } else {
-        console.warn("⚠️ No TBSA data found in cookies.");
     }
 }
 
@@ -867,7 +849,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
 // ✅ Listen for Orientation Changes
 window.addEventListener("resize", checkOrientation);
-window.addEventListener("orientationchange", checkOrientation);
+window.addEventListener("orientationchange", checkOrientation);script>
    </script>
 
 </body>
