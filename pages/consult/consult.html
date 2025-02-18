@@ -700,15 +700,32 @@ function updateHeaderTitle() {
 
 // ✅ Function: Populate Input Fields from Cookies (Fields 1-7)
 function populateFieldsFromCookies() {
-    for (let i = 1; i <= 7; i++) {
-        let fieldName = `field${i}`;
-        let storedValue = getSessionCookie(fieldName);
-        let inputField = document.querySelector(`.input-field.field${i}`);
+    console.log("🔍 Populating input fields from cookies...");
+    let storedTBSA = getSessionCookie("adultTBSA"); // Retrieve TBSA data from cookies
 
-        if (inputField) {
-            inputField.value = storedValue ? storedValue + "%" : "0%"; // Default to "0%" if no cookie
-            inputField.readOnly = true;
+    if (storedTBSA) {
+        try {
+            let tbsaData = JSON.parse(storedTBSA);
+            console.log("✅ Parsed TBSA Data:", tbsaData);
+
+            for (let i = 1; i <= 7; i++) {
+                let fieldName = `field${i}`;
+                let inputField = document.querySelector(`.input-field.${fieldName}`);
+
+                if (inputField) {
+                    let value = tbsaData[fieldName] || "0%"; // Use stored value or default to "0%"
+                    console.log(`✅ Updating ${fieldName} with value: ${value}`);
+                    inputField.value = value;
+                    inputField.readOnly = true; // Ensure it's non-editable
+                } else {
+                    console.warn(`⚠️ Input field ${fieldName} not found in DOM`);
+                }
+            }
+        } catch (error) {
+            console.error("❌ Error parsing TBSA cookie:", error);
         }
+    } else {
+        console.warn("⚠️ No TBSA data found in cookies.");
     }
 }
 
@@ -851,6 +868,7 @@ document.addEventListener("DOMContentLoaded", function () {
 // ✅ Listen for Orientation Changes
 window.addEventListener("resize", checkOrientation);
 window.addEventListener("orientationchange", checkOrientation);
+
 
    </script>
 
