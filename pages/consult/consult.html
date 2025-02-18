@@ -557,75 +557,105 @@ html, body {
 </div>
 
 <!-- ✅ Step 1 Popup -->
-<div id="stepPopup1" class="step1-popup"> <!-- ✅ Fixed class name (Removed the dot) -->
+<div id="stepPopup1" class="step1-popup">
     <p>Does your patient have any % of FULL thickness burns?</p>
-    <label><input type="checkbox" name="fullThickness" value="yes"> Yes</label>
-    <label><input type="checkbox" name="fullThickness" value="no"> No</label>
+    <label>
+        <input type="radio" name="fullThickness" value="yes" />
+        Yes
+    </label>
+    <label>
+        <input type="radio" name="fullThickness" value="no" />
+        No
+    </label>
 
-    <p>Does your patient have PARTIAL thickness burns greater than or equal to ≥ 10% TBSA?</p>
-    <label><input type="checkbox" name="partialThickness" value="yes"> Yes</label>
-    <label><input type="checkbox" name="partialThickness" value="no"> No</label>
+    <p>Does your patient have PARTIAL thickness burns ≥ 10% TBSA?</p>
+    <label>
+        <input type="radio" name="partialThickness" value="yes" />
+        Yes
+    </label>
+    <label>
+        <input type="radio" name="partialThickness" value="no" />
+        No
+    </label>
 
-    <button class="close-popup" onclick="closePopup('stepPopup1')">CLOSE</button>
+    <!-- Step 1 has a special close function requiring both questions are answered -->
+    <button class="close-popup" onclick="closeStep1Popup()">CLOSE</button>
 </div>
 
 <!-- ✅ Step 2 Popup -->
-<div id="stepPopup2" class="step2-popup"> <!-- ✅ Fixed class name -->
+<div id="stepPopup2" class="step2-popup">
     <p>Does your patient have any deep PARTIAL or FULL thickness burns involving the FACE, HANDS, GENITALIA, FEET, PERINEUM or over any JOINT?</p>
-   <label><input type="checkbox" name="sensitive" value="yes"> Yes</label>
-    <label><input type="checkbox" name="sensitive" value="no"> No</label>  
-  <button class="close-popup" onclick="closePopup('stepPopup2')">CLOSE</button>
+    <label>
+        <input type="radio" name="sensitive" value="yes" />
+        Yes
+    </label>
+    <label>
+        <input type="radio" name="sensitive" value="no" />
+        No
+    </label>
+
+    <button class="close-popup" onclick="closePopup('stepPopup2', 2)">CLOSE</button>
 </div>
 
 <!-- ✅ Step 3 Popup -->
-<div id="stepPopup3" class="step3-popup"> <!-- ✅ Fixed class name -->
+<div id="stepPopup3" class="step3-popup">
     <p>Does your patient have INHALATION injury with any % of deep PARTIAL or FULL thickness burns?</p>
-   <label><input type="checkbox" name="inhalation" value="yes"> Yes</label>
-    <label><input type="checkbox" name="inhalation" value="no"> No</label>  
-  <button class="close-popup" onclick="closePopup('stepPopup3')">CLOSE</button>
+    <label>
+        <input type="radio" name="inhalation" value="yes" />
+        Yes
+    </label>
+    <label>
+        <input type="radio" name="inhalation" value="no" />
+        No
+    </label>
+
+    <button class="close-popup" onclick="closePopup('stepPopup3', 3)">CLOSE</button>
 </div>
 
-<!-- ✅ Step 4 Popup -->
+<!-- ✅ Step 4 Popup (Multiple Checkboxes Allowed) -->
 <div id="stepPopup4" class="step4-popup">
     <p>Does your patient have any of the following HIGH-RISK CONSIDERATIONS?</p>
 
-    <!-- ✅ High-Risk Checkboxes -->
     <div class="checkbox-container">
-        <input type="checkbox" name="highRisk" value="age">
+        <input type="checkbox" name="highRisk" value="age" />
         <label>≥ 50 years of age</label>
     </div>
     <div class="checkbox-container">
-        <input type="checkbox" name="highRisk" value="anticoagulated">
+        <input type="checkbox" name="highRisk" value="anticoagulated" />
         <label>Anticoagulated</label>
     </div>
     <div class="checkbox-container">
-        <input type="checkbox" name="highRisk" value="immunosuppressed">
+        <input type="checkbox" name="highRisk" value="immunosuppressed" />
         <label>Immunosuppression</label>
     </div>
     <div class="checkbox-container">
-        <input type="checkbox" name="highRisk" value="pregnancy">
+        <input type="checkbox" name="highRisk" value="pregnancy" />
         <label>Pregnancy</label>
     </div>
     <div class="checkbox-container">
-        <input type="checkbox" name="highRisk" value="diabetes">
+        <input type="checkbox" name="highRisk" value="diabetes" />
         <label>Diabetes</label>
     </div>
     <div class="checkbox-container">
-        <input type="checkbox" name="highRisk" value="social_care">
+        <input type="checkbox" name="highRisk" value="social_care" />
         <label>Patients with burns requiring special social, emotional, or rehabilitation care</label>
     </div>
     <div class="checkbox-container">
-        <input type="checkbox" name="highRisk" value="ed_assessment">
+        <input type="checkbox" name="highRisk" value="ed_assessment" />
         <label>Patients requiring more care based on the assessment of the ED physician</label>
     </div>
     <div class="checkbox-container">
-        <input type="checkbox" name="highRisk" value="significant_problems">
+        <input type="checkbox" name="highRisk" value="significant_problems" />
         <label>Significant medical problems</label>
     </div>
     <div class="checkbox-container">
-        <input type="checkbox" name="highRisk" value="none">
+        <input type="checkbox" name="highRisk" value="none" />
         <label>None</label>
     </div>
+
+    <button class="close-popup" onclick="closePopup('stepPopup4', 4)">CLOSE</button>
+</div>
+
 
     <!-- ✅ Close Button -->
     <button class="close-popup" onclick="closePopup('stepPopup4')">CLOSE</button>
@@ -651,7 +681,11 @@ html, body {
 </div>
 
 <script> 
-  // ✅ Function: Retrieve a session cookie value
+  /***********************************************************
+ * 1) SESSION COOKIE HELPERS
+ ************************************************************/
+
+// ✅ Function: Retrieve a session cookie value
 function getSessionCookie(name) {
     let cookies = document.cookie.split('; ');
     for (let cookie of cookies) {
@@ -667,6 +701,11 @@ function getSessionCookie(name) {
 function setSessionCookie(name, value) {
     document.cookie = `${name}=${encodeURIComponent(value)}; path=/; SameSite=Lax; max-age=86400`; // Expires in 1 day
 }
+
+
+/***********************************************************
+ * 2) BACKGROUND + HEADER TITLE
+ ************************************************************/
 
 // ✅ Function: Update Background Color Based on Burn Type
 function updateBackgroundColor() {
@@ -695,6 +734,11 @@ function updateHeaderTitle() {
             : "<u>THERMAL BURN</u><br> Consult Summary"; // Default if no icon is selected
     }
 }
+
+
+/***********************************************************
+ * 3) TBSA FIELDS
+ ************************************************************/
 
 // ✅ Function: Populate Input Fields from Cookies (Fields 1-7) & Calculate TBSA Total
 function populateFieldsFromCookies() {
@@ -734,6 +778,11 @@ function populateFieldsFromCookies() {
     }
 }
 
+
+/***********************************************************
+ * 4) POPUP CONTROL
+ ************************************************************/
+
 // ✅ Function: Open a step popup
 function openPopup(stepId) {
     document.getElementById(stepId).style.display = "block";
@@ -741,6 +790,9 @@ function openPopup(stepId) {
 
 // ✅ Function: Close Step 1 Popup (Requires Answers for Both Questions)
 function closeStep1Popup() {
+    // We assume Step 1 has two separate radio questions:
+    //  - name="fullThickness" (yes/no)
+    //  - name="partialThickness" (yes/no)
     let fullThicknessChecked = document.querySelector('input[name="fullThickness"]:checked');
     let partialThicknessChecked = document.querySelector('input[name="partialThickness"]:checked');
 
@@ -749,48 +801,79 @@ function closeStep1Popup() {
         return; // Stops from closing
     }
 
-    closePopup("stepPopup1", 1); // ✅ Proceed with closing if both are answered
+    // If both answered, proceed
+    closePopup("stepPopup1", 1);
 }
 
-// ✅ Function: Close a step popup, save checkboxes, and mark completion
+// ✅ Function: Close a step popup, save responses, and mark completion
 function closePopup(stepId, stepNumber) {
-    saveStepCheckboxes(stepId);
+    saveStepResponses(stepId);
     updateStepStatus(stepNumber);
     document.getElementById(stepId).style.display = "none";
 }
 
-// ✅ Function: Save Checkbox State for a Given Step
-function saveStepCheckboxes(stepId) {
-    let checkboxes = document.querySelectorAll(`#${stepId} input[type="checkbox"]`);
+
+/***********************************************************
+ * 5) RADIO / CHECKBOX SAVING & RESTORING
+ ************************************************************/
+
+// ✅ Function: Save Radio + Checkbox State for a Given Step
+function saveStepResponses(stepId) {
+    // Grab both radio and checkbox inputs for this step
+    let inputs = document.querySelectorAll(`#${stepId} input[type="radio"], #${stepId} input[type="checkbox"]`);
     let stepData = {};
 
-    checkboxes.forEach(checkbox => {
-        stepData[checkbox.name] = checkbox.checked ? "checked" : "unchecked";
+    inputs.forEach(input => {
+        if (input.type === "radio") {
+            // For radio, store which value is selected
+            if (input.checked) {
+                stepData[input.name] = input.value;
+            }
+        } else if (input.type === "checkbox") {
+            // For checkboxes, store "checked" or "unchecked"
+            stepData[input.name] = input.checked ? "checked" : "unchecked";
+        }
     });
 
-    setSessionCookie(stepId, JSON.stringify(stepData)); // ✅ Save the state as a JSON string
+    // Store the data in a session cookie
+    setSessionCookie(stepId, JSON.stringify(stepData));
 }
 
-// ✅ Function: Restore Checkbox State for a Given Step
-function restoreStepCheckboxes(stepId) {
+// ✅ Function: Restore Radio + Checkbox State for a Given Step
+function restoreStepResponses(stepId) {
     let storedData = getSessionCookie(stepId);
     if (storedData) {
         let stepData = JSON.parse(storedData);
-        let checkboxes = document.querySelectorAll(`#${stepId} input[type="checkbox"]`);
+        let inputs = document.querySelectorAll(`#${stepId} input[type="radio"], #${stepId} input[type="checkbox"]`);
 
-        checkboxes.forEach(checkbox => {
-            if (stepData[checkbox.name] === "checked") {
-                checkbox.checked = true;
+        inputs.forEach(input => {
+            if (input.type === "radio") {
+                // Check if this input’s name matches the stored value
+                if (stepData[input.name] === input.value) {
+                    input.checked = true;
+                }
+            } else if (input.type === "checkbox") {
+                if (stepData[input.name] === "checked") {
+                    input.checked = true;
+                }
             }
         });
     }
 }
 
+
+/***********************************************************
+ * 6) STEP STATUS + NAVIGATION
+ ************************************************************/
+
 // ✅ Function: Mark Step as "COMPLETED" or "PENDING"
 function updateStepStatus(stepNumber) {
     let stepElement = document.getElementById(`stepStatus${stepNumber}`);
-    let checkboxes = document.querySelectorAll(`#stepPopup${stepNumber} input[type="checkbox"]`);
-    let isCompleted = Array.from(checkboxes).some(checkbox => checkbox.checked);
+
+    // For simplicity, we consider a step "COMPLETED" if ANY radio/checkbox is checked.
+    // (Step 1 specifically checks each question in closeStep1Popup() before allowing closure.)
+    let inputs = document.querySelectorAll(`#stepPopup${stepNumber} input[type="radio"], #stepPopup${stepNumber} input[type="checkbox"]`);
+    let isCompleted = Array.from(inputs).some(input => input.checked);
 
     if (stepElement) {
         stepElement.innerText = isCompleted ? "COMPLETED" : "PENDING";
@@ -800,7 +883,6 @@ function updateStepStatus(stepNumber) {
 
     enableNextButton(); // ✅ Check if all steps are completed
 }
-
 
 // ✅ Function: Disable Next Button Initially
 function disableNextButton() {
@@ -836,6 +918,11 @@ function enableNextButton() {
     }
 }
 
+
+/***********************************************************
+ * 7) PREV / NEXT BUTTONS
+ ************************************************************/
+
 // ✅ Function: Handle Previous Button Click
 function setupPreviousButton() {
     let prevBtn = document.getElementById("prevBtn");
@@ -855,6 +942,11 @@ function setupNextButton() {
         });
     }
 }
+
+
+/***********************************************************
+ * 8) EVENT LISTENERS ON BUTTONS
+ ************************************************************/
 
 // ✅ Attach Event Listeners to Step Buttons
 document.getElementById("step1").addEventListener("click", function () {
@@ -882,7 +974,11 @@ document.querySelector("#stepPopup4 .close-popup").addEventListener("click", fun
     closePopup("stepPopup4", 4);
 });
 
-// ✅ Function: Restore Completion Status & Fields on Page Load
+
+/***********************************************************
+ * 9) ON PAGE LOAD
+ ************************************************************/
+
 document.addEventListener("DOMContentLoaded", function () {
     updateBackgroundColor();
     updateHeaderTitle();
@@ -891,17 +987,30 @@ document.addEventListener("DOMContentLoaded", function () {
     setupNextButton();
 
     for (let i = 1; i <= 4; i++) {
-        restoreStepCheckboxes(`stepPopup${i}`);
+        restoreStepResponses(`stepPopup${i}`);
         updateStepStatus(i);
     }
 
     populateFieldsFromCookies();
 });
 
+
+/***********************************************************
+ * 10) ORIENTATION CHANGES
+ ************************************************************/
+
 // ✅ Listen for Orientation Changes
 window.addEventListener("resize", checkOrientation);
 window.addEventListener("orientationchange", checkOrientation);
-     </script>
+
+// You will need your checkOrientation() function, 
+// or remove these lines if unused.
+function checkOrientation() {
+    // Example:
+    // if(window.innerWidth < window.innerHeight) { ... }
+}
+
+       </script>
 
 </body>
 </html>
