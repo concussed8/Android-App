@@ -650,7 +650,8 @@ html, body {
     <img src="https://raw.githubusercontent.com/concussed8/Android-App/main/images/next.png" id="nextBtn" alt="Next">
 </div>
 
-<script> // ✅ Function: Retrieve a session cookie value
+<script> 
+  // ✅ Function: Retrieve a session cookie value
 function getSessionCookie(name) {
     let cookies = document.cookie.split('; ');
     for (let cookie of cookies) {
@@ -695,9 +696,9 @@ function updateHeaderTitle() {
     }
 }
 
-// ✅ Function: Populate TBSA Diagram Fields & Calculate Total
+// ✅ Function: Populate Input Fields from Cookies (Fields 1-7) & Calculate TBSA Total
 function populateFieldsFromCookies() {
-    let storedTBSA = getSessionCookie("adultTBSA"); // Retrieve TBSA data
+    let storedTBSA = getSessionCookie("adultTBSA"); // Retrieve TBSA data from cookies
     let totalTBSA = 0;
 
     if (storedTBSA) {
@@ -709,10 +710,11 @@ function populateFieldsFromCookies() {
                 let inputField = document.querySelector(`.input-field.${fieldName}`);
 
                 if (inputField) {
-                    let value = tbsaData[fieldName] || "0%"; // Default to 0% if missing
+                    let value = tbsaData[fieldName] || "0%"; // Use stored value or default to "0%"
                     inputField.value = value;
-                    inputField.readOnly = true;
+                    inputField.readOnly = true; // Ensure it's non-editable
 
+                    // ✅ Add value to total (removing '%')
                     totalTBSA += parseFloat(value.replace("%", "")) || 0;
                 }
             }
@@ -720,8 +722,8 @@ function populateFieldsFromCookies() {
             // ✅ Display Total TBSA in Field 8
             let totalField = document.querySelector(".input-field.field8");
             if (totalField) {
-                totalField.value = totalTBSA.toFixed(1) + "%";
-                totalField.readOnly = true;
+                totalField.value = totalTBSA.toFixed(1) + "%"; // ✅ Show as percentage
+                totalField.readOnly = true; // ✅ Make non-editable
             }
 
         } catch (error) {
@@ -730,21 +732,6 @@ function populateFieldsFromCookies() {
     } else {
         console.warn("⚠️ No TBSA data found in cookies.");
     }
-}
-
-// ✅ Function: Prevent Selecting Both "Yes" and "No" at the Same Time (Only Steps 1-3)
-function enforceSingleSelection() {
-    document.querySelectorAll('#stepPopup1 input[type="checkbox"], #stepPopup2 input[type="checkbox"], #stepPopup3 input[type="checkbox"]').forEach(checkbox => {
-        checkbox.addEventListener("change", function () {
-            let groupName = this.name; // ✅ Get name attribute (same for Yes/No pairs)
-            let checkboxes = document.querySelectorAll(`input[name="${groupName}"]`);
-
-            // ✅ Uncheck the other option in the same question group
-            checkboxes.forEach(cb => {
-                if (cb !== this) cb.checked = false;
-            });
-        });
-    });
 }
 
 // ✅ Function: Open a step popup
@@ -814,11 +801,22 @@ function updateStepStatus(stepNumber) {
     enableNextButton(); // ✅ Check if all steps are completed
 }
 
+
+// ✅ Function: Disable Next Button Initially
+function disableNextButton() {
+    let nextBtn = document.getElementById("nextBtn");
+    if (nextBtn) {
+        nextBtn.style.pointerEvents = "none";
+        nextBtn.style.opacity = "0.5";
+    }
+}
+
 // ✅ Function: Enable Next Button Only If All Steps Are Completed
 function enableNextButton() {
     let nextBtn = document.getElementById("nextBtn");
     if (!nextBtn) return;
 
+    // ✅ Check if all 4 steps have "COMPLETED" status
     let allCompleted = true;
     for (let i = 1; i <= 4; i++) {
         let stepStatus = document.getElementById(`stepStatus${i}`);
@@ -828,34 +826,81 @@ function enableNextButton() {
         }
     }
 
-    nextBtn.style.pointerEvents = allCompleted ? "auto" : "none";
-    nextBtn.style.opacity = allCompleted ? "1" : "0.5";
+    // ✅ Enable Next Button only if all steps are completed
+    if (allCompleted) {
+        nextBtn.style.pointerEvents = "auto";
+        nextBtn.style.opacity = "1";
+    } else {
+        nextBtn.style.pointerEvents = "none";
+        nextBtn.style.opacity = "0.5";
+    }
 }
 
 // ✅ Function: Handle Previous Button Click
-document.getElementById("prevBtn").addEventListener("click", function () {
-    window.location.href = "https://concussed8.github.io/Android-App/pages/initial_management/initial_management.html";
-});
+function setupPreviousButton() {
+    let prevBtn = document.getElementById("prevBtn");
+    if (prevBtn) {
+        prevBtn.addEventListener("click", function () {
+          window.location.href = "https://concussed8.github.io/Android-App/pages/modified_parkland/parkland.html";
+        });
+    }
+}
 
 // ✅ Function: Handle Next Button Click
-document.getElementById("nextBtn").addEventListener("click", function () {
-    window.location.href = "https://concussed8.github.io/Android-App/pages/modified_parkland/parkland.html";
+function setupNextButton() {
+    let nextBtn = document.getElementById("nextBtn");
+    if (nextBtn) {
+        nextBtn.addEventListener("click", function () {
+            window.location.href = "https://concussed8.github.io/Android-App/pages/modified_parkland/parkland.html";
+        });
+    }
+}
+
+// ✅ Attach Event Listeners to Step Buttons
+document.getElementById("step1").addEventListener("click", function () {
+    openPopup("stepPopup1");
+});
+document.getElementById("step2").addEventListener("click", function () {
+    openPopup("stepPopup2");
+});
+document.getElementById("step3").addEventListener("click", function () {
+    openPopup("stepPopup3");
+});
+document.getElementById("step4").addEventListener("click", function () {
+    openPopup("stepPopup4");
 });
 
-// ✅ Restore Completion Status & Fields on Page Load
+// ✅ Attach Event Listeners to Close Buttons
+document.querySelector("#stepPopup1 .close-popup").addEventListener("click", closeStep1Popup);
+document.querySelector("#stepPopup2 .close-popup").addEventListener("click", function () {
+    closePopup("stepPopup2", 2);
+});
+document.querySelector("#stepPopup3 .close-popup").addEventListener("click", function () {
+    closePopup("stepPopup3", 3);
+});
+document.querySelector("#stepPopup4 .close-popup").addEventListener("click", function () {
+    closePopup("stepPopup4", 4);
+});
+
+// ✅ Function: Restore Completion Status & Fields on Page Load
 document.addEventListener("DOMContentLoaded", function () {
     updateBackgroundColor();
     updateHeaderTitle();
-    enforceSingleSelection();
     disableNextButton();
-    populateFieldsFromCookies();
+    setupPreviousButton();
+    setupNextButton();
 
     for (let i = 1; i <= 4; i++) {
         restoreStepCheckboxes(`stepPopup${i}`);
         updateStepStatus(i);
     }
+
+    populateFieldsFromCookies();
 });
 
+// ✅ Listen for Orientation Changes
+window.addEventListener("resize", checkOrientation);
+window.addEventListener("orientationchange", checkOrientation);
    </script>
 
 </body>
