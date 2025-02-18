@@ -453,25 +453,26 @@ html, body {
   align-items: flex-start;
 }
 
-/* ✅ Ensures the Checkboxes Align with the Start of the Question */
+/* ✅ Properly Aligns Checkbox & Multi-Line Text */
 .step4-popup .checkbox-container {
   display: flex;
-  align-items: center;
-  margin-bottom: 5px; /* ✅ Controls spacing */
+  align-items: flex-start; /* ✅ Aligns checkbox with first line of text */
+  gap: 10px; /* ✅ Adds spacing between checkbox and text */
+  margin-bottom: 5px;
 }
 
-/* ✅ Properly Spaces and Aligns Checkbox & Text */
+/* ✅ Increases Checkbox Size & Ensures Alignment */
 .step4-popup input[type="checkbox"] {
-  margin-right: 10px; /* ✅ Moves checkbox away from text */
-  transform: scale(1.3); /* ✅ Increases checkbox size */
+  margin-top: 3px; /* ✅ Adjusts position slightly */
+  transform: scale(1.3); /* ✅ Makes checkboxes larger */
 }
 
-/* ✅ Prevents Wrapping Issues & Keeps Labels Aligned */
+/* ✅ Ensures Long Sentences Wrap Correctly */
 .step4-popup label {
   display: flex;
-  align-items: center;
-  width: 100%; /* ✅ Ensures alignment */
+  flex: 1; /* ✅ Makes label take remaining space */
   text-align: left;
+  line-height: 1.4; /* ✅ Adjusts spacing for readability */
 }
 
 /* ✅ Close Button at the Bottom */
