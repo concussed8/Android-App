@@ -808,12 +808,28 @@ function disableNextButton() {
     }
 }
 
-// ✅ Function: Enable Next Button After Acknowledge
+// ✅ Function: Enable Next Button Only If All Steps Are Completed
 function enableNextButton() {
     let nextBtn = document.getElementById("nextBtn");
-    if (nextBtn) {
+    if (!nextBtn) return;
+
+    // ✅ Check if all 4 steps have "COMPLETED" status
+    let allCompleted = true;
+    for (let i = 1; i <= 4; i++) {
+        let stepStatus = document.getElementById(`stepStatus${i}`);
+        if (!stepStatus || stepStatus.innerText !== "COMPLETED") {
+            allCompleted = false;
+            break;
+        }
+    }
+
+    // ✅ Enable Next Button only if all steps are completed
+    if (allCompleted) {
         nextBtn.style.pointerEvents = "auto";
         nextBtn.style.opacity = "1";
+    } else {
+        nextBtn.style.pointerEvents = "none";
+        nextBtn.style.opacity = "0.5";
     }
 }
 
