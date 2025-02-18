@@ -723,6 +723,32 @@ function checkOrientation() {
         document.body.innerHTML = "<div style='display:flex;justify-content:center;align-items:center;height:100vh;font-size:24px;color:red;'>Return to Portrait Mode</div>";
     }
 }
+// ✅ Function: Open Popup by ID
+function openPopup(popupId) {
+    document.getElementById(popupId).style.display = "block";
+}
+
+// ✅ Function: Close Popup by ID
+function closePopup(popupId) {
+    document.getElementById(popupId).style.display = "none";
+}
+
+// ✅ Add Click Listeners to Each Step Button
+document.getElementById("step1").addEventListener("click", function () {
+    openPopup("stepPopup1");
+});
+
+document.getElementById("step2").addEventListener("click", function () {
+    openPopup("stepPopup2");
+});
+
+document.getElementById("step3").addEventListener("click", function () {
+    openPopup("stepPopup3");
+});
+
+document.getElementById("step4").addEventListener("click", function () {
+    openPopup("stepPopup4");
+});
 
 // ✅ Step Popup Functions (Place Before Page Load Event Listener)
 function openPopup(stepId) {
