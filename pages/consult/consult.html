@@ -627,22 +627,19 @@ html, body {
     <!-- ✅ Close Button -->
     <button class="close-popup" onclick="closePopup('stepPopup4')">CLOSE</button>
 </div>
-
-
 <!-- ✅ Main Adjustable Container -->
 <div class="adjustable-container">
     <!-- ✅ Container Header -->
     <div class="container-header">Consult Checklist Completion</div>
 
-  
-
-    <p>Step 1: <span id="stepStatus1">PENDING</span></p>
-    <p>Step 2: <span id="stepStatus2">PENDING</span></p>
-    <p>Step 3: <span id="stepStatus3">PENDING</span></p>
-    <p>Step 4: <span id="stepStatus4">PENDING</span></p>
+    <!-- ✅ Step Status without Extra Gaps -->
+    <div class="step-container">
+        <span class="step-item">Step 1: <span id="stepStatus1" class="step-status">PENDING</span></span>
+        <span class="step-item">Step 2: <span id="stepStatus2" class="step-status">PENDING</span></span>
+        <span class="step-item">Step 3: <span id="stepStatus3" class="step-status">PENDING</span></span>
+        <span class="step-item">Step 4: <span id="stepStatus4" class="step-status">PENDING</span></span>
+    </div>
 </div>
-
-
 
 <!-- Next & Prev Buttons -->
 <div class="nav-buttons">
