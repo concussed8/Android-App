@@ -650,8 +650,7 @@ html, body {
     <img src="https://raw.githubusercontent.com/concussed8/Android-App/main/images/next.png" id="nextBtn" alt="Next">
 </div>
 
-<script> 
-  // ✅ Function: Retrieve a session cookie value
+<script> // ✅ Function: Retrieve a session cookie value
 function getSessionCookie(name) {
     let cookies = document.cookie.split('; ');
     for (let cookie of cookies) {
@@ -671,13 +670,12 @@ function setSessionCookie(name, value) {
 // ✅ Function: Update Background Color Based on Burn Type
 function updateBackgroundColor() {
     setTimeout(() => {
-        let burnType = getSessionCookie("selectedIcon") || "thermal"; // Default to thermal
+        let burnType = getSessionCookie("selectedIcon") || "thermal";
         let colors = {
             "thermal": "#800000",
             "chemical": "#90EE90",
             "electrical": "#ADD8E6"
         };
-
         if (colors[burnType]) {
             document.body.style.backgroundColor = colors[burnType];
         }
@@ -692,13 +690,13 @@ function updateHeaderTitle() {
     if (headerElement) {
         headerElement.innerHTML = selectedIcon
             ? `<u>${selectedIcon.toUpperCase()} BURN</u><br> Consult Summary`
-            : "<u>THERMAL BURN</u><br> Consult Summary"; // Default if no icon is selected
+            : "<u>THERMAL BURN</u><br> Consult Summary"; 
     }
 }
 
-// ✅ Function: Populate Input Fields from Cookies (Fields 1-7) & Calculate TBSA Total
+// ✅ Function: Populate TBSA Fields & Calculate Total
 function populateFieldsFromCookies() {
-    let storedTBSA = getSessionCookie("adultTBSA"); // Retrieve TBSA data from cookies
+    let storedTBSA = getSessionCookie("adultTBSA");
     let totalTBSA = 0;
 
     if (storedTBSA) {
@@ -710,33 +708,30 @@ function populateFieldsFromCookies() {
                 let inputField = document.querySelector(`.input-field.${fieldName}`);
 
                 if (inputField) {
-                    let value = tbsaData[fieldName] || "0%"; // Use stored value or default to "0%"
+                    let value = tbsaData[fieldName] || "0%";
                     inputField.value = value;
-                    inputField.readOnly = true; // Ensure it's non-editable
+                    inputField.readOnly = true;
 
-                    // ✅ Add value to total (removing '%')
                     totalTBSA += parseFloat(value.replace("%", "")) || 0;
                 }
             }
 
-            // ✅ Display Total TBSA in Field 8
             let totalField = document.querySelector(".input-field.field8");
             if (totalField) {
-                totalField.value = totalTBSA.toFixed(1) + "%"; // ✅ Show as percentage
-                totalField.readOnly = true; // ✅ Make non-editable
+                totalField.value = totalTBSA.toFixed(1) + "%";
+                totalField.readOnly = true;
             }
 
         } catch (error) {
             console.error("❌ Error parsing TBSA cookie:", error);
         }
-    } else {
-        console.warn("⚠️ No TBSA data found in cookies.");
     }
 }
 
 // ✅ Function: Open a step popup
 function openPopup(stepId) {
-    document.getElementById(stepId).style.display = "block";
+    document.querySelectorAll(".step-popup").forEach(popup => popup.style.display = "none"); 
+    document.getElementById(stepId).style.display = "flex";
 }
 
 // ✅ Function: Close Step 1 Popup (Requires Answers for Both Questions)
@@ -746,10 +741,10 @@ function closeStep1Popup() {
 
     if (!fullThicknessChecked || !partialThicknessChecked) {
         alert("❌ You must select an answer for both questions before proceeding.");
-        return; // Stops from closing
+        return;
     }
 
-    closePopup("stepPopup1", 1); // ✅ Proceed with closing if both are answered
+    closePopup("stepPopup1", 1);
 }
 
 // ✅ Function: Close a step popup, save checkboxes, and mark completion
@@ -768,7 +763,7 @@ function saveStepCheckboxes(stepId) {
         stepData[checkbox.name] = checkbox.checked ? "checked" : "unchecked";
     });
 
-    setSessionCookie(stepId, JSON.stringify(stepData)); // ✅ Save the state as a JSON string
+    setSessionCookie(stepId, JSON.stringify(stepData));
 }
 
 // ✅ Function: Restore Checkbox State for a Given Step
@@ -798,17 +793,7 @@ function updateStepStatus(stepNumber) {
         stepElement.style.fontWeight = "bold";
     }
 
-    enableNextButton(); // ✅ Check if all steps are completed
-}
-
-
-// ✅ Function: Disable Next Button Initially
-function disableNextButton() {
-    let nextBtn = document.getElementById("nextBtn");
-    if (nextBtn) {
-        nextBtn.style.pointerEvents = "none";
-        nextBtn.style.opacity = "0.5";
-    }
+    enableNextButton();
 }
 
 // ✅ Function: Enable Next Button Only If All Steps Are Completed
@@ -816,7 +801,6 @@ function enableNextButton() {
     let nextBtn = document.getElementById("nextBtn");
     if (!nextBtn) return;
 
-    // ✅ Check if all 4 steps have "COMPLETED" status
     let allCompleted = true;
     for (let i = 1; i <= 4; i++) {
         let stepStatus = document.getElementById(`stepStatus${i}`);
@@ -826,35 +810,19 @@ function enableNextButton() {
         }
     }
 
-    // ✅ Enable Next Button only if all steps are completed
-    if (allCompleted) {
-        nextBtn.style.pointerEvents = "auto";
-        nextBtn.style.opacity = "1";
-    } else {
-        nextBtn.style.pointerEvents = "none";
-        nextBtn.style.opacity = "0.5";
-    }
+    nextBtn.style.pointerEvents = allCompleted ? "auto" : "none";
+    nextBtn.style.opacity = allCompleted ? "1" : "0.5";
 }
 
 // ✅ Function: Handle Previous Button Click
-function setupPreviousButton() {
-    let prevBtn = document.getElementById("prevBtn");
-    if (prevBtn) {
-        prevBtn.addEventListener("click", function () {
-          window.location.href = "https://concussed8.github.io/Android-App/pages/modified_parkland/parkland.html";
-        });
-    }
-}
+document.getElementById("prevBtn").addEventListener("click", function () {
+    window.location.href = "https://concussed8.github.io/Android-App/pages/initial_management/initial_management.html";
+});
 
 // ✅ Function: Handle Next Button Click
-function setupNextButton() {
-    let nextBtn = document.getElementById("nextBtn");
-    if (nextBtn) {
-        nextBtn.addEventListener("click", function () {
-            window.location.href = "https://concussed8.github.io/Android-App/pages/modified_parkland/parkland.html";
-        });
-    }
-}
+document.getElementById("nextBtn").addEventListener("click", function () {
+    window.location.href = "https://concussed8.github.io/Android-App/pages/modified_parkland/parkland.html";
+});
 
 // ✅ Attach Event Listeners to Step Buttons
 document.getElementById("step1").addEventListener("click", function () {
@@ -882,26 +850,20 @@ document.querySelector("#stepPopup4 .close-popup").addEventListener("click", fun
     closePopup("stepPopup4", 4);
 });
 
-// ✅ Function: Restore Completion Status & Fields on Page Load
+// ✅ Restore Completion Status & Fields on Page Load
 document.addEventListener("DOMContentLoaded", function () {
     updateBackgroundColor();
     updateHeaderTitle();
     disableNextButton();
-    setupPreviousButton();
-    setupNextButton();
+    populateFieldsFromCookies();
 
     for (let i = 1; i <= 4; i++) {
         restoreStepCheckboxes(`stepPopup${i}`);
         updateStepStatus(i);
     }
-
-    populateFieldsFromCookies();
 });
 
-// ✅ Listen for Orientation Changes
-window.addEventListener("resize", checkOrientation);
-window.addEventListener("orientationchange", checkOrientation);
-   </script>
+     </script>
 
 </body>
 </html>
