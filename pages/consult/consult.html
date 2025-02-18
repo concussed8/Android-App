@@ -501,14 +501,15 @@ html, body {
 .step4-popup .close-popup:active {
   transform: scale(0.95);
 }
-/* ✅ Step Completion Styling */
+/* ✅ Step Completion Styling (Ensures Single Line Spacing) */
 .step-status {
-  margin-top: 0px; /* ✅ Adds single line spacing between each step */
+  display: block; /* ✅ Ensures each status is on its own line */
+  margin-top: 5px; /* ✅ Adds controlled spacing between each step */
+  margin-bottom: 5px; /* ✅ Prevents extra gaps */
   font-size: 16px; /* ✅ Adjust font size */
   font-weight: bold;
   text-align: center;
   line-height: 1.2; /* ✅ Ensures single-line spacing */
-
 }
 
   </style>
