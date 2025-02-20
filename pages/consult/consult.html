@@ -32,6 +32,7 @@
       font-weight: bold;
       font-family: "Courier New", Courier, monospace;
       color: white;
+      background-color: rgba(0, 0, 0, 0.2);
       z-index: 1000;
       padding-top: 5px;
       padding-bottom: 10px;
@@ -665,7 +666,7 @@ function updateHeaderTitle() {
     if (headerElement) {
         headerElement.innerHTML = selectedIcon
             ? `<u>${selectedIcon.toUpperCase()} BURN</u><br> Consult Summary`
-            : "<u>THERMAL BURN</u><br> Consult Summary";
+            : "<u>THERMAL BURN</u><br> Consult Checklist";
     }
 }
 
