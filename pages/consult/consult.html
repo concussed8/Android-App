@@ -5,525 +5,452 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
   <title>consult summary</title>
   <style>
-/* Ensure the body fills the viewport */
-html, body {
-  margin: 0;
-  padding: 0;
-  width: 100vw;
-  height: 100vh;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  background-color: white;
-}
+    /* Ensure the body fills the viewport */
+    html, body {
+      margin: 0;
+      padding: 0;
+      width: 100vw;
+      height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      background-color: white;
+    }
 
-/* Prevent landscape mode */
-@media screen and (orientation: landscape) {
-  body {
-    display: none;
-  }
-}
+    /* Prevent landscape mode */
+    @media screen and (orientation: landscape) {
+      body {
+        display: none;
+      }
+    }
 
-/* Fixed Header */
-.header {
-  width: 100%;
-  text-align: center;
-  font-size: 7vw;
-  font-weight: bold;
-  font-family: "Courier New", Courier, monospace;
-  color: white;
-  z-index: 1000;
-  padding-top: 5px;
-  padding-bottom: 10px;
-}
+    /* Fixed Header */
+    .header {
+      width: 100%;
+      text-align: center;
+      font-size: 7vw;
+      font-weight: bold;
+      font-family: "Courier New", Courier, monospace;
+      color: white;
+      z-index: 1000;
+      padding-top: 5px;
+      padding-bottom: 10px;
+    }
 
-/* ✅ Main Container: Adjustable Size & Position */
-.content-container {
-  position: relative;
-  width: 35%;  /* ✅ Adjustable */
-  max-width: 165px; /* ✅ Adjust as needed */
-  height: auto; /* ✅ Adjust height manually */
-  min-height: 175px; /* ✅ Ensures space for image & input fields */
-  background-color: white;
-  border: 3px solid black;
-  border-radius: 8px;
-  margin-top: 5px; /* ✅ Vertical control */
-  margin-left: -190px; /* ✅ Manual horizontal control */
-  padding: 20px;
-  text-align: center;
-}
+    /* ✅ Main Container */
+    .content-container {
+      position: relative;
+      width: 35%;
+      max-width: 165px;
+      height: auto;
+      min-height: 175px;
+      background-color: white;
+      border: 3px solid black; /* Default (overridden to pink if age=2..15) */
+      border-radius: 8px;
+      margin-top: 5px;
+      margin-left: -190px;
+      padding: 20px;
+      text-align: center;
+    }
 
+    /* ✅ Consult Image */
+    #consultImage {
+      width: 100%;
+      max-width: 400px;
+      display: block;
+      margin: 0 auto;
+    }
 
-/* ✅ Consult Image */
-#consultImage {
-  width: 100%;
-  max-width: 400px;
-  display: block;
-  margin: 0 auto;
-}
+    /* ✅ Positioning & Styling for Input Fields */
+    .input-field {
+      position: absolute;
+      width: 40px;
+      height: 20px;
+      background: white;
+      border: 2px solid black;
+      text-align: center;
+      font-size: 12px;
+      font-weight: bold;
+      color: black;
+      cursor: default;
+      user-select: none;
+      pointer-events: none;
+      z-index: 10;
+    }
 
-/* ✅ Positioning & Styling for Input Fields */
-.input-field {
-  position: absolute;
-  width: 40px;  /* ✅ Adjustable width */
-  height: 20px;  /* ✅ Adjustable height */
-  background: white;
-  border: 2px solid black; /* ✅ Adjustable thickness */
-  text-align: center;
-  font-size: 12px; /* ✅ Adjustable font size */
-  font-weight: bold;
-  color: black;
-  cursor: default;
-  user-select: none;
-  pointer-events: none; /* ✅ Prevents user interaction */
-  z-index: 10;
-}
+    /* ✅ TBSA Total Box */
+    .field8 { 
+      width: 80px;
+      height: 25px;
+      bottom: 15px;
+      left: 50%;
+      transform: translateX(-50%);
+    }
 
-/* ✅ TBSA Total Box */
-.field8 { 
-  width: 80px; /* ✅ Adjustable */
-  height: 25px; /* ✅ Adjustable */
-  bottom: 15px;
-  left: 50%;
-  transform: translateX(-50%);
-}
+    /* ✅ Input Field Positions (Modify Manually) */
+    .field1 { top: 35px;  left: 62px; }
+    .field2 { top: 90px;  left: 61px; }
+    .field3 { top: 155px; left: 63px; }
+    .field4 { top: 114px; left: 18px; }
+    .field5 { top: 114px; left: 106px; }
+    .field6 { top: 215px; left: 45px; }
+    .field7 { top: 215px; left: 88px; }
 
-/* ✅ Input Field Positions (Modify Manually) */
-.field1 { top: 35px; left: 62px; }  /* Head */
-.field2 { top: 90px; left: 61px; } /* Chest/Trunk */
-.field3 { top: 155px; left: 63px; } /* Groin */
-.field4 { top: 114px; left: 18px; }  /* Right Arm */
-.field5 { top: 114px; left: 106px; } /* Left Arm */
-.field6 { top: 215px; left: 45px; } /* Right Leg */
-.field7 { top: 215px; left: 88px; } /* Left Leg */
+    /* ✅ Navigation Buttons */
+    .nav-buttons {
+      position: absolute;
+      bottom: 13px;
+      display: flex;
+      width: 60vw;
+      max-width: 400px;
+      justify-content: center;
+      align-items: center;
+      gap: 100px;
+      left: 50%;
+      transform: translateX(-50%);
+      z-index: 1000;
+    }
+    .nav-buttons img {
+      width: 100px;
+      height: 75px;
+      cursor: pointer;
+      border-radius: 10px;
+      opacity: 0.9;
+      transition: transform 0.2s ease;
+    }
+    .nav-buttons img:active {
+      transform: scale(1.1);
+    }
 
-/* ✅ Navigation Buttons */
-.nav-buttons {
-  position: absolute;
-  bottom: 13px;
-  display: flex;
-  width: 60vw;
-  max-width: 400px;
-  justify-content: center;
-  align-items: center;
-  gap: 100px;
-  left: 50%;
-  transform: translateX(-50%);
-  z-index: 1000;
-}
+    /* ✅ Step Buttons Container */
+    .step-buttons {
+      position: absolute;
+      top: 100px;
+      left: 225px;
+      display: flex;
+      flex-direction: column;
+      gap: 25px;
+      z-index: 1000;
+    }
+    .step-button {
+      position: relative;
+      width: 100px;
+      height: 50px;
+      font-size: 16px;
+      font-weight: bold;
+      color: white;
+      border: none;
+      cursor: pointer;
+      text-transform: uppercase;
+      user-select: none;
+      transition: all 0.2s ease-in-out;
+      transform: skewX(0deg);
+      background: linear-gradient(145deg, #4A90E2, #1E5799);
+      box-shadow: -3px 3px 6px rgba(0, 0, 0, 0.4), 3px -3px 6px rgba(255, 255, 255, 0.3);
+      border-radius: 8px;
+    }
+    .step-button:hover {
+      background: linear-gradient(145deg, #1E5799, #4A90E2);
+      transform: skewX(-15deg) scale(1.05);
+    }
+    .step-button:active {
+      background: linear-gradient(145deg, #003366, #1E5799);
+      box-shadow: inset -2px 2px 5px rgba(0, 0, 0, 0.5), inset 2px -2px 5px rgba(255, 255, 255, 0.2);
+    }
 
-/* ✅ Styling for Navigation Buttons */
-.nav-buttons img {
-  width: 100px;
-  height: 75px;
-  cursor: pointer;
-  border-radius: 10px;
-  opacity: 0.9;
-  transition: transform 0.2s ease;
-}
+    /* ✅ Main Adjustable Container */
+    .adjustable-container {
+      position: absolute;
+      width: 75%;
+      height: 75%;
+      max-width: 300px;
+      max-height: 280px;
+      top: 400px;
+      left: 25px;
 
-/* ✅ Button Press Effect */
-.nav-buttons img:active {
-  transform: scale(1.1);
-}
-/* ✅ Step Buttons Container */
-.step-buttons {
-  position: absolute;
-  top: 100px; /* ✅ Adjust vertical position */
-  left: 225px; /* ✅ Adjust horizontal position */
-  display: flex;
-  flex-direction: column; /* ✅ Stack buttons vertically */
-  gap: 25px; /* ✅ Space between buttons */
-  z-index: 1000; /* ✅ Ensures they stay on top */
-}
+      background-color: white;
+      border: 3px solid black;
+      border-radius: 10px;
+      padding: 20px;
+      box-shadow: 4px 4px 10px rgba(0, 0, 0, 0.3);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      text-align: center;
+    }
+    .adjustable-container .container-header {
+      width: 100%;
+      padding: 10px 0;
+      font-size: 16px;
+      font-family: "Courier New", Courier, monospace;
+      font-weight: bold;
+      color: white;
+      background-color: #0047AB;
+      border-bottom: 0px solid black;
+      border-radius: 0px 0px 0 0;
+      user-select: none;
+      margin-top: -15px;
+      margin-bottom: 10px;
+    }
 
-/* ✅ Individual Step Button Styling */
-.step-button {
-  position: relative;
-  width: 100px;  /* ✅ Button Width */
-  height: 50px;  /* ✅ Button Height */
-  font-size: 16px;
-  font-weight: bold;
-  color: white;
-  border: none;
-  cursor: pointer;
-  text-transform: uppercase;
-  user-select: none;
-  transition: all 0.2s ease-in-out;
-  
-  /* ✅ Slant Effect */
-  transform: skewX(0deg);
-  
-  /* ✅ Cool Gradient Background for 3D Effect */
-  background: linear-gradient(145deg, #4A90E2, #1E5799);
-  
-  /* ✅ Beveled Edges with Box Shadows */
-  box-shadow: -3px 3px 6px rgba(0, 0, 0, 0.4), 3px -3px 6px rgba(255, 255, 255, 0.3);
-  
-  /* ✅ Border Radius for Soft Edges */
-  border-radius: 8px;
-}
+    /* ✅ Step 1 Popup */
+    .step1-popup {
+      position: absolute;
+      top: 50%; left: 50%;
+      transform: translate(-50%, -50%);
+      width: 85%;
+      max-width: 500px;
+      background: rgba(255, 255, 255, 1);
+      border: 5px solid black;
+      border-radius: 10px;
+      padding: 20px;
+      font-family: "Courier New", Courier, monospace;
+      font-size: 18px;
+      font-weight: bold;
+      color: black;
+      box-shadow: 5px 5px 15px rgba(0, 0, 0, 0.5);
+      z-index: 10000;
+      display: none;
+      flex-direction: column;
+      justify-content: space-between;
+      align-items: flex-start;
+    }
+    .step1-popup p {
+      text-align: left;
+      margin-bottom: 10px;
+      line-height: 1.4;
+    }
+    .step1-popup label {
+      display: block;
+      margin: 4px 0 10px 20px;
+      font-size: 18px;
+    }
+    .step1-popup input[type="radio"] {
+      transform: scale(1.3);
+      margin-right: 8px;
+    }
+    .step1-popup .close-popup {
+      width: 60%;
+      max-width: 200px;
+      padding: 12px 20px;
+      font-size: 16px;
+      font-weight: bold;
+      background: red;
+      color: white;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+      box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.3);
+      transition: all 0.2s ease-in-out;
+      margin-top: 20px;
+      margin-bottom: 15px;
+      align-self: center;
+    }
+    .step1-popup .close-popup:hover {
+      background: darkred;
+    }
+    .step1-popup .close-popup:active {
+      transform: scale(0.95);
+    }
 
-/* ✅ Button Hover Effect */
-.step-button:hover {
-  background: linear-gradient(145deg, #1E5799, #4A90E2);
-  transform: skewX(-15deg) scale(1.05);
-}
+    /* ✅ Step 2 Popup */
+    .step2-popup {
+      position: absolute;
+      top: 50%; left: 50%;
+      transform: translate(-50%, -50%);
+      width: 85%;
+      max-width: 500px;
+      background: rgba(255, 255, 255, 1);
+      border: 5px solid black;
+      border-radius: 10px;
+      padding: 20px;
+      font-family: "Courier New", Courier, monospace;
+      font-size: 18px;
+      font-weight: bold;
+      color: black;
+      box-shadow: 5px 5px 15px rgba(0, 0, 0, 0.5);
+      z-index: 10000;
+      display: none;
+      flex-direction: column;
+      justify-content: space-between;
+      align-items: flex-start;
+    }
+    .step2-popup p {
+      text-align: left;
+      margin-bottom: 10px;
+      line-height: 1.4;
+    }
+    .step2-popup label {
+      display: block;
+      margin: 4px 0 10px 20px;
+      font-size: 18px;
+    }
+    .step2-popup input[type="radio"] {
+      transform: scale(1.3);
+      margin-right: 8px;
+    }
+    .step2-popup .close-popup {
+      width: 60%;
+      max-width: 200px;
+      padding: 12px 20px;
+      font-size: 16px;
+      font-weight: bold;
+      background: red;
+      color: white;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+      box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.3);
+      transition: all 0.2s ease-in-out;
+      margin-top: 20px;
+      margin-bottom: 15px;
+      align-self: center;
+    }
+    .step2-popup .close-popup:hover {
+      background: darkred;
+    }
+    .step2-popup .close-popup:active {
+      transform: scale(0.95);
+    }
 
-/* ✅ Button Active (Click) Effect */
-.step-button:active {
-  background: linear-gradient(145deg, #003366, #1E5799);
-  box-shadow: inset -2px 2px 5px rgba(0, 0, 0, 0.5), inset 2px -2px 5px rgba(255, 255, 255, 0.2);
-}
-/* ✅ Main Adjustable Container */
-.adjustable-container {
-  position: absolute; /* ✅ Allows precise manual positioning */
-  width: 75%; /* ✅ Adjustable width relative to viewport */
-  height: 75% /* ✅ Adjustable height relative to viewport */
-  max-width: 300px; /* ✅ Prevents container from getting too large */
-  max-height: 280px; /* ✅ Prevents excessive height */
-  
-  /* ✅ Manual Positioning */
-  top: 400px; /* ✅ Adjust vertical position */
-  left: 25px; /* ✅ Adjust horizontal position */
+    /* ✅ Step 3 Popup */
+    .step3-popup {
+      position: absolute;
+      top: 50%; left: 50%;
+      transform: translate(-50%, -50%);
+      width: 85%;
+      max-width: 500px;
+      background: rgba(255, 255, 255, 1);
+      border: 5px solid black;
+      border-radius: 10px;
+      padding: 20px;
+      font-family: "Courier New", Courier, monospace;
+      font-size: 18px;
+      font-weight: bold;
+      color: black;
+      box-shadow: 5px 5px 15px rgba(0, 0, 0, 0.5);
+      z-index: 10000;
+      display: none;
+      flex-direction: column;
+      justify-content: space-between;
+      align-items: flex-start;
+    }
+    .step3-popup p {
+      text-align: left;
+      margin-bottom: 10px;
+      line-height: 1.4;
+    }
+    .step3-popup label {
+      display: block;
+      margin: 4px 0 10px 20px;
+      font-size: 18px;
+    }
+    .step3-popup input[type="radio"] {
+      transform: scale(1.3);
+      margin-right: 8px;
+    }
+    .step3-popup .close-popup {
+      width: 60%;
+      max-width: 200px;
+      padding: 12px 20px;
+      font-size: 16px;
+      font-weight: bold;
+      background: red;
+      color: white;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+      box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.3);
+      transition: all 0.2s ease-in-out;
+      margin-top: 20px;
+      margin-bottom: 15px;
+      align-self: center;
+    }
+    .step3-popup .close-popup:hover {
+      background: darkred;
+    }
+    .step3-popup .close-popup:active {
+      transform: scale(0.95);
+    }
 
-  /* ✅ Styling */
-  background-color: white; /* ✅ Default container background */
-  border: 3px solid black; /* ✅ Visible border */
-  border-radius: 10px; /* ✅ Rounded corners */
-  padding: 20px; /* ✅ Inner spacing */
-  box-shadow: 4px 4px 10px rgba(0, 0, 0, 0.3); /* ✅ Subtle shadow */
-  display: flex;
-  flex-direction: column; /* ✅ Ensures content stacks inside */
-  align-items: center;
-  text-align: center;
-}
+    /* ✅ Step 4 Popup */
+    .step4-popup {
+      position: absolute;
+      top: 50%; left: 50%;
+      transform: translate(-50%, -50%);
+      width: 85%;
+      max-width: 500px;
+      background: rgba(255, 255, 255, 1);
+      border: 5px solid black;
+      border-radius: 10px;
+      padding: 20px;
+      font-family: "Courier New", Courier, monospace;
+      font-size: 14px;
+      font-weight: bold;
+      color: black;
+      box-shadow: 5px 5px 15px rgba(0, 0, 0, 0.5);
+      z-index: 10000;
+      display: none;
+      flex-direction: column;
+      justify-content: space-between;
+      align-items: flex-start;
+    }
+    .step4-popup .checkbox-container {
+      display: flex;
+      align-items: flex-start;
+      gap: 10px;
+      margin-bottom: 5px;
+    }
+    .step4-popup input[type="checkbox"] {
+      margin-top: 3px;
+      transform: scale(1.3);
+    }
+    .step4-popup label {
+      display: flex;
+      flex: 1;
+      text-align: left;
+      line-height: 1.4;
+    }
+    .step4-popup .close-popup {
+      width: 60%;
+      max-width: 200px;
+      padding: 12px 20px;
+      font-size: 16px;
+      font-weight: bold;
+      background: red;
+      color: white;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+      box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.3);
+      transition: all 0.2s ease-in-out;
+      margin-top: 20px;
+      margin-bottom: 15px;
+      align-self: center;
+    }
+    .step4-popup .close-popup:hover {
+      background: darkred;
+    }
+    .step4-popup .close-popup:active {
+      transform: scale(0.95);
+    }
 
-/* ✅ Container Header */
-.container-header {
-  width: 100%; /* ✅ Stretches across the container */
-  padding: 10px 0; /* ✅ Increased padding for better spacing */
-  font-size: 16px; /* ✅ Font size */
-  font-family: "Courier New", Courier, monospace; /* ✅ Monospace font */
-  font-weight: bold; /* ✅ Bold text */
-  color: white; /* ✅ Text color */
-  background-color: #0047AB; /* ✅ Blue header background */
-  border-bottom: 0px solid black; /* ✅ Bottom border for definition */
-  border-radius: 0px 0px 0 0; /* ✅ Rounds only top corners */
-  user-select: none; /* ✅ Prevents text selection */
-  
-  /* ✅ Manual Vertical Control */
-  margin-top: -15px; /* ✅ Adjust this value to move the header up/down */
-  margin-bottom: 10px; /* ✅ Adds space below the header */
-}
-
-/* ✅ Step 1 Popup - Adjusted for Paragraph Alignment */
-.step1-popup {
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  width: 85%; /* ✅ Adjustable width */
-  max-width: 500px; /* ✅ Prevents excessive size */
-  background: rgba(255, 255, 255, 1); /* ✅ Slightly transparent white */
-  border: 5px solid black; /* ✅ Bold border */
-  border-radius: 10px; /* ✅ Rounded corners */
-  padding: 20px;
-  font-family: "Courier New", Courier, monospace;
-  font-size: 18px;
-  font-weight: bold;
-  color: black;
-  box-shadow: 5px 5px 15px rgba(0, 0, 0, 0.5); /* ✅ Shadow effect */
-  z-index: 10000; /* ✅ Keeps it above other elements */
-  display: none; /* ✅ Hidden by default */
-
-  flex-direction: column; /* ✅ Ensures proper spacing */
-  justify-content: space-between; /* ✅ Pushes close button to the bottom */
-  align-items: flex-start; /* ✅ Aligns content to the left */
-}
-
-/* ✅ Paragraph-Style Question Formatting */
-.step1-popup p {
-  text-align: left; /* ✅ Aligns questions like a paragraph */
-  margin-bottom: 10px; /* ✅ Adds spacing below each question */
-  line-height: 1.4; /* ✅ Adjust line spacing */
-}
-
-/* ✅ Checkbox Styling - Aligned Under Questions */
-.step1-popup label {
-  display: block;
-  margin: 4px 0 10px 20px; /* ✅ Moves checkboxes under questions */
-  font-size: 18px;
-}
-
-/* ✅ Checkbox Sizing */
-.step1-popup input[type="checkbox"] {
-  transform: scale(1.3); /* ✅ Makes checkboxes larger */
-  margin-right: 8px;
-}
-
-/* ✅ Close Button at the Bottom */
-.step1-popup .close-popup {
-  width: 60%; /* ✅ Adjustable width */
-  max-width: 200px; /* ✅ Prevents excessive size */
-  padding: 12px 20px; /* ✅ Adjust button padding */
-  font-size: 16px; /* ✅ Adjustable font size */
-  font-weight: bold;
-  background: red; /* ✅ Red for emphasis */
-  color: white;
-  border: none;
-  border-radius: 5px;
-  cursor: pointer;
-  box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.3);
-  transition: all 0.2s ease-in-out;
-  margin-top: 20px; /* ✅ Adds spacing from checkboxes */
-  margin-bottom: 15px; /* ✅ Adjustable bottom margin */
-  align-self: center; /* ✅ Ensures centering */
-}
-
-/* ✅ Close Button Hover & Click Effects */
-.step1-popup .close-popup:hover {
-  background: darkred;
-}
-.step1-popup .close-popup:active {
-  transform: scale(0.95);
-}
-
-/* ✅ Step 2 Popup - Adjusted for Paragraph Alignment */
-.step2-popup {
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  width: 85%; /* ✅ Adjustable width */
-  max-width: 500px; /* ✅ Prevents excessive size */
-  background: rgba(255, 255, 255, 1); /* ✅ Slightly transparent white */
-  border: 5px solid black; /* ✅ Bold border */
-  border-radius: 10px; /* ✅ Rounded corners */
-  padding: 20px;
-  font-family: "Courier New", Courier, monospace;
-  font-size: 18px;
-  font-weight: bold;
-  color: black;
-  box-shadow: 5px 5px 15px rgba(0, 0, 0, 0.5); /* ✅ Shadow effect */
-  z-index: 10000; /* ✅ Keeps it above other elements */
-  display: none; /* ✅ Hidden by default */
-  
-  flex-direction: column; /* ✅ Ensures proper spacing */
-  justify-content: space-between; /* ✅ Pushes close button to the bottom */
-  align-items: flex-start; /* ✅ Aligns content to the left */
-}
-
-/* ✅ Paragraph-Style Question Formatting */
-.step2-popup p {
-  text-align: left; /* ✅ Aligns questions like a paragraph */
-  margin-bottom: 10px; /* ✅ Adds spacing below each question */
-  line-height: 1.4; /* ✅ Adjust line spacing */
-}
-
-/* ✅ Checkbox Styling - Aligned Under Questions */
-.step2-popup label {
-  display: block;
-  margin: 4px 0 10px 20px; /* ✅ Moves checkboxes under questions */
-  font-size: 18px;
-}
-
-/* ✅ Checkbox Sizing */
-.step2-popup input[type="checkbox"] {
-  transform: scale(1.3); /* ✅ Makes checkboxes larger */
-  margin-right: 8px;
-}
-
-/* ✅ Close Button at the Bottom */
-.step2-popup .close-popup {
-  width: 60%; /* ✅ Adjustable width */
-  max-width: 200px; /* ✅ Prevents excessive size */
-  padding: 12px 20px; /* ✅ Adjust button padding */
-  font-size: 16px; /* ✅ Adjustable font size */
-  font-weight: bold;
-  background: red; /* ✅ Red for emphasis */
-  color: white;
-  border: none;
-  border-radius: 5px;
-  cursor: pointer;
-  box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.3);
-  transition: all 0.2s ease-in-out;
-  margin-top: 20px; /* ✅ Adds spacing from checkboxes */
-  margin-bottom: 15px; /* ✅ Adjustable bottom margin */
-  align-self: center; /* ✅ Ensures centering */
-}
-
-/* ✅ Close Button Hover & Click Effects */
-.step2-popup .close-popup:hover {
-  background: darkred;
-}
-.step2-popup .close-popup:active {
-  transform: scale(0.95);
-}
-/* ✅ Step 3 Popup - Adjusted for Paragraph Alignment */
-.step3-popup {
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  width: 85%; /* ✅ Adjustable width */
-  max-width: 500px; /* ✅ Prevents excessive size */
-  background: rgba(255, 255, 255, 1); /* ✅ Slightly transparent white */
-  border: 5px solid black; /* ✅ Bold border */
-  border-radius: 10px; /* ✅ Rounded corners */
-  padding: 20px;
-  font-family: "Courier New", Courier, monospace;
-  font-size: 18px;
-  font-weight: bold;
-  color: black;
-  box-shadow: 5px 5px 15px rgba(0, 0, 0, 0.5); /* ✅ Shadow effect */
-  z-index: 10000; /* ✅ Keeps it above other elements */
-  display: none; /* ✅ Hidden by default */
-
-  flex-direction: column; /* ✅ Ensures proper spacing */
-  justify-content: space-between; /* ✅ Pushes close button to the bottom */
-  align-items: flex-start; /* ✅ Aligns content to the left */
-}
-
-/* ✅ Paragraph-Style Question Formatting */
-.step3-popup p {
-  text-align: left; /* ✅ Aligns questions like a paragraph */
-  margin-bottom: 10px; /* ✅ Adds spacing below each question */
-  line-height: 1.4; /* ✅ Adjust line spacing */
-}
-
-/* ✅ Checkbox Styling - Aligned Under Questions */
-.step3-popup label {
-  display: block;
-  margin: 4px 0 10px 20px; /* ✅ Moves checkboxes under questions */
-  font-size: 18px;
-}
-
-/* ✅ Checkbox Sizing */
-.step3-popup input[type="checkbox"] {
-  transform: scale(1.3); /* ✅ Makes checkboxes larger */
-  margin-right: 8px;
-}
-
-/* ✅ Close Button at the Bottom */
-.step3-popup .close-popup {
-  width: 60%; /* ✅ Adjustable width */
-  max-width: 200px; /* ✅ Prevents excessive size */
-  padding: 12px 20px; /* ✅ Adjust button padding */
-  font-size: 16px; /* ✅ Adjustable font size */
-  font-weight: bold;
-  background: red; /* ✅ Red for emphasis */
-  color: white;
-  border: none;
-  border-radius: 5px;
-  cursor: pointer;
-  box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.3);
-  transition: all 0.2s ease-in-out;
-  margin-top: 20px; /* ✅ Adds spacing from checkboxes */
-  margin-bottom: 15px; /* ✅ Adjustable bottom margin */
-  align-self: center; /* ✅ Ensures centering */
-}
-
-/* ✅ Close Button Hover & Click Effects */
-.step3-popup .close-popup:hover {
-  background: darkred;
-}
-.step3-popup .close-popup:active {
-  transform: scale(0.95);
-}
-/* ✅ Step 4 Popup - Ensures Checkboxes Align Properly */
-.step4-popup {
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  width: 85%; /* ✅ Adjustable width */
-  max-width: 500px; /* ✅ Prevents excessive size */
-  background: rgba(255, 255, 255, 1); /* ✅ Opaque white background */
-  border: 5px solid black; /* ✅ Bold border */
-  border-radius: 10px; /* ✅ Rounded corners */
-  padding: 20px;
-  font-family: "Courier New", Courier, monospace;
-  font-size: 14px;
-  font-weight: bold;
-  color: black;
-  box-shadow: 5px 5px 15px rgba(0, 0, 0, 0.5); /* ✅ Shadow effect */
-  z-index: 10000; /* ✅ Keeps it above other elements */
-  display: none; /* ✅ Hidden by default */
-  flex-direction: column;
-  justify-content: space-between;
-  align-items: flex-start;
-}
-
-/* ✅ Properly Aligns Checkbox & Multi-Line Text */
-.step4-popup .checkbox-container {
-  display: flex;
-  align-items: flex-start; /* ✅ Aligns checkbox with first line of text */
-  gap: 10px; /* ✅ Adds spacing between checkbox and text */
-  margin-bottom: 5px;
-}
-
-/* ✅ Increases Checkbox Size & Ensures Alignment */
-.step4-popup input[type="checkbox"] {
-  margin-top: 3px; /* ✅ Adjusts position slightly */
-  transform: scale(1.3); /* ✅ Makes checkboxes larger */
-}
-
-/* ✅ Ensures Long Sentences Wrap Correctly */
-.step4-popup label {
-  display: flex;
-  flex: 1; /* ✅ Makes label take remaining space */
-  text-align: left;
-  line-height: 1.4; /* ✅ Adjusts spacing for readability */
-}
-
-/* ✅ Close Button at the Bottom */
-.step4-popup .close-popup {
-  width: 60%;
-  max-width: 200px;
-  padding: 12px 20px;
-  font-size: 16px;
-  font-weight: bold;
-  background: red;
-  color: white;
-  border: none;
-  border-radius: 5px;
-  cursor: pointer;
-  box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.3);
-  transition: all 0.2s ease-in-out;
-  margin-top: 20px;
-  margin-bottom: 15px;
-  align-self: center;
-}
-
-/* ✅ Close Button Hover & Click Effects */
-.step4-popup .close-popup:hover {
-  background: darkred;
-}
-.step4-popup .close-popup:active {
-  transform: scale(0.95);
-}
-/* ✅ Step Item - Keeps Step # and Status Inline */
-.step-item {
-  display: flex;  /* ✅ Ensures "Step #" and status stay in one line */
-  align-items: center; /* ✅ Centers vertically */
-  justify-content: flex-start; /* ✅ Left-aligns content */
-  font-size: 18px; /* ✅ Adjusts font size */
-  font-weight: bold;
-  margin-bottom: 2px; /* ✅ Reduce gap between steps */
-  white-space: nowrap; /* ✅ Prevents line wrapping */
-}
-
-/* ✅ Step Completion Status */
-.step-status {
-  margin-left: 10px; /* ✅ Keeps space between "Step #" and status */
-  font-size: 18px;
-  font-weight: bold;
-  color: red; /* ✅ Default to "PENDING" */
-}
-
-
-
+    /* ✅ Step Item - Keeps Step # and Status Inline */
+    .step-item {
+      display: flex;
+      align-items: center;
+      justify-content: flex-start;
+      font-size: 18px;
+      font-weight: bold;
+      margin-bottom: 2px;
+      white-space: nowrap;
+    }
+    .step-status {
+      margin-left: 10px;
+      font-size: 18px;
+      font-weight: bold;
+      color: red;
+    }
   </style>
 </head>
 <body>
@@ -544,10 +471,10 @@ html, body {
     <input type="text" class="input-field field6" value="0">
     <input type="text" class="input-field field7" value="0">
     
-
     <!-- TBSA Total Box -->
     <input type="text" class="input-field field8" readonly value="0%">
 </div>
+
 <!-- ✅ Step Buttons Container -->
 <div class="step-buttons">
     <button class="step-button" id="step1">Step 1</button>
@@ -656,10 +583,6 @@ html, body {
     <button class="close-popup" onclick="closePopup('stepPopup4', 4)">CLOSE</button>
 </div>
 
-
-    <!-- ✅ Close Button -->
-    <button class="close-popup" onclick="closePopup('stepPopup4')">CLOSE</button>
-</div>
 <!-- ✅ Main Adjustable Container -->
 <div class="adjustable-container">
     <!-- ✅ Container Header -->
@@ -681,10 +604,9 @@ html, body {
 </div>
 
 <script> 
-  /***********************************************************
+/***********************************************************
  * 1) SESSION COOKIE HELPERS
  ************************************************************/
-
 // ✅ Function: Retrieve a session cookie value
 function getSessionCookie(name) {
     let cookies = document.cookie.split('; ');
@@ -696,27 +618,40 @@ function getSessionCookie(name) {
     }
     return "";
 }
-
 // ✅ Function: Set a session cookie with expiration
 function setSessionCookie(name, value) {
     document.cookie = `${name}=${encodeURIComponent(value)}; path=/; SameSite=Lax; max-age=86400`; // Expires in 1 day
 }
 
+/***********************************************************
+ * 1b) PINK BORDER IF AGE=2..15
+ ************************************************************/
+function applyPinkBorderIfAge2to15() {
+    let age = parseInt(getSessionCookie("age"), 10);
+    let container = document.querySelector(".content-container");
+    if (!container) return; // If not found, do nothing
+
+    if (!isNaN(age) && age >= 2 && age <= 15) {
+        console.log("✅ Age is 2..15 => Pink border");
+        container.style.border = "3px solid #ffc0cb";
+    } else {
+        console.log("✅ Age not 2..15 => Black border");
+        container.style.border = "3px solid black";
+    }
+}
 
 /***********************************************************
  * 2) BACKGROUND + HEADER TITLE
  ************************************************************/
-
 // ✅ Function: Update Background Color Based on Burn Type
 function updateBackgroundColor() {
     setTimeout(() => {
-        let burnType = getSessionCookie("selectedIcon") || "thermal"; // Default to thermal
+        let burnType = getSessionCookie("selectedIcon") || "thermal";
         let colors = {
             "thermal": "#800000",
             "chemical": "#90EE90",
             "electrical": "#ADD8E6"
         };
-
         if (colors[burnType]) {
             document.body.style.backgroundColor = colors[burnType];
         }
@@ -727,49 +662,38 @@ function updateBackgroundColor() {
 function updateHeaderTitle() {
     let selectedIcon = getSessionCookie("selectedIcon");
     let headerElement = document.querySelector(".header");
-
     if (headerElement) {
         headerElement.innerHTML = selectedIcon
             ? `<u>${selectedIcon.toUpperCase()} BURN</u><br> Consult Summary`
-            : "<u>THERMAL BURN</u><br> Consult Summary"; // Default if no icon is selected
+            : "<u>THERMAL BURN</u><br> Consult Summary";
     }
 }
-
 
 /***********************************************************
  * 3) TBSA FIELDS
  ************************************************************/
-
-// ✅ Function: Populate Input Fields from Cookies (Fields 1-7) & Calculate TBSA Total
+// ✅ Function: Populate Input Fields from Cookies & Calculate TBSA Total
 function populateFieldsFromCookies() {
-    let storedTBSA = getSessionCookie("adultTBSA"); // Retrieve TBSA data from cookies
+    let storedTBSA = getSessionCookie("adultTBSA");
     let totalTBSA = 0;
-
     if (storedTBSA) {
         try {
             let tbsaData = JSON.parse(storedTBSA);
-
             for (let i = 1; i <= 7; i++) {
                 let fieldName = `field${i}`;
                 let inputField = document.querySelector(`.input-field.${fieldName}`);
-
                 if (inputField) {
-                    let value = tbsaData[fieldName] || "0%"; // Use stored value or default to "0%"
+                    let value = tbsaData[fieldName] || "0%";
                     inputField.value = value;
-                    inputField.readOnly = true; // Ensure it's non-editable
-
-                    // ✅ Add value to total (removing '%')
+                    inputField.readOnly = true;
                     totalTBSA += parseFloat(value.replace("%", "")) || 0;
                 }
             }
-
-            // ✅ Display Total TBSA in Field 8
             let totalField = document.querySelector(".input-field.field8");
             if (totalField) {
-                totalField.value = totalTBSA.toFixed(1) + "%"; // ✅ Show as percentage
-                totalField.readOnly = true; // ✅ Make non-editable
+                totalField.value = totalTBSA.toFixed(1) + "%";
+                totalField.readOnly = true;
             }
-
         } catch (error) {
             console.error("❌ Error parsing TBSA cookie:", error);
         }
@@ -778,11 +702,9 @@ function populateFieldsFromCookies() {
     }
 }
 
-
 /***********************************************************
  * 4) POPUP CONTROL
  ************************************************************/
-
 // ✅ Function: Open a step popup
 function openPopup(stepId) {
     document.getElementById(stepId).style.display = "block";
@@ -790,18 +712,12 @@ function openPopup(stepId) {
 
 // ✅ Function: Close Step 1 Popup (Requires Answers for Both Questions)
 function closeStep1Popup() {
-    // We assume Step 1 has two separate radio questions:
-    //  - name="fullThickness" (yes/no)
-    //  - name="partialThickness" (yes/no)
     let fullThicknessChecked = document.querySelector('input[name="fullThickness"]:checked');
     let partialThicknessChecked = document.querySelector('input[name="partialThickness"]:checked');
-
     if (!fullThicknessChecked || !partialThicknessChecked) {
         alert("❌ You must select an answer for both questions before proceeding.");
-        return; // Stops from closing
+        return;
     }
-
-    // If both answered, proceed
     closePopup("stepPopup1", 1);
 }
 
@@ -812,30 +728,22 @@ function closePopup(stepId, stepNumber) {
     document.getElementById(stepId).style.display = "none";
 }
 
-
 /***********************************************************
  * 5) RADIO / CHECKBOX SAVING & RESTORING
  ************************************************************/
-
 // ✅ Function: Save Radio + Checkbox State for a Given Step
 function saveStepResponses(stepId) {
-    // Grab both radio and checkbox inputs for this step
     let inputs = document.querySelectorAll(`#${stepId} input[type="radio"], #${stepId} input[type="checkbox"]`);
     let stepData = {};
-
     inputs.forEach(input => {
         if (input.type === "radio") {
-            // For radio, store which value is selected
             if (input.checked) {
                 stepData[input.name] = input.value;
             }
         } else if (input.type === "checkbox") {
-            // For checkboxes, store "checked" or "unchecked"
             stepData[input.name] = input.checked ? "checked" : "unchecked";
         }
     });
-
-    // Store the data in a session cookie
     setSessionCookie(stepId, JSON.stringify(stepData));
 }
 
@@ -845,10 +753,8 @@ function restoreStepResponses(stepId) {
     if (storedData) {
         let stepData = JSON.parse(storedData);
         let inputs = document.querySelectorAll(`#${stepId} input[type="radio"], #${stepId} input[type="checkbox"]`);
-
         inputs.forEach(input => {
             if (input.type === "radio") {
-                // Check if this input’s name matches the stored value
                 if (stepData[input.name] === input.value) {
                     input.checked = true;
                 }
@@ -861,27 +767,20 @@ function restoreStepResponses(stepId) {
     }
 }
 
-
 /***********************************************************
  * 6) STEP STATUS + NAVIGATION
  ************************************************************/
-
 // ✅ Function: Mark Step as "COMPLETED" or "PENDING"
 function updateStepStatus(stepNumber) {
     let stepElement = document.getElementById(`stepStatus${stepNumber}`);
-
-    // For simplicity, we consider a step "COMPLETED" if ANY radio/checkbox is checked.
-    // (Step 1 specifically checks each question in closeStep1Popup() before allowing closure.)
     let inputs = document.querySelectorAll(`#stepPopup${stepNumber} input[type="radio"], #stepPopup${stepNumber} input[type="checkbox"]`);
     let isCompleted = Array.from(inputs).some(input => input.checked);
-
     if (stepElement) {
         stepElement.innerText = isCompleted ? "COMPLETED" : "PENDING";
         stepElement.style.color = isCompleted ? "darkgreen" : "red";
         stepElement.style.fontWeight = "bold";
     }
-
-    enableNextButton(); // ✅ Check if all steps are completed
+    enableNextButton();
 }
 
 // ✅ Function: Disable Next Button Initially
@@ -897,8 +796,6 @@ function disableNextButton() {
 function enableNextButton() {
     let nextBtn = document.getElementById("nextBtn");
     if (!nextBtn) return;
-
-    // ✅ Check if all 4 steps have "COMPLETED" status
     let allCompleted = true;
     for (let i = 1; i <= 4; i++) {
         let stepStatus = document.getElementById(`stepStatus${i}`);
@@ -907,8 +804,6 @@ function enableNextButton() {
             break;
         }
     }
-
-    // ✅ Enable Next Button only if all steps are completed
     if (allCompleted) {
         nextBtn.style.pointerEvents = "auto";
         nextBtn.style.opacity = "1";
@@ -918,11 +813,9 @@ function enableNextButton() {
     }
 }
 
-
 /***********************************************************
  * 7) PREV / NEXT BUTTONS
  ************************************************************/
-
 // ✅ Function: Handle Previous Button Click
 function setupPreviousButton() {
     let prevBtn = document.getElementById("prevBtn");
@@ -930,17 +823,15 @@ function setupPreviousButton() {
         prevBtn.addEventListener("click", function () {
             let burnType = getSessionCookie("selectedIcon"); 
             if (burnType === "electrical") {
-                // If "electrical" was saved in the cookie, go to 1000_volts
                 window.location.href = "https://concussed8.github.io/Android-App/pages/voltage/1000_volts.html";
             } else {
-                // Otherwise, go back to modified_parkland
                 window.location.href = "https://concussed8.github.io/Android-App/pages/modified_parkland/parkland.html";
             }
         });
     }
 }
 
-// ✅ Function: Handle Next Button Click (unchanged)
+// ✅ Function: Handle Next Button Click
 function setupNextButton() {
     let nextBtn = document.getElementById("nextBtn");
     if (nextBtn) {
@@ -950,12 +841,9 @@ function setupNextButton() {
     }
 }
 
-
 /***********************************************************
  * 8) EVENT LISTENERS ON BUTTONS
  ************************************************************/
-
-// ✅ Attach Event Listeners to Step Buttons
 document.getElementById("step1").addEventListener("click", function () {
     openPopup("stepPopup1");
 });
@@ -969,7 +857,6 @@ document.getElementById("step4").addEventListener("click", function () {
     openPopup("stepPopup4");
 });
 
-// ✅ Attach Event Listeners to Close Buttons
 document.querySelector("#stepPopup1 .close-popup").addEventListener("click", closeStep1Popup);
 document.querySelector("#stepPopup2 .close-popup").addEventListener("click", function () {
     closePopup("stepPopup2", 2);
@@ -981,12 +868,14 @@ document.querySelector("#stepPopup4 .close-popup").addEventListener("click", fun
     closePopup("stepPopup4", 4);
 });
 
-
 /***********************************************************
  * 9) ON PAGE LOAD
  ************************************************************/
-
 document.addEventListener("DOMContentLoaded", function () {
+    // 1) Pink border logic
+    applyPinkBorderIfAge2to15();
+
+    // 2) Then do your other dynamic updates
     updateBackgroundColor();
     updateHeaderTitle();
     disableNextButton();
@@ -1001,23 +890,15 @@ document.addEventListener("DOMContentLoaded", function () {
     populateFieldsFromCookies();
 });
 
-
 /***********************************************************
  * 10) ORIENTATION CHANGES
  ************************************************************/
-
-// ✅ Listen for Orientation Changes
 window.addEventListener("resize", checkOrientation);
 window.addEventListener("orientationchange", checkOrientation);
 
-// You will need your checkOrientation() function, 
-// or remove these lines if unused.
 function checkOrientation() {
-    // Example:
     // if(window.innerWidth < window.innerHeight) { ... }
 }
-
-       </script>
-
+</script>
 </body>
 </html>
