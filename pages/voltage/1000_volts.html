@@ -227,15 +227,16 @@
     /* ==============================
        4) Previous & Next Buttons
        ============================== */
-    function setupPreviousButton() {
-      let prevBtn = document.getElementById("prevBtn");
-      if (prevBtn) {
-        prevBtn.addEventListener("click", function() {
-          // Example: Go back in history
-          window.history.back();
-        });
-      }
-    }
+ function setupPreviousButton() {
+  let prevBtn = document.getElementById("prevBtn");
+  if (prevBtn) {
+    prevBtn.addEventListener("click", function() {
+      // Redirect directly to the parkland page
+      window.location.href = "https://concussed8.github.io/Android-App/pages/modified_parkland/parkland.html";
+    });
+  }
+}
+
 
     function setupNextButton() {
       let nextBtn = document.getElementById("nextBtn");
