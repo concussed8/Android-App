@@ -485,16 +485,28 @@
       }
     }
 
-    // Function to handle Next Button Click (Redirect to next page)
-    function handleNextButton() {
-      let nextBtn = document.getElementById("nextBtn");
-      if (nextBtn) {
-        nextBtn.addEventListener("click", function () {
-          console.log("Navigating to Next Page: Modified Parkland Calculation Page");
-          window.location.href = "https://concussed8.github.io/Android-App/pages/voltage/1000_volts.html";
-        });
+ // Function to handle Next Button Click (Redirect to next page)
+function handleNextButton() {
+  let nextBtn = document.getElementById("nextBtn");
+  if (nextBtn) {
+    nextBtn.addEventListener("click", function () {
+      // 1) Check burn type cookie
+      let burnType = getSessionCookie("selectedIcon");
+      console.log("Next button clicked. Burn type is:", burnType);
+
+      // 2) If electrical, go to 1000_volts.html
+      if (burnType === "electrical") {
+        console.log("Electrical burn selected. Redirecting to 1000_volts page...");
+        window.location.href = "https://concussed8.github.io/Android-App/pages/voltage/1000_volts.html";
+      } else {
+        // 3) Otherwise, go to consult
+        console.log("Non-electrical burn. Navigating to consult page...");
+        window.location.href = "https://concussed8.github.io/Android-App/pages/consult/consult.html";
       }
-    }
+    });
+  }
+}
+
 
     // Run all functions when the page loads
     document.addEventListener("DOMContentLoaded", function () {
