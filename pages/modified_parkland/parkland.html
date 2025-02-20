@@ -5,291 +5,258 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
   <title>Fluid Resuscitation</title>
   <style>
-/* ==============================
-   General Page Layout & Styling
-   ============================== */
+    /* ==============================
+       General Page Layout & Styling
+       ============================== */
 
-/* Ensure the body fills the viewport */
-body {
-  margin: 0; /* Removes default browser margin */
-  padding: 0; /* Removes default browser padding */
-  display: flex; /* Enables flexible positioning */
-  flex-direction: column; /* Stacks elements vertically */
-  align-items: center; /* Centers elements horizontally */
-  justify-content: center; /* Centers elements vertically */
-  height: 100vh; /* Sets the height to fill the screen */
-  background-color: #800000; /* Default background color (updates dynamically) */
-  overflow-y: auto; /* Allows vertical scrolling if content overflows */
-}
+    /* Ensure the body fills the viewport */
+    body {
+      margin: 0;
+      padding: 0;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      height: 100vh;
+      background-color: #800000; /* Default background color (updates dynamically) */
+      overflow-y: auto;
+    }
 
-/* Prevent landscape mode */
-@media screen and (orientation: landscape) {
-  body {
-    display: none; /* Hides everything when device is rotated to landscape */
-  }
-}
+    /* Prevent landscape mode */
+    @media screen and (orientation: landscape) {
+      body {
+        display: none;
+      }
+    }
 
+    /* ==============================
+       Main Page Title (Fixed at Top)
+       ============================== */
+    .main-header {
+      font-family: "Courier New", monospace;
+      font-size: 26px;
+      font-weight: bold;
+      color: white;
+      text-align: center;
+      position: fixed;
+      top: 0;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 100%;
+      max-width: 600px;
+      padding: 10px 0;
+      background-color: rgba(0, 0, 0, 0.2);
+      z-index: 1000;
+    }
 
+    /* Underline only "THERMAL BURN" */
+    .main-header span {
+      text-decoration: underline;
+    }
 
-/* ==============================
-   Main Page Title (Fixed at Top)
-   ============================== */
-.main-header {
-  font-family: "Courier New", monospace; /* Uses monospaced font */
-  font-size: 26px; /* Sets readable font size */
-  font-weight: bold; /* Makes text bold */
-  color: white; /* Sets text color */
-  text-align: center; /* Centers text horizontally */
-  position: fixed; /* Fixes the header at the top of the viewport */
-  top: 0; /* Ensures the header stays at the very top */
-  left: 50%; /* Centers the header horizontally */
-  transform: translateX(-50%); /* Ensures perfect centering */
-  width: 100%; /* Stretches across the entire width */
-  max-width: 600px; /* Prevents excessive stretching */
-  padding: 10px 0; /* Adds vertical padding */
-  background-color: rgba(0, 0, 0, 0.2); /* Optional: Slight background for readability */
-  z-index: 1000; /* Keeps it above other content */
-}
+    /* ==============================
+       Content Container (Below Header)
+       ============================== */
+    .content-container {
+      width: 80%;
+      max-width: 488px;
+      height: auto;
+      background-color: white;
+      border: 3px solid black;
+      border-radius: 8px;
+      padding: 20px;
+      text-align: center;
+      box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.5);
+      margin-top: -150px;
+    }
 
-/* Underline only "THERMAL BURN" */
-.main-header span {
-  text-decoration: underline; /* Underlines the text */
-}
+    @media (max-width: 768px) {
+      .content-container {
+        margin-top: -150px;
+      }
+    }
 
-/* ==============================
-   Content Container (Below Header)
-   ============================== */
-.content-container {
-  width: 80%; /* Responsive width */
-  max-width: 488px; /* Prevents excessive stretching */
-  height: auto; /* Adapts to content size */
-  background-color: white; /* Sets background color */
-  border: 3px solid black; /* Default border (updates dynamically) */
-  border-radius: 8px; /* Softens edges */
-  padding: 20px; /* Adds inner spacing */
-  text-align: center; /* Centers content */
-  box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.5); /* Adds subtle shadow */
-  
-  /* 🔽 Controls distance from the header */
-  margin-top: -150px; /* Pushes the container below the fixed header */
-}
+    /* ==============================
+       Container Header
+       ============================== */
+    .container-header {
+      font-family: Arial, sans-serif;
+      font-size: 22px;
+      font-weight: bold;
+      text-align: center;
+      color: #800000; /* Default color (updates dynamically) */
+      margin-bottom: 15px;
+    }
 
-/* Adjust for smaller screens */
-@media (max-width: 768px) {
-  .content-container {
-    margin-top: -150px; /* Slightly increases spacing for mobile */
-  }
-}
+    /* ==============================
+       Fluid Resuscitation Image
+       ============================== */
+    .fluid-image-container {
+      width: 100%;
+      text-align: center;
+      margin-bottom: 15px;
+    }
 
+    .fluid-image-container img {
+      width: 100%;
+      max-width: 320px;
+      height: auto;
+      display: block;
+      border-radius: 8px;
+      margin: 0 auto;
+    }
 
+    /* ==============================
+       Input Fields
+       ============================== */
+    .input-group {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      width: 100%;
+      margin-bottom: 12px;
+    }
 
-/* ==============================
-   Container Header
-   ============================== */
+    .input-group:last-child {
+      margin-bottom: 0;
+    }
 
-.container-header {
-  font-family: Arial, sans-serif; /* Sets a clean font */
-  font-size: 22px; /* Adjusts font size */
-  font-weight: bold; /* Makes the header stand out */
-  text-align: center; /* Centers text */
-  color: #800000; /* Default color (updates dynamically) */
-  margin-bottom: 15px; /* Adds spacing below */
-}
+    .input-group label {
+      font-size: 18px;
+      font-weight: bold;
+      padding: 8px 3%;
+      border-radius: 10px;
+      text-align: center;
+      white-space: nowrap;
+      display: inline-block;
+      width: 30%;
+    }
 
-/* ==============================
-   Fluid Resuscitation Image
-   ============================== */
+    .input-group input {
+      font-size: 18px;
+      font-weight: bold;
+      text-align: center;
+      border: none;
+      border-radius: 6px;
+      padding: 8px;
+      outline: none;
+      font-family: Arial, sans-serif;
+      width: 45%;
+    }
 
-/* Image container inside the content box */
-.fluid-image-container {
-  width: 100%; /* Makes image container match content width */
-  text-align: center; /* Centers image */
-  margin-bottom: 15px; /* Adds spacing below image */
-}
+    /* ==============================
+       Weight Input (Orange Box)
+       ============================== */
+    .weight-group {
+      background-color: #FFA500;
+      color: white;
+      width: 100%;
+      display: flex;
+      align-items: center;
+      padding: 8px 0;
+    }
 
-/* Image styling */
-.fluid-image-container img {
-  width: 100%; /* Makes image responsive */
-  max-width: 320px; /* Prevents excessive stretching */
-  height: auto; /* Keeps image aspect ratio */
-  display: block; /* Prevents unwanted spacing */
-  border-radius: 8px; /* Softens edges */
-  margin: 0 auto; /* Centers the image */
-}
+    .weight-group input {
+      background-color: white;
+      color: black;
+      border: 2px solid #FFA500;
+      width: 45%;
+      margin-right: 20px;
+    }
 
-/* ==============================
-   Input Fields
-   ============================== */
+    /* ==============================
+       TBSA Input (Light Blue Box)
+       ============================== */
+    .tbsa-group {
+      background-color: #66CCFF;
+      color: black;
+      width: 100%;
+      display: flex;
+      align-items: center;
+      padding: 8px 0;
+    }
 
-/* Wrapper for input fields */
-.input-group {
-  display: flex; /* Aligns label and input side by side */
-  align-items: center; /* Centers label and input vertically */
-  justify-content: space-between; /* Ensures even spacing */
-  width: 100%; /* Takes full width inside the container */
-  margin-bottom: 12px; /* Creates a gap between input groups */
-}
+    .tbsa-group input {
+      background-color: white;
+      color: black;
+      border: 2px solid #ADD8E6;
+      width: 45%;
+      margin-right: 20px;
+    }
 
-/* Ensures no extra margin at the bottom of the last input group */
-.input-group:last-child {
-  margin-bottom: 0;
-}
+    /* ==============================
+       Calculation Box
+       ============================== */
+    @keyframes blinkBorder {
+      0% { border-color: red; }
+      50% { border-color: transparent; }
+      100% { border-color: red; }
+    }
 
-/* Label Style - Responsive width */
-.input-group label {
-  font-size: 18px; /* Ensures readability */
-  font-weight: bold; /* Makes label stand out */
-  padding: 8px 3%; /* Dynamically adjusts padding */
-  border-radius: 10px; /* Softens edges */
-  text-align: center; /* Centers label text */
-  white-space: nowrap; /* Prevents text from wrapping */
-  display: inline-block; /* Ensures label retains width */
-  width: 30%; /* Label takes 30% of .content-container width */
-}
+    .calcbox {
+      background-color: #FFEE66;
+      color: black;
+      width: 100%;
+      display: flex;
+      align-items: center;
+      padding: 8px 0;
+      border: 6px dashed red;
+      margin-top: 25px;
+      animation: blinkBorder 1s step-start infinite;
+    }
 
-/* Input Field Style - Responsive width */
-.input-group input {
-  font-size: 18px; /* Ensures readability */
-  font-weight: bold; /* Makes input text distinct */
-  text-align: center; /* Centers text */
-  border: none; /* Removes default border */
-  border-radius: 6px; /* Softens edges */
-  padding: 8px; /* Adds internal spacing */
-  outline: none; /* Removes default focus outline */
-  font-family: Arial, sans-serif; /* Ensures consistency */
-  width: 45%; /* Input field takes 65% of .content-container width */
-}
+    .calcbox input {
+      background-color: white;
+      color: black;
+      border: 2px solid black;
+      width: 45%;
+      text-align: center;
+      font-size: 30px;
+      font-weight: bold;
+      margin-left: 20px;
+    }
 
-/* ==============================
-   Weight Input (Orange Box)
-   ============================== */
+    .calclabel {
+      font-size: 24px;
+      font-weight: bold;
+      color: black;
+      padding: 8px 3%;
+      border-radius: 10px;
+      text-align: center;
+      white-space: nowrap;
+      display: inline-block;
+      width: 30%;
+    }
 
-.weight-group {
-  background-color: #FFA500; /* Orange background */
-  color: white; /* White text for contrast */
-  width: 100%; /* Expands to full width */
-  display: flex; /* Aligns label and input */
-  align-items: center; /* Centers text vertically */
-  padding: 8px 0; /* Adds padding */
-}
+    /* ==============================
+       Navigation Buttons
+       ============================== */
+    .nav-buttons {
+      position: absolute;
+      bottom: 20px;
+      left: 50%;
+      transform: translateX(-50%);
+      display: flex;
+      justify-content: center;
+      width: 60vw;
+      max-width: 400px;
+      gap: 100px;
+      z-index: 1000;
+    }
 
-/* Orange input field */
-.weight-group input {
-  background-color: white; /* White background for readability */
-  color: black; /* Black text for contrast */
-  border: 2px solid #FFA500; /* Matches weight box */
-  width: 45%;
-   /* 🔽 Incrementally move the input box to the left */
-  margin-right: 20px; /* Adjust this value as needed */
-}
+    .nav-buttons img {
+      width: 100px;
+      height: 75px;
+      cursor: pointer;
+      border-radius: 10px;
+      opacity: 0.9;
+      transition: transform 0.2s ease;
+    }
 
-/* ==============================
-   TBSA Input (Light Blue Box)
-   ============================== */
-
-.tbsa-group {
-  background-color: #66CCFF; /* Light blue background */
-  color: black; /* Black text for contrast */
-  width: 100%; /* Expands to full width */
-  display: flex; /* Aligns label and input */
-  align-items: center; /* Centers text vertically */
-  padding: 8px 0; /* Adds padding */
-}
-
-/* Light blue input field */
-.tbsa-group input {
-  background-color: white; /* White background for readability */
-  color: black; /* Black text for contrast */
-  border: 2px solid #ADD8E6; /* Matches TBSA box */
-  width: 45%; /* Ensures proportional size */
-  
-  /* 🔽 Incrementally move the input box to the left */
-  margin-right: 20px; /* Adjust this value as needed */
-}
-
-/* ==============================
-   Calculation Box (Output Left, Label Right)
-   ============================== */
-@keyframes blinkBorder {
-  0% { border-color: red; }
-  50% { border-color: transparent; }
-  100% { border-color: red; }
-}
-
-.calcbox {
-  background-color: #FFEE66; /* Yellow background */
-  color: black; /* Black text for contrast */
-  width: 100%; /* Full width inside the container */
-  display: flex; /* Aligns input and label */
-  align-items: center; /* Centers text vertically */
-  padding: 8px 0; /* Adds padding inside */
-  border: 6px dashed red; /* Dashed border */
-  
-  /* 🔽 Adjust distance from the box above */
-  margin-top: 25px; /* Change this value to move the box up/down */
-
-  /* Animation */
-  animation: blinkBorder 1s step-start infinite;
-}
-
-
-/* Output field (left side) */
-.calcbox input {
-  background-color: white; /* White background for readability */
-  color: black; /* Black text */
-  border: 2px solid black; /* Solid border */
-  width: 45%; /* Matches other input field widths */
-  text-align: center; /* Centers text */
-  font-size: 30px; /* Large, readable font */
-  font-weight: bold; /* Makes text bold */
-  margin-left: 20px; /* 🔽 Change this value to move right */
-}
-
-/* Label on the right */
-.calclabel {
-  font-size: 24px; /* Readable font size */
-  font-weight: bold; /* Bold text */
-  color: black; /* Black text */
-  padding: 8px 3%; /* Adds horizontal padding */
-  border-radius: 10px; /* Softens edges */
-  text-align: center; /* Centers text */
-  white-space: nowrap; /* Prevents text wrapping */
-  display: inline-block; /* Maintains structure */
-  width: 30%; /* Label width */
-}
-
-/* ==============================
-   Navigation Buttons
-   ============================== */
-
-.nav-buttons {
-  position: absolute; /* Allows precise positioning */
-  bottom: 20px; /* Keeps buttons at the bottom */
-  left: 50%; /* Centers buttons horizontally */
-  transform: translateX(-50%); /* Ensures perfect centering */
-  display: flex; /* Aligns buttons in a row */
-  justify-content: center; /* Keeps even spacing */
-  width: 60vw; /* Responsive width */
-  max-width: 400px; /* Prevents excessive stretching */
-  gap: 100px; /* Creates spacing between buttons */
-  z-index: 1000; /* Ensures buttons stay on top */
-}
-
-/* Navigation Button Images */
-.nav-buttons img {
-  width: 100px; /* Sets button width */
-  height: 75px; /* Sets button height */
-  cursor: pointer; /* Indicates clickability */
-  border-radius: 10px; /* Softens button edges */
-  opacity: 0.9; /* Adds slight transparency */
-  transition: transform 0.2s ease; /* Smooth hover effect */
-}
-
-/* Button Click Effect */
-.nav-buttons img:active {
-  transform: scale(1.1); /* Slightly enlarges button */
-}
- </style>
+    .nav-buttons img:active {
+      transform: scale(1.1);
+    }
+  </style>
 </head>
 <body>
 
@@ -315,12 +282,12 @@ body {
       <label for="tbsa">% TBSA:</label>
       <input type="text" id="tbsa" readonly>
     </div>
-    <!-- Calculation Box (Output Left, Label Right) -->
-<div class="input-group calcbox">
-    <input type="text" id="calcOutput" readonly>
-    <label for="calcOutput" class="calclabel">mls/hr RL</label>
-</div>
 
+    <!-- Calculation Box (Output Left, Label Right) -->
+    <div class="input-group calcbox">
+      <input type="text" id="calcOutput" readonly>
+      <label for="calcOutput" class="calclabel">mls/hr RL</label>
+    </div>
   </div>
 
   <!-- Navigation Buttons -->
@@ -330,26 +297,26 @@ body {
   </div>
 
   <script>
-// Function to retrieve a session cookie value
-function getSessionCookie(name) {
-    let cookies = document.cookie.split('; ');
-    for (let cookie of cookies) {
+    // Function to retrieve a session cookie value
+    function getSessionCookie(name) {
+      let cookies = document.cookie.split('; ');
+      for (let cookie of cookies) {
         let [cookieName, cookieValue] = cookie.split('=');
         if (cookieName === name) {
-            return decodeURIComponent(cookieValue);
+          return decodeURIComponent(cookieValue);
         }
+      }
+      return "";
     }
-    return "";
-}
 
-// Function to set a session cookie
-function setSessionCookie(name, value) {
-    document.cookie = `${name}=${encodeURIComponent(value)}; path=/; SameSite=Lax; max-age=3600`; // 1-hour expiry
-}
+    // Function to set a session cookie
+    function setSessionCookie(name, value) {
+      document.cookie = `${name}=${encodeURIComponent(value)}; path=/; SameSite=Lax; max-age=3600`; // 1-hour expiry
+    }
 
-// Function to update background and container header color based on selected burn type
-function updateBackgroundColor() {
-    setTimeout(() => {
+    // Function to update background and container header color based on selected burn type
+    function updateBackgroundColor() {
+      setTimeout(() => {
         let burnType = getSessionCookie("selectedIcon");
 
         console.log("Applying Background Color for:", burnType);
@@ -358,185 +325,193 @@ function updateBackgroundColor() {
         let headerColor = "#800000";
 
         if (burnType) {
-            switch (burnType) {
-                case "thermal":
-                    backgroundColor = "#800000"; // Dark Red
-                    headerColor = "#800000";
-                    break;
-                case "chemical":
-                    backgroundColor = "#90EE90"; // Light Green
-                    headerColor = "#90EE90";
-                    break;
-                case "electrical":
-                    backgroundColor = "#ADD8E6"; // Light Blue
-                    headerColor = "#ADD8E6";
-                    break;
-                default:
-                    console.warn("Unexpected burn type:", burnType);
-            }
+          switch (burnType) {
+            case "thermal":
+              backgroundColor = "#800000"; // Dark Red
+              headerColor = "#800000";
+              break;
+            case "chemical":
+              backgroundColor = "#90EE90"; // Light Green
+              headerColor = "#90EE90";
+              break;
+            case "electrical":
+              backgroundColor = "#ADD8E6"; // Light Blue
+              headerColor = "#ADD8E6";
+              break;
+            default:
+              console.warn("Unexpected burn type:", burnType);
+          }
         }
 
         document.body.style.backgroundColor = backgroundColor;
         document.querySelector(".container-header").style.color = headerColor;
-    }, 200);
-}
+      }, 200);
+    }
 
-// Function to update the main page title dynamically
-function updateHeaderTitle() {
-    let burnType = getSessionCookie("selectedIcon");
-    let headerSpan = document.querySelector(".main-header span");
+    // Function to update the main page title dynamically
+    function updateHeaderTitle() {
+      let burnType = getSessionCookie("selectedIcon");
+      let headerSpan = document.querySelector(".main-header span");
 
-    if (burnType && headerSpan) {
+      if (burnType && headerSpan) {
         switch (burnType) {
-            case "thermal":
-                headerSpan.textContent = "THERMAL BURN";
-                break;
-            case "chemical":
-                headerSpan.textContent = "CHEMICAL BURN";
-                break;
-            case "electrical":
-                headerSpan.textContent = "ELECTRICAL BURN";
-                break;
-            default:
-                console.warn("Unexpected burn type:", burnType);
+          case "thermal":
+            headerSpan.textContent = "THERMAL BURN";
+            break;
+          case "chemical":
+            headerSpan.textContent = "CHEMICAL BURN";
+            break;
+          case "electrical":
+            headerSpan.textContent = "ELECTRICAL BURN";
+            break;
+          default:
+            console.warn("Unexpected burn type:", burnType);
         }
+      }
     }
-}
 
-// Function to display the correct fluid resuscitation image inside the container
-function displayFluidImage() {
-    let age = parseInt(getSessionCookie("age"), 10);
-    let burnType = getSessionCookie("selectedIcon");
-    let imagePath = "";
+    // Function to display the correct fluid resuscitation image inside the container
+    function displayFluidImage() {
+      let age = parseInt(getSessionCookie("age"), 10);
+      let burnType = getSessionCookie("selectedIcon");
+      let imagePath = "";
 
-    if (age >= 16) {
+      if (age >= 16) {
         if (burnType === "thermal" || burnType === "chemical") {
-            imagePath = "https://raw.githubusercontent.com/concussed8/Android-App/main/images/2mls_kg.png";
+          imagePath = "https://raw.githubusercontent.com/concussed8/Android-App/main/images/2mls_kg.png";
         } else if (burnType === "electrical") {
-            imagePath = "https://raw.githubusercontent.com/concussed8/Android-App/main/images/4mls_kg.png";
+          imagePath = "https://raw.githubusercontent.com/concussed8/Android-App/main/images/4mls_kg.png";
         }
-    } else {
+      } else {
         imagePath = "https://raw.githubusercontent.com/concussed8/Android-App/main/images/3mls_kg.png";
+      }
+
+      document.getElementById("fluidImage").src = imagePath;
+      console.log("Loaded Fluid Image:", imagePath);
     }
 
-    document.getElementById("fluidImage").src = imagePath;
-    console.log("Loaded Fluid Image:", imagePath);
-}
+    // Function to populate input fields with stored cookie values
+    function populateInputFields() {
+      let weightField = document.getElementById("weight");
+      let tbsaField = document.getElementById("tbsa");
 
-// Function to populate input fields with stored cookie values
-function populateInputFields() {
-    let weightField = document.getElementById("weight");
-    let tbsaField = document.getElementById("tbsa");
-
-    // Retrieve and set weight
-    let storedWeight = getSessionCookie("weight");
-    if (storedWeight) {
+      // Retrieve and set weight
+      let storedWeight = getSessionCookie("weight");
+      if (storedWeight) {
         weightField.value = storedWeight + " kg";
-    } else {
+      } else {
         console.warn("No weight found in cookies.");
-    }
+      }
 
-    // Retrieve and sum values for TBSA
-    let storedTBSA = getSessionCookie("adultTBSA");
-    if (storedTBSA) {
+      // Retrieve and sum values for TBSA
+      let storedTBSA = getSessionCookie("adultTBSA");
+      if (storedTBSA) {
         let tbsaData = JSON.parse(storedTBSA); // Convert back to object
         let totalTBSA = Object.values(tbsaData).reduce((sum, value) => {
-            let numericValue = parseFloat(value.replace("%", "")) || 0; // Extract number
-            return sum + numericValue;
+          let numericValue = parseFloat(value.replace("%", "")) || 0;
+          return sum + numericValue;
         }, 0);
 
         tbsaField.value = totalTBSA + "%";
-    } else {
+      } else {
         console.warn("No TBSA values found in cookies.");
+      }
     }
-}
 
-// Function to calculate and display the result in calcbox
-function calculateFluidResuscitation() {
-    let age = parseInt(getSessionCookie("age"), 10);
-    let burnType = getSessionCookie("selectedIcon");
-    let weight = parseFloat(getSessionCookie("weight"));
-    let storedTBSA = getSessionCookie("adultTBSA");
-    let totalTBSA = 0;
-    let result = 0;
+    // Function to calculate and display the result in calcbox
+    function calculateFluidResuscitation() {
+      let age = parseInt(getSessionCookie("age"), 10);
+      let burnType = getSessionCookie("selectedIcon");
+      let weight = parseFloat(getSessionCookie("weight"));
+      let storedTBSA = getSessionCookie("adultTBSA");
+      let totalTBSA = 0;
+      let result = 0;
 
-    if (storedTBSA) {
+      if (storedTBSA) {
         let tbsaData = JSON.parse(storedTBSA);
         totalTBSA = Object.values(tbsaData).reduce((sum, value) => {
-            let numericValue = parseFloat(value.replace("%", "")) || 0;
-            return sum + numericValue;
+          let numericValue = parseFloat(value.replace("%", "")) || 0;
+          return sum + numericValue;
         }, 0);
-    }
+      }
 
-    if (!isNaN(weight) && !isNaN(totalTBSA) && totalTBSA > 0) {
+      if (!isNaN(weight) && !isNaN(totalTBSA) && totalTBSA > 0) {
         if ((burnType === "thermal" || burnType === "chemical") && age >= 16) {
-            result = (2 * weight * totalTBSA) / 16;
+          // 2 ml/kg/%
+          result = (2 * weight * totalTBSA) / 16;
         } else if (age >= 2 && age <= 15) {
-            result = (3 * weight * totalTBSA) / 16;
+          // 3 ml/kg/%
+          result = (3 * weight * totalTBSA) / 16;
         } else if (burnType === "electrical" && age >= 16) {
-            result = (4 * weight * totalTBSA) / 16;
+          // 4 ml/kg/%
+          result = (4 * weight * totalTBSA) / 16;
         }
+      }
+
+      document.getElementById("calcOutput").value = result.toFixed(2);
     }
 
-    document.getElementById("calcOutput").value = result.toFixed(2);
-}
+    // ✅ Function: Handle Previous Button Click (Redirect Based on Age)
+    function handlePreviousButton() {
+      let prevBtn = document.getElementById("prevBtn");
 
-// ✅ Function: Handle Previous Button Click (Redirect Based on Age)
-function handlePreviousButton() {
-    let prevBtn = document.getElementById("prevBtn");
-
-    if (prevBtn) {
+      if (prevBtn) {
         prevBtn.addEventListener("click", function () {
-            let age = parseInt(getSessionCookie("age"), 10);
-            let prevPage = "";
+          let age = parseInt(getSessionCookie("age"), 10);
+          let prevPage = "";
 
-            if (age >= 10) {
-                prevPage = "https://concussed8.github.io/Android-App/pages/adult_TBSA/adult_tbsa.html";
-            } else if (age >= 2 && age <= 9) {
-                prevPage = `https://concussed8.github.io/Android-App/pages/peds_tbsa/${age}y_tbsa.html`;
-            }
+          if (age >= 10) {
+            prevPage = "https://concussed8.github.io/Android-App/pages/adult_TBSA/adult_tbsa.html";
+          } else if (age >= 2 && age <= 9) {
+            prevPage = `https://concussed8.github.io/Android-App/pages/peds_tbsa/${age}y_tbsa.html`;
+          }
 
-            if (prevPage) {
-                console.log("Redirecting to:", prevPage);
-                window.location.href = prevPage;
-            } else {
-                console.warn("No valid age-based redirection found.");
-            }
+          if (prevPage) {
+            console.log("Redirecting to:", prevPage);
+            window.location.href = prevPage;
+          } else {
+            console.warn("No valid age-based redirection found.");
+          }
         });
+      }
     }
-}
 
-// ✅ Initialize Previous Button Logic on Page Load
-document.addEventListener("DOMContentLoaded", function () {
-    handlePreviousButton();
-});
+    // ✅ Initialize Previous Button Logic on Page Load
+    document.addEventListener("DOMContentLoaded", function () {
+      handlePreviousButton();
+    });
 
+    // Function to handle Next Button Click (Redirect to next page)
+    function handleNextButton() {
+      let nextBtn = document.getElementById("nextBtn");
 
-// Function to handle Next Button Click (Redirect to next page)
-function handleNextButton() {
-    let nextBtn = document.getElementById("nextBtn");
-
-    if (nextBtn) {
+      if (nextBtn) {
         nextBtn.addEventListener("click", function () {
+          // 1) Check burn type
+          let burnType = getSessionCookie("selectedIcon");
+          // 2) If electrical, go to 1000_volts
+          if (burnType === "electrical") {
+            console.log("Electrical burn selected. Redirecting to 1000_volts page...");
+            window.location.href = "https://concussed8.github.io/Android-App/pages/voltage/1000_volts";
+          } else {
+            // 3) Otherwise proceed to consult
             console.log("Navigating to Next Page: Consult Page");
             window.location.href = "https://concussed8.github.io/Android-App/pages/consult/consult.html";
+          }
         });
+      }
     }
-}
 
-// Run all functions when the page loads
-document.addEventListener("DOMContentLoaded", function () {
-    updateBackgroundColor();
-    updateHeaderTitle();
-    displayFluidImage();
-    populateInputFields();
-    calculateFluidResuscitation(); // ✅ Ensures calculation runs on page load
-    handlePreviousButton(); // ✅ Handles navigation correctly
-    handleNextButton();
-});
-
-
-</script>
-
+    // Run all functions when the page loads
+    document.addEventListener("DOMContentLoaded", function () {
+      updateBackgroundColor();
+      updateHeaderTitle();
+      displayFluidImage();
+      populateInputFields();
+      calculateFluidResuscitation(); // ✅ Ensures calculation runs on page load
+      handlePreviousButton();        // ✅ Handles navigation correctly
+      handleNextButton();            // <-- Updated next button logic
+    });
+  </script>
 </body>
 </html>
