@@ -46,55 +46,84 @@
        3) MAIN CONTENT CONTAINER
        ============================================================= */
     .content-container {
-      width: 80%;               /* Container width (relative to viewport) */
-      max-width: 488px;         /* Prevents container from becoming too wide */
-      background-color: white;  /* Background color for the container */
+      width: 80%;
+      max-width: 488px;
+      background-color: white;
       border: 3px solid black;  /* Default black border (pink if age=2..15) */
-      border-radius: 8px;       /* Rounds corners */
-      margin-top: 10px;         /* Spaces it below the header */
-      padding: 20px;            /* Internal padding around content */
-      display: flex;            /* Use flex to control alignment of the image + summary */
-      flex-direction: column;   /* Stacks items vertically */
-      align-items: center;      /* Centers items horizontally inside container */
-      justify-content: flex-start; /* Positions items at the top by default */
+      border-radius: 8px;
+      margin-top: 10px;
+      padding: 20px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: flex-start;
     }
 
     /* =============================================================
-       4) IMAGE STYLING FOR criticall.jpg
+       4) BANNER TEXT ABOVE THE IMAGE
        ============================================================= */
-    .criticall-image {
-      width: 100%;              /* Full container width */
-      max-width: 300px;         /* Prevent the image from exceeding 300px in width */
-      height: auto;             /* Preserves aspect ratio */
-      border: 2px solid #444;   /* Dark gray border around the image */
-      border-radius: 10px;      /* Rounds corners */
-      background-color: #f0f0f0;/* Fills behind transparent areas (if any) */
-      margin-top: 10px;         /* Spacing above image */
-      margin-bottom: 10px;      /* Spacing below image */
-      cursor: pointer;          /* Changes cursor on hover (optional) */
+    .consult-required {
+      /* Example text styling */
+      font-size: 20px;          /* adjust size */
+      color: darkblue;          /* text color */
+      font-family: Arial, sans-serif; /* choose your font */
+      font-weight: bold;        /* bold text */
+      margin-bottom: 10px;      /* space below text before image */
+      text-align: center;
     }
 
     /* =============================================================
-       5) SUMMARY STYLING
+       5) PULSE ANIMATION FOR CRITICALL.JPG
+       ============================================================= */
+    @keyframes pulseImage {
+      0%   { transform: scale(1);   opacity: 1;   }
+      50%  { transform: scale(1.05);opacity: 0.9; }
+      100% { transform: scale(1);   opacity: 1;   }
+    }
+
+    .criticall-image {
+      width: 100%;
+      max-width: 300px;
+      height: auto;
+      border: 2px solid #444;   
+      border-radius: 10px;      
+      background-color: #f0f0f0;
+      margin-top: 10px;        
+      margin-bottom: 10px;     
+      cursor: pointer;         
+
+      /* Pulse Animation Controls */
+      animation: pulseImage 1.5s ease-in-out infinite; 
+      /* 
+        - 1.5s = duration of one full pulse
+        - infinite = loop forever
+        - 'ease-in-out' = smooth acceleration/deceleration 
+      */
+    }
+
+    /* =============================================================
+       6) SUMMARY LIST (BULLETED, RED, BOLD)
        ============================================================= */
     .consult-summary {
-      /* Container for the textual summary below the image */
       width: 100%;
-      font-family: Arial, sans-serif;
-      font-size: 16px;
-      line-height: 1.4;
-      /* Optionally add margin/padding if you need spacing from the image */
+      /* Additional spacing from the image if desired: */
       margin-top: 10px;
     }
-    .summary-heading {
+
+    .consult-summary ul {
+      list-style-type: disc; /* bullet style */
+      margin: 0;
+      padding-left: 1.2em;  /* space for bullets to appear */
+    }
+
+    .consult-summary li {
+      color: red;           /* bold red text for summary lines */
       font-weight: bold;
-      margin-top: 1em;
-      margin-bottom: 0.5em;
-      text-decoration: underline;
+      margin-bottom: 5px;   /* space between bullet items */
     }
 
     /* =============================================================
-       6) NAVIGATION BUTTONS
+       7) NAVIGATION BUTTONS
        ============================================================= */
     .nav-buttons {
       position: absolute;
@@ -130,17 +159,25 @@
     Consult Summary
   </div>
 
-  <!-- CONTENT CONTAINER: Criticall.jpg + Summary -->
+  <!-- CONTENT CONTAINER -->
   <div class="content-container">
-    <!-- Criticall Image from GitHub Directory -->
+    
+    <!-- BANNER TEXT ABOVE THE IMAGE -->
+    <div class="consult-required">
+      ***BURN CENTRE CONSULT REQUIRED***
+    </div>
+
+    <!-- CRITICALL.JPG (PULSING) -->
     <img
       class="criticall-image"
       src="https://raw.githubusercontent.com/concussed8/Android-App/main/images/criticall.jpg"
       alt="Criticall Burn Image"
     >
 
-    <!-- Where we display the answers summary -->
-    <div class="consult-summary" id="consultSummary"></div>
+    <!-- BULLETED SUMMARY -->
+    <div class="consult-summary" id="consultSummary">
+      <!-- We'll build a UL with red bullets in JS -->
+    </div>
   </div>
 
   <!-- NAVIGATION ICONS (DIRECTORIES ONLY, NO FILENAMES) -->
@@ -220,7 +257,7 @@
     }
 
     /***********************************************************
-     * 4) RETRIEVE STEP DATA & BUILD SUMMARY
+     * 4) RETRIEVE STEP DATA
      ************************************************************/
     function getStepData(stepId) {
       let data = getSessionCookie(stepId);
@@ -233,39 +270,40 @@
       }
     }
 
+    /***********************************************************
+     * 5) BUILD SUMMARY
+     ************************************************************/
     function buildConsultSummary() {
       let container = document.getElementById("consultSummary");
       if (!container) return;
 
-      // Clear any previous lines
-      container.innerHTML = "";
+      // We'll place bullet items inside a <ul>
+      let ul = document.createElement("ul");
 
-      let summaryLines = [];
-
-      // STEP 1
+      // Step 1
       let step1Data = getStepData("stepPopup1");
       if (step1Data) {
         if (step1Data["fullThickness"] === "yes") {
-          summaryLines.push("Full thickness burns present");
+          ul.appendChild(makeListItem("Full thickness burns present"));
         }
         if (step1Data["partialThickness"] === "yes") {
-          summaryLines.push("Partial thickness burns ≥ 10% TBSA");
+          ul.appendChild(makeListItem("Partial thickness burns ≥ 10% TBSA"));
         }
       }
 
-      // STEP 2
+      // Step 2
       let step2Data = getStepData("stepPopup2");
       if (step2Data && step2Data["sensitive"] === "yes") {
-        summaryLines.push("Full/Partial thickness burns involving FACE, HANDS, GENITALIA, FEET, PERINEUM, or JOINT(S)");
+        ul.appendChild(makeListItem("Full/Partial thickness burns involving FACE, HANDS, GENITALIA, FEET, PERINEUM, or JOINT(S)"));
       }
 
-      // STEP 3
+      // Step 3
       let step3Data = getStepData("stepPopup3");
       if (step3Data && step3Data["inhalation"] === "yes") {
-        summaryLines.push("INHALATION injury present");
+        ul.appendChild(makeListItem("INHALATION injury present"));
       }
 
-      // STEP 4
+      // Step 4
       let step4Data = getStepData("stepPopup4");
       if (step4Data) {
         let highRiskChecks = [];
@@ -275,20 +313,21 @@
           }
         }
         if (highRiskChecks.length > 0) {
-          summaryLines.push("<span class='summary-heading'>Comorbidities:</span>");
-          // If "none" was checked, you might show only "None"
+          // Add heading as a list item or separate line
+          ul.appendChild(makeListItem("Comorbidities:", true)); // pass true if you want it distinct
+
           if (highRiskChecks.includes("none")) {
-            summaryLines.push("None");
+            ul.appendChild(makeListItem("None"));
           } else {
-            // Convert each key to display text
-            let mapped = highRiskChecks.map(item => mapCheckboxToText(item));
-            summaryLines.push(mapped.join(", "));
+            let mapped = highRiskChecks.map(mapCheckboxToText);
+            mapped.forEach(txt => ul.appendChild(makeListItem(txt)));
           }
         }
       }
 
-      // Finally, put lines in the container
-      container.innerHTML = summaryLines.join("<br>");
+      // Put the <ul> inside container
+      container.innerHTML = "";
+      container.appendChild(ul);
     }
 
     // Convert Step 4 keys to user-friendly text
@@ -317,8 +356,21 @@
       }
     }
 
+    // Helper to create a <li> element in bold red text
+    function makeListItem(text, isHeading = false) {
+      let li = document.createElement("li");
+      li.innerHTML = text;
+      if (isHeading) {
+        // Could style differently if you want the heading bullet or no bullet
+        li.style.listStyleType = "none"; // or keep bullet
+        li.style.textDecoration = "underline";
+        li.style.marginTop = "10px";
+      }
+      return li;
+    }
+
     /***********************************************************
-     * 5) NAV BUTTONS
+     * 6) NAV BUTTONS
      ************************************************************/
     function setupPrevButton() {
       let prevBtn = document.getElementById("prevBtn");
@@ -337,17 +389,15 @@
     }
 
     /***********************************************************
-     * 6) ON DOM LOAD
+     * 7) ON DOM LOAD
      ************************************************************/
     document.addEventListener("DOMContentLoaded", function() {
-      updateBackgroundColor();
-      applyPinkBorderIfAge2to15();
-      updateHeaderTitle();
+      updateBackgroundColor();        // dynamic BG color
+      applyPinkBorderIfAge2to15();    // pink border if age=2..15
+      updateHeaderTitle();            // dynamic burn type
       setupPrevButton();
       setupNextButton();
-
-      // Build the consult summary from Step 1–4 answers
-      buildConsultSummary();
+      buildConsultSummary();          // build bullet summary
     });
   </script>
 </body>
