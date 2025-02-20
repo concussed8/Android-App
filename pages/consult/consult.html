@@ -928,12 +928,19 @@ function setupPreviousButton() {
     let prevBtn = document.getElementById("prevBtn");
     if (prevBtn) {
         prevBtn.addEventListener("click", function () {
-          window.location.href = "https://concussed8.github.io/Android-App/pages/modified_parkland/parkland.html";
+            let burnType = getSessionCookie("selectedIcon"); 
+            if (burnType === "electrical") {
+                // If "electrical" was saved in the cookie, go to 1000_volts
+                window.location.href = "https://concussed8.github.io/Android-App/pages/voltage/1000_volts.html";
+            } else {
+                // Otherwise, go back to modified_parkland
+                window.location.href = "https://concussed8.github.io/Android-App/pages/modified_parkland/parkland.html";
+            }
         });
     }
 }
 
-// ✅ Function: Handle Next Button Click
+// ✅ Function: Handle Next Button Click (unchanged)
 function setupNextButton() {
     let nextBtn = document.getElementById("nextBtn");
     if (nextBtn) {
