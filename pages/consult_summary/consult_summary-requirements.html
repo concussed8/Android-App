@@ -1,0 +1,354 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+  <title>Burn Management Checklist</title>
+  <style>
+    /* =============================================================
+       1) GENERAL LAYOUT
+       ============================================================= */
+    html, body {
+      margin: 0;
+      padding: 0;
+      width: 100vw;
+      height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      background-color: white; /* Dynamically overridden if needed */
+    }
+
+    @media screen and (orientation: landscape) {
+      /* Hides everything if device is in landscape */
+      body {
+        display: none;
+      }
+    }
+
+    /* =============================================================
+       2) FIXED HEADER
+       ============================================================= */
+    .header {
+      width: 100%;
+      text-align: center;
+      font-size: 8vw;
+      font-weight: bold;
+      font-family: "Courier New", Courier, monospace;
+      color: white; /* Contrasts against dynamic BG if used */
+      z-index: 1000;
+      padding-top: 5px;
+      padding-bottom: 10px;
+      background-color: rgba(0, 0, 0, 0.2);
+    }
+
+    /* =============================================================
+       3) MAIN CONTENT CONTAINER
+       ============================================================= */
+    .content-container {
+      width: 80%;               /* Container width (relative to viewport) */
+      max-width: 488px;         /* Prevents container from becoming too wide */
+      background-color: white;  /* Background color for the container */
+      border: 3px solid black;  /* Default black border (pink if age=2..15) */
+      border-radius: 8px;       /* Rounds corners */
+      margin-top: 10px;         /* Spaces it below the header */
+      padding: 20px;            /* Internal padding around content */
+      display: flex;            /* Use flex to control alignment of the image + summary */
+      flex-direction: column;   /* Stacks items vertically */
+      align-items: center;      /* Centers items horizontally inside container */
+      justify-content: flex-start; /* Positions items at the top by default */
+    }
+
+    /* =============================================================
+       4) IMAGE STYLING FOR criticall.jpg
+       ============================================================= */
+    .criticall-image {
+      width: 100%;              /* Full container width */
+      max-width: 300px;         /* Prevent the image from exceeding 300px in width */
+      height: auto;             /* Preserves aspect ratio */
+      border: 2px solid #444;   /* Dark gray border around the image */
+      border-radius: 10px;      /* Rounds corners */
+      background-color: #f0f0f0;/* Fills behind transparent areas (if any) */
+      margin-top: 10px;         /* Spacing above image */
+      margin-bottom: 10px;      /* Spacing below image */
+      cursor: pointer;          /* Changes cursor on hover (optional) */
+    }
+
+    /* =============================================================
+       5) SUMMARY STYLING
+       ============================================================= */
+    .consult-summary {
+      /* Container for the textual summary below the image */
+      width: 100%;
+      font-family: Arial, sans-serif;
+      font-size: 16px;
+      line-height: 1.4;
+      /* Optionally add margin/padding if you need spacing from the image */
+      margin-top: 10px;
+    }
+    .summary-heading {
+      font-weight: bold;
+      margin-top: 1em;
+      margin-bottom: 0.5em;
+      text-decoration: underline;
+    }
+
+    /* =============================================================
+       6) NAVIGATION BUTTONS
+       ============================================================= */
+    .nav-buttons {
+      position: absolute;
+      bottom: 20px;
+      display: flex;
+      width: 60vw;
+      max-width: 400px;
+      justify-content: center;
+      align-items: center;
+      gap: 100px;
+      left: 50%;
+      transform: translateX(-50%);
+      z-index: 1000;
+    }
+    .nav-buttons img {
+      width: 100px;
+      height: 75px;
+      cursor: pointer;
+      border-radius: 10px;
+      opacity: 0.9;
+      transition: transform 0.2s ease;
+    }
+    .nav-buttons img:active {
+      transform: scale(1.1);
+    }
+  </style>
+</head>
+<body>
+
+  <!-- HEADER (DYNAMIC BURN TYPE + "Consult Summary") -->
+  <div class="header">
+    <span id="dynamicHeader"></span><br>
+    Consult Summary
+  </div>
+
+  <!-- CONTENT CONTAINER: Criticall.jpg + Summary -->
+  <div class="content-container">
+    <!-- Criticall Image from GitHub Directory -->
+    <img
+      class="criticall-image"
+      src="https://raw.githubusercontent.com/concussed8/Android-App/main/images/criticall.jpg"
+      alt="Criticall Burn Image"
+    >
+
+    <!-- Where we display the answers summary -->
+    <div class="consult-summary" id="consultSummary"></div>
+  </div>
+
+  <!-- NAVIGATION ICONS (DIRECTORIES ONLY, NO FILENAMES) -->
+  <div class="nav-buttons">
+    <img src="https://raw.githubusercontent.com/concussed8/Android-App/main/images/prev.png" id="prevBtn" alt="Previous">
+    <img src="https://raw.githubusercontent.com/concussed8/Android-App/main/images/next.png" id="nextBtn" alt="Next">
+  </div>
+
+  <script>
+    /***********************************************************
+     * 1) COOKIE HELPERS
+     ************************************************************/
+    function getSessionCookie(name) {
+      let cookies = document.cookie.split('; ');
+      for (let cookie of cookies) {
+        let [cookieName, cookieValue] = cookie.split('=');
+        if (cookieName === name) {
+          return decodeURIComponent(cookieValue);
+        }
+      }
+      return "";
+    }
+    function setSessionCookie(name, value) {
+      document.cookie = `${name}=${encodeURIComponent(value)}; path=/; SameSite=Lax; max-age=3600`;
+    }
+
+    /***********************************************************
+     * 2) DYNAMIC BACKGROUND & PINK BORDER
+     ************************************************************/
+    function updateBackgroundColor() {
+      setTimeout(() => {
+        let burnType = getSessionCookie("selectedIcon") || "thermal";
+        let colors = {
+          thermal: "#800000",
+          chemical: "#90EE90",
+          electrical: "#ADD8E6"
+        };
+        if (colors[burnType]) {
+          document.body.style.backgroundColor = colors[burnType];
+        }
+      }, 200);
+    }
+
+    function applyPinkBorderIfAge2to15() {
+      let age = parseInt(getSessionCookie("age"), 10);
+      let container = document.querySelector(".content-container");
+      if (!container) return;
+
+      if (!isNaN(age) && age >= 2 && age <= 15) {
+        container.style.border = "3px solid #ffc0cb";
+      } else {
+        container.style.border = "3px solid black";
+      }
+    }
+
+    /***********************************************************
+     * 3) HEADER DYNAMIC TITLE
+     ************************************************************/
+    function updateHeaderTitle() {
+      let burnType = getSessionCookie("selectedIcon") || "thermal";
+      let dynamicHeader = document.getElementById("dynamicHeader");
+      if (!dynamicHeader) return;
+
+      switch (burnType) {
+        case "thermal":
+          dynamicHeader.textContent = "THERMAL BURN";
+          break;
+        case "chemical":
+          dynamicHeader.textContent = "CHEMICAL BURN";
+          break;
+        case "electrical":
+          dynamicHeader.textContent = "ELECTRICAL BURN";
+          break;
+        default:
+          dynamicHeader.textContent = "THERMAL BURN";
+      }
+    }
+
+    /***********************************************************
+     * 4) RETRIEVE STEP DATA & BUILD SUMMARY
+     ************************************************************/
+    function getStepData(stepId) {
+      let data = getSessionCookie(stepId);
+      if (!data) return null;
+      try {
+        return JSON.parse(data);
+      } catch (err) {
+        console.warn("Error parsing step cookie for:", stepId, err);
+        return null;
+      }
+    }
+
+    function buildConsultSummary() {
+      let container = document.getElementById("consultSummary");
+      if (!container) return;
+
+      // Clear any previous lines
+      container.innerHTML = "";
+
+      let summaryLines = [];
+
+      // STEP 1
+      let step1Data = getStepData("stepPopup1");
+      if (step1Data) {
+        if (step1Data["fullThickness"] === "yes") {
+          summaryLines.push("Full thickness burns present");
+        }
+        if (step1Data["partialThickness"] === "yes") {
+          summaryLines.push("Partial thickness burns ≥ 10% TBSA");
+        }
+      }
+
+      // STEP 2
+      let step2Data = getStepData("stepPopup2");
+      if (step2Data && step2Data["sensitive"] === "yes") {
+        summaryLines.push("Full/Partial thickness burns involving FACE, HANDS, GENITALIA, FEET, PERINEUM, or JOINT(S)");
+      }
+
+      // STEP 3
+      let step3Data = getStepData("stepPopup3");
+      if (step3Data && step3Data["inhalation"] === "yes") {
+        summaryLines.push("INHALATION injury present");
+      }
+
+      // STEP 4
+      let step4Data = getStepData("stepPopup4");
+      if (step4Data) {
+        let highRiskChecks = [];
+        for (let key in step4Data) {
+          if (step4Data[key] === "checked") {
+            highRiskChecks.push(key);
+          }
+        }
+        if (highRiskChecks.length > 0) {
+          summaryLines.push("<span class='summary-heading'>Comorbidities:</span>");
+          // If "none" was checked, you might show only "None"
+          if (highRiskChecks.includes("none")) {
+            summaryLines.push("None");
+          } else {
+            // Convert each key to display text
+            let mapped = highRiskChecks.map(item => mapCheckboxToText(item));
+            summaryLines.push(mapped.join(", "));
+          }
+        }
+      }
+
+      // Finally, put lines in the container
+      container.innerHTML = summaryLines.join("<br>");
+    }
+
+    // Convert Step 4 keys to user-friendly text
+    function mapCheckboxToText(key) {
+      switch (key) {
+        case "age":
+          return "≥ 50 years of age";
+        case "anticoagulated":
+          return "Anticoagulated";
+        case "immunosuppressed":
+          return "Immunosuppression";
+        case "pregnancy":
+          return "Pregnancy";
+        case "diabetes":
+          return "Diabetes";
+        case "social_care":
+          return "Special social/emotional/rehab care needed";
+        case "ed_assessment":
+          return "More care required by ED physician assessment";
+        case "significant_problems":
+          return "Significant medical problems";
+        case "none":
+          return "None";
+        default:
+          return key; // fallback
+      }
+    }
+
+    /***********************************************************
+     * 5) NAV BUTTONS
+     ************************************************************/
+    function setupPrevButton() {
+      let prevBtn = document.getElementById("prevBtn");
+      if (!prevBtn) return;
+      prevBtn.addEventListener("click", function() {
+        console.log("Prev clicked. Directory placeholder. Insert real path if needed.");
+      });
+    }
+
+    function setupNextButton() {
+      let nextBtn = document.getElementById("nextBtn");
+      if (!nextBtn) return;
+      nextBtn.addEventListener("click", function() {
+        console.log("Next clicked. Directory placeholder. Insert real path if needed.");
+      });
+    }
+
+    /***********************************************************
+     * 6) ON DOM LOAD
+     ************************************************************/
+    document.addEventListener("DOMContentLoaded", function() {
+      updateBackgroundColor();
+      applyPinkBorderIfAge2to15();
+      updateHeaderTitle();
+      setupPrevButton();
+      setupNextButton();
+
+      // Build the consult summary from Step 1–4 answers
+      buildConsultSummary();
+    });
+  </script>
+</body>
+</html>

@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Consult Summary - Example</title>
+  <style>
+    .content-container {
+      width: 80%;
+      max-width: 488px;
+      margin: 50px auto;
+      padding: 20px;
+      border: 3px solid black;
+      border-radius: 8px;
+      background-color: #fff;
+      font-family: Arial, sans-serif;
+      font-size: 16px;
+      line-height: 1.4;
+    }
+    .summary-heading {
+      font-weight: bold;
+      margin-top: 1em;
+      margin-bottom: 0.5em;
+      text-decoration: underline;
+    }
+  </style>
+</head>
+<body>
+  <div class="content-container" id="consultSummary"></div>
+
+  <script>
+  /***********************************************************
+   * 1) SIMULATE COOKIE DATA
+   ************************************************************/
+  // We'll pretend these cookies were set from the user’s step answers:
+  // Step 1:
+  document.cookie = `stepPopup1=${encodeURIComponent(JSON.stringify({
+    fullThickness: "yes",
+    partialThickness: "yes"
+  }))}; path=/;`;
+  // Step 2:
+  document.cookie = `stepPopup2=${encodeURIComponent(JSON.stringify({
+    sensitive: "yes"
+  }))}; path=/;`;
+  // Step 3:
+  document.cookie = `stepPopup3=${encodeURIComponent(JSON.stringify({
+    inhalation: "yes"
+  }))}; path=/;`;
+  // Step 4 (multiple checkboxes):
+  // Suppose user checked "age", "pregnancy", "diabetes", "significant_problems"
+  // (We've left the others "unchecked".)
+  document.cookie = `stepPopup4=${encodeURIComponent(JSON.stringify({
+    age: "checked",
+    pregnancy: "checked",
+    diabetes: "checked",
+    significant_problems: "checked",
+    anticoagulated: "unchecked",
+    immunosuppressed: "unchecked",
+    social_care: "unchecked",
+    ed_assessment: "unchecked",
+    none: "unchecked"
+  }))}; path=/;`;
+
+
+  /***********************************************************
+   * 2) COOKIE HELPERS
+   ************************************************************/
+  function getSessionCookie(name) {
+    let cookies = document.cookie.split('; ');
+    for (let cookie of cookies) {
+      let [cookieName, cookieValue] = cookie.split('=');
+      if (cookieName === name) {
+        return decodeURIComponent(cookieValue);
+      }
+    }
+    return "";
+  }
+
+  // For each step, we retrieve the data
+  function getStepData(stepId) {
+    let data = getSessionCookie(stepId);
+    if (!data) return null;
+    try {
+      return JSON.parse(data);
+    } catch (err) {
+      console.warn("Error parsing step cookie for:", stepId, err);
+      return null;
+    }
+  }
+
+  /***********************************************************
+   * 3) BUILD SUMMARY
+   ************************************************************/
+  function buildConsultSummary() {
+    let container = document.getElementById("consultSummary");
+    if (!container) return;
+    container.innerHTML = ""; // Clear any previous content
+
+    let summaryLines = [];
+
+    // STEP 1: Full Thickness / Partial Thickness
+    let step1Data = getStepData("stepPopup1");
+    if (step1Data) {
+      if (step1Data["fullThickness"] === "yes") {
+        summaryLines.push("Full thickness burns present");
+      }
+      if (step1Data["partialThickness"] === "yes") {
+        summaryLines.push("Partial thickness burns ≥ 10% TBSA");
+      }
+    }
+
+    // STEP 2: Sensitive areas (face/hands/genitalia/etc.)
+    let step2Data = getStepData("stepPopup2");
+    if (step2Data && step2Data["sensitive"] === "yes") {
+      summaryLines.push("Full/Partial thickness burns involving FACE, HANDS, GENITALIA, FEET, PERINEUM, or JOINT(S)");
+    }
+
+    // STEP 3: Inhalation
+    let step3Data = getStepData("stepPopup3");
+    if (step3Data && step3Data["inhalation"] === "yes") {
+      summaryLines.push("INHALATION injury present");
+    }
+
+    // STEP 4: High-Risk Considerations
+    let step4Data = getStepData("stepPopup4");
+    if (step4Data) {
+      let highRiskChecks = [];
+      for (let key in step4Data) {
+        if (step4Data[key] === "checked") {
+          highRiskChecks.push(key);
+        }
+      }
+
+      if (highRiskChecks.length > 0) {
+        summaryLines.push("<span class='summary-heading'>Comorbidities:</span>");
+
+        // If "none" is checked, you might choose to skip the rest or just show "None".
+        if (highRiskChecks.includes("none")) {
+          summaryLines.push("None");
+        } else {
+          let mapped = highRiskChecks.map(item => mapCheckboxToText(item));
+          summaryLines.push(mapped.join(", "));
+        }
+      }
+    }
+
+    // Join lines with <br>
+    container.innerHTML = summaryLines.join("<br>");
+  }
+
+  // Convert each Step 4 key to user-friendly text
+  function mapCheckboxToText(key) {
+    switch (key) {
+      case "age":
+        return "≥ 50 years of age";
+      case "anticoagulated":
+        return "Anticoagulated";
+      case "immunosuppressed":
+        return "Immunosuppression";
+      case "pregnancy":
+        return "Pregnancy";
+      case "diabetes":
+        return "Diabetes";
+      case "social_care":
+        return "Special social/emotional/rehab care needed";
+      case "ed_assessment":
+        return "More care required by ED physician assessment";
+      case "significant_problems":
+        return "Significant medical problems";
+      case "none":
+        return "None";
+      default:
+        return key;
+    }
+  }
+
+  /***********************************************************
+   * 4) ON PAGE LOAD
+   ************************************************************/
+  document.addEventListener("DOMContentLoaded", function() {
+    buildConsultSummary(); 
+  });
+  </script>
+</body>
+</html>
