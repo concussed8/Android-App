@@ -2,10 +2,12 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
-  <title>Burn Management Checklist</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+  <title>1000 Volts</title>
   <style>
-    /* Ensure the body fills the viewport */
+    /* -----------------------------------------
+       1) General Layout & Dynamic Background
+       ----------------------------------------- */
     html, body {
       margin: 0;
       padding: 0;
@@ -14,56 +16,70 @@
       display: flex;
       flex-direction: column;
       align-items: center;
-      background-color: white;
+      justify-content: flex-start;
+      /* Default background color (can be changed by JS) */
+      background-color: #fff;
     }
 
-    /* Prevent landscape mode */
+    /* Prevent landscape mode on mobile */
     @media screen and (orientation: landscape) {
       body {
         display: none;
       }
     }
 
-    /* Fixed Header */
-    .header {
-      width: 100%;
-      text-align: center;
-      font-size: 8vw;
+    /* -----------------------------------------
+       2) Dynamic Header (Fixed at top)
+       ----------------------------------------- */
+    .main-header {
+      font-family: "Courier New", monospace;
+      font-size: 7vw; /* Responsive font size */
       font-weight: bold;
-      font-family: "Courier New", Courier, monospace;
       color: white;
+      text-align: center;
+      width: 100%;
+      padding: 10px 0;
+      margin: 0;
+      background-color: rgba(0, 0, 0, 0.2); /* Slight overlay if desired */
+      position: fixed;
+      top: 0;
+      left: 0;
       z-index: 1000;
-      padding-top: 5px;
-      padding-bottom: 10px;
     }
 
-    /* Main Container (position: relative for overlay) */
+    /* We’ll update the .header-span text with JS
+       (THERMAL BURN / CHEMICAL BURN / ELECTRICAL BURN, etc.) */
+    .header-span {
+      text-decoration: underline;
+    }
+
+    /* -----------------------------------------
+       3) Content Container with Pink Border Logic
+       ----------------------------------------- */
     .content-container {
-      position: relative;
+      position: relative; 
       width: 80%;
-      max-width: 488px;
-      height: auto;
-      background-color: white;
-      /* The border color will be dynamically updated based on age */
+      max-width: 480px;
+      background: #fff;
+      /* Border color will be updated via updateContainerBorderByAge() */
       border: 3px solid black;
       border-radius: 8px;
-      margin-top: -10px;
       padding: 20px;
-      display: flex;
-      flex-direction: column;
-      align-items: flex-start; 
-      justify-content: flex-start;
+      text-align: left;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.3);
+      margin-top: 20vh; /* Push content below fixed header */
     }
 
-    /* Question Statement */
+    /* -----------------------------------------
+       4) Question + Radio Buttons
+       ----------------------------------------- */
     .question {
       font-size: 18px;
-      margin-bottom: 1em;
       font-weight: bold;
+      margin-bottom: 1em;
       font-family: Arial, sans-serif;
     }
 
-    /* Radio Button Group */
     .radio-group label {
       display: block;
       margin-bottom: 0.5em;
@@ -71,199 +87,58 @@
       font-family: Arial, sans-serif;
     }
 
-    /* Acknowledge Button */
-    #ackButton {
-      margin-top: 1.5em;
+    /* -----------------------------------------
+       5) Navigation Buttons
+       ----------------------------------------- */
+    .nav-buttons {
+      margin-top: 1em;
+      text-align: center;
+    }
+    .nav-buttons button {
       padding: 0.6em 1.2em;
       font-size: 16px;
-      font-weight: bold;
+      margin: 0 1em;
       cursor: pointer;
       border: 2px solid #444;
       border-radius: 4px;
       background-color: #e5e5e5;
-    }
-
-    /* Semi-Transparent Overlay Covering the Container */
-    #overlayPopup {
-      position: absolute;
-      top: 0;
-      left: 0;
-      max-width: 488px;
-      width: 95%;
-      height: 91%;
-      background-color: rgba(0,0,0,0.75); /* semi-transparent black */
-      color: #fff;
       font-weight: bold;
-      display: none; /* hidden initially */
-      align-items: center;
-      justify-content: center;
-      text-align: center;
-      z-index: 9999; /* above container contents */
-      font-size: 3em;
-      padding: 10px;
-    }
-
-    /* Next & Prev Buttons */
-    .nav-buttons {
-      position: absolute;
-      bottom: 20px;
-      display: flex;
-      width: 60vw; /* Responsive width */
-      max-width: 400px;
-      justify-content: center;
-      align-items: center;
-      gap: 100px; /* Space between icons */
-      left: 50%;
-      transform: translateX(-50%);
-      z-index: 1000;
-    }
-    .nav-buttons img {
-      width: 100px;
-      height: 75px;
-      cursor: pointer;
-      border-radius: 10px;
-      opacity: 0.9;
-      transition: transform 0.2s ease;
-    }
-    .nav-buttons img:active {
-      transform: scale(1.1);
     }
   </style>
 </head>
 <body>
-  <!-- Fixed Header -->
-  <div class="header">
-    THERMAL BURN <br>
-    Initial Management <br>
-    No Consult
+
+  <!-- Dynamic Header -->
+  <div class="main-header">
+    <span class="header-span">BURN TYPE</span>  
+    <!-- We’ll update it in JS, e.g. "THERMAL BURN", "CHEMICAL BURN", "ELECTRICAL BURN" -->
   </div>
 
-  <!-- Main Container -->
+  <!-- Content Container -->
   <div class="content-container">
-    <!-- Single Question Statement + 2 Radio Buttons + Acknowledge Button -->
     <div class="question">
       Was the patient burned with voltage (≥ 1000 Volts)?
     </div>
+
     <div class="radio-group">
       <label>
-        <input type="radio" name="voltage" value="yes">
-        Yes
+        <input type="radio" name="voltage" value="yes"> Yes
       </label>
       <label>
-        <input type="radio" name="voltage" value="no">
-        No
+        <input type="radio" name="voltage" value="no"> No
       </label>
     </div>
-    <button id="ackButton">Acknowledge</button>
 
-    <!-- Semi-Transparent Overlay -->
-    <div id="overlayPopup">COMPLETE</div>
-  </div>
-
-  <!-- Next & Prev Buttons -->
-  <div class="nav-buttons">
-    <img src="https://raw.githubusercontent.com/concussed8/Android-App/main/images/prev.png" id="prevBtn" alt="Previous">
-    <img src="https://raw.githubusercontent.com/concussed8/Android-App/main/images/next.png" id="nextBtn" alt="Next">
+    <div class="nav-buttons">
+      <button id="prevBtn">Previous</button>
+      <button id="nextBtn">Next</button>
+    </div>
   </div>
 
   <script>
-    document.addEventListener("DOMContentLoaded", function () {
-      updateBackgroundColor();
-      updateHeaderTitle(); 
-      updateContainerBorderByAge(); // Pink border if 6-15, etc.
-
-      let nextBtn = document.getElementById("nextBtn");
-      let prevBtn = document.getElementById("prevBtn");
-      let ackButton = document.getElementById("ackButton");
-      let overlay = document.getElementById("overlayPopup");
-
-      // 1) Disable Next Button initially
-      if (nextBtn) {
-        nextBtn.style.pointerEvents = "none";
-        nextBtn.style.opacity = "0.5";
-      }
-
-      // 2) Handle Acknowledge Button Click
-      if (ackButton) {
-        ackButton.addEventListener("click", function () {
-          // Ensure user selected Yes or No
-          let selectedVoltage = document.querySelector('input[name="voltage"]:checked');
-          if (!selectedVoltage) {
-            alert("Please select Yes or No.");
-            return;
-          }
-
-          // Show the semi-transparent overlay
-          if (overlay) {
-            overlay.style.display = "flex";
-          }
-
-          // Now enable the Next Button
-          if (nextBtn) {
-            nextBtn.style.pointerEvents = "auto";
-            nextBtn.style.opacity = "1";
-          }
-        });
-      }
-
-      // ✅ Next Button: Navigate Based on Radio Selection
-      if (nextBtn && getCurrentPage() === "initial_management.html") {
-        nextBtn.addEventListener("click", function () {
-          // figure out which radio was selected
-          let selectedVoltage = document.querySelector('input[name="voltage"]:checked');
-          if (!selectedVoltage) {
-            return; // safety check
-          }
-
-          if (selectedVoltage.value === "yes") {
-            // If "Yes" was chosen, go to your "Yes" page
-            window.location.href = "https://concussed8.github.io/Android-App/pages/consult/consult.html";
-          } else {
-            // If "No" was chosen, go to your "No" page
-            window.location.href = "https://concussed8.github.io/Android-App/pages/.../NoPage.html";
-          }
-        });
-      }
-
-      // ✅ Previous Button: Navigate to Age Weight Page
-      if (prevBtn) {
-        prevBtn.addEventListener("click", function () {
-          let prevPage = "https://concussed8.github.io/Android-App/pages/age_weight/age_weight.html";
-          console.log("Navigating to:", prevPage);
-          window.location.href = prevPage;
-        });
-      }
-    });
-
-    /* ------------------------- AGE-BASED BORDER LOGIC ------------------------ */
-    function updateContainerBorderByAge() {
-      let age = parseInt(getSessionCookie("age"), 10);
-      let container = document.querySelector(".content-container");
-      if (!container || isNaN(age)) return;
-
-      // PINK border if 2 <= age < 16; BLACK border if >=16
-      if (age >= 16) {
-        container.style.border = "3px solid black";
-      } else if (age >= 2) {
-        container.style.border = "9px solid #ffc0cb"; // pink
-      } else {
-        // for children < 2, if that scenario matters
-        container.style.border = "9px solid #ffc0cb";
-      }
-    }
-
-    /* --------------------------- HELPER FUNCTIONS --------------------------- */
-    // ✅ Function: Get Current Page Name
-    function getCurrentPage() {
-      return window.location.pathname.split("/").pop();
-    }
-
-    // ✅ Function: Set a Session Cookie
-    function setSessionCookie(name, value) {
-      document.cookie = `${name}=${encodeURIComponent(value)}; path=/; SameSite=Lax; max-age=3600`;
-    }
-
-    // ✅ Function: Get a Session Cookie
+    /* =====================================================
+       1) COOKIE HELPERS
+       ===================================================== */
     function getSessionCookie(name) {
       let cookies = document.cookie.split('; ');
       for (let cookie of cookies) {
@@ -275,49 +150,106 @@
       return "";
     }
 
-    // ✅ Function: Sync Burn Type with Selected Icon
-    function syncBurnTypeWithSelectedIcon() {
-      let selectedIcon = getSessionCookie("selectedIcon");
-      if (!selectedIcon) return;
-      let burnType = getSessionCookie("burnType");
-      if (burnType !== selectedIcon) {
-        setSessionCookie("burnType", selectedIcon);
-      }
-      return selectedIcon;
+    function setSessionCookie(name, value) {
+      document.cookie = `${name}=${encodeURIComponent(value)}; path=/; SameSite=Lax; max-age=3600`;
     }
 
-    // ✅ Function: Update Background Color
+    /* =====================================================
+       2) DYNAMIC BACKGROUND & HEADER TITLE
+       ===================================================== */
     function updateBackgroundColor() {
-      setTimeout(() => {
-        let burnType = syncBurnTypeWithSelectedIcon();
-        let colors = {
-          "thermal": "#800000",
-          "chemical": "#90EE90",
-          "electrical": "#ADD8E6"
-        };
-        if (burnType in colors) {
-          document.body.style.backgroundColor = colors[burnType];
-        }
-      }, 200);
+      let burnType = getSessionCookie("selectedIcon"); // "thermal", "chemical", or "electrical"
+
+      // Default to thermal if not set
+      let backgroundColor = "#800000";
+      if (burnType === "chemical") {
+        backgroundColor = "#90EE90"; 
+      } else if (burnType === "electrical") {
+        backgroundColor = "#ADD8E6";
+      }
+
+      // Apply to body
+      document.body.style.backgroundColor = backgroundColor;
     }
 
-    // ✅ Function: Update Header Based on Burn Type
     function updateHeaderTitle() {
-      let selectedIcon = getSessionCookie("selectedIcon");
-      if (selectedIcon) {
-        document.querySelector(".header").innerHTML = `<u>${selectedIcon.toUpperCase()} BURN</u> <br> Initial Management <br> No Consult`;
+      let burnType = getSessionCookie("selectedIcon"); 
+      let headerSpan = document.querySelector(".header-span");
+
+      if (headerSpan) {
+        if (burnType === "chemical") {
+          headerSpan.textContent = "CHEMICAL BURN";
+        } else if (burnType === "electrical") {
+          headerSpan.textContent = "ELECTRICAL BURN";
+        } else {
+          headerSpan.textContent = "THERMAL BURN"; // default
+        }
       }
     }
 
-    // ✅ Function: Prevent Landscape Mode
-    function checkOrientation() {
-      if (window.matchMedia("(orientation: landscape)").matches) {
-        document.body.innerHTML = "<div style='display:flex;justify-content:center;align-items:center;height:100vh;font-size:24px;color:red;'>Return to Portrait Mode</div>";
+    /* =====================================================
+       3) PINK BORDER IF AGE-APPROPRIATE
+       ===================================================== */
+    function updateContainerBorderByAge() {
+      let age = parseInt(getSessionCookie("age"), 10);
+      let container = document.querySelector(".content-container");
+      if (!container || isNaN(age)) return;
+
+      // Pink border if age in [2..15], black otherwise
+      if (age >= 2 && age <= 15) {
+        container.style.border = "9px solid #ffc0cb"; // pink
+      } else {
+        container.style.border = "3px solid black";   // default
       }
     }
 
-    window.addEventListener("resize", checkOrientation);
-    window.addEventListener("orientationchange", checkOrientation);
+    /* =====================================================
+       4) EVENT LISTENERS
+       ===================================================== */
+    // Previous Button: Just goes back or do your logic
+    function setupPreviousButton() {
+      let prevBtn = document.getElementById("prevBtn");
+      if (prevBtn) {
+        prevBtn.addEventListener("click", function() {
+          // Example: just go back in history
+          window.history.back();
+        });
+      }
+    }
+
+    // Next Button: Logic for YES / NO
+    function setupNextButton() {
+      let nextBtn = document.getElementById("nextBtn");
+      if (nextBtn) {
+        nextBtn.addEventListener("click", function() {
+          // Check which radio is selected
+          const selectedVoltage = document.querySelector('input[name="voltage"]:checked');
+          if (!selectedVoltage) {
+            alert("Please select Yes or No.");
+            return;
+          }
+
+          if (selectedVoltage.value === "yes") {
+            // If yes -> consult page
+            window.location.href = "https://concussed8.github.io/Android-App/pages/consult/consult.html";
+          } else {
+            // If no -> no page (replace with your real path)
+            window.location.href = "https://concussed8.github.io/Android-App/pages/.../NoPage.html";
+          }
+        });
+      }
+    }
+
+    /* =====================================================
+       5) ON PAGE LOAD
+       ===================================================== */
+    document.addEventListener("DOMContentLoaded", function() {
+      updateBackgroundColor();
+      updateHeaderTitle();
+      updateContainerBorderByAge();
+      setupPreviousButton();
+      setupNextButton();
+    });
   </script>
 </body>
 </html>
