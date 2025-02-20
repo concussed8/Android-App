@@ -521,50 +521,7 @@ html, body {
   font-weight: bold;
   color: red; /* ✅ Default to "PENDING" */
 }
-/* Basic styling for the Electrical Burn Popup */
-    #electricalBurnPopup {
-      display: none;               /* Hidden by default */
-      position: fixed;
-      top: 50%;
-      left: 50%;
-      transform: translate(-50%, -50%);
-      z-index: 9999;              /* Ensure it appears on top */
-      background-color: #fff;
-      border: 2px solid #444;
-      border-radius: 8px;
-      padding: 20px;
-      max-width: 300px;
-      width: 80%;
-      box-shadow: 0 0 10px rgba(0,0,0,0.5);
-      text-align: center;
-    }
 
-    #electricalBurnPopup h3 {
-      margin-top: 0;
-      margin-bottom: 1em;
-      font-size: 1.2em;
-    }
-
-    #electricalBurnPopup .radio-group {
-      margin: 1em 0;
-      text-align: left; /* So radio labels align nicely */
-    }
-
-    #electricalBurnPopup label {
-      display: block;
-      margin-bottom: 0.5em;
-      cursor: pointer;
-    }
-
-    #electricalBurnPopup button {
-      margin-top: 1em;
-      padding: 0.6em 1.2em;
-      font-size: 1em;
-      cursor: pointer;
-      border: 1px solid #444;
-      border-radius: 4px;
-      background-color: #e5e5e5;
-    }
 
 
   </style>
@@ -722,435 +679,337 @@ html, body {
     <img src="https://raw.githubusercontent.com/concussed8/Android-App/main/images/prev.png" id="prevBtn" alt="Previous">
     <img src="https://raw.githubusercontent.com/concussed8/Android-App/main/images/next.png" id="nextBtn" alt="Next">
 </div>
-<!-- ================== ELECTRICAL BURN POPUP - ADDED ================== -->
-  <!-- This popup appears only if the user selected "electrical" burn. -->
-  <div id="electricalBurnPopup">
-    <h3>Did they get burned with current (≥ 1000 Volts)?</h3>
-    <div class="radio-group">
-      <label>
-        <input type="radio" name="highVoltage" value="Yes">
-        Yes
-      </label>
-      <label>
-        <input type="radio" name="highVoltage" value="No">
-        No
-      </label>
-    </div>
-    <button id="electricalBurnContinueBtn">Continue</button>
-  </div>
+
 <script> 
- <!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <title>Burn Popup Example</title>
+  /***********************************************************
+ * 1) SESSION COOKIE HELPERS
+ ************************************************************/
 
-  <!-- ================== YOUR POPUP CSS (EXISTING) ================== -->
-  <!-- Include any existing popup styles here. -->
+// ✅ Function: Retrieve a session cookie value
+function getSessionCookie(name) {
+    let cookies = document.cookie.split('; ');
+    for (let cookie of cookies) {
+        let [cookieName, cookieValue] = cookie.split('=');
+        if (cookieName === name) {
+            return decodeURIComponent(cookieValue);
+        }
+    }
+    return "";
+}
 
-  <!-- ================== ELECTRICAL BURN POPUP - ADDED ================== -->
-  <style>
-    /* Basic styling for the Electrical Burn Popup */
-    #electricalBurnPopup {
-      display: none;               /* Hidden by default */
-      position: fixed;
-      top: 50%;
-      left: 50%;
-      transform: translate(-50%, -50%);
-      z-index: 9999;              /* Ensure it appears on top */
-      background-color: #fff;
-      border: 2px solid #444;
-      border-radius: 8px;
-      padding: 20px;
-      max-width: 300px;
-      width: 80%;
-      box-shadow: 0 0 10px rgba(0,0,0,0.5);
-      text-align: center;
+// ✅ Function: Set a session cookie with expiration
+function setSessionCookie(name, value) {
+    document.cookie = `${name}=${encodeURIComponent(value)}; path=/; SameSite=Lax; max-age=86400`; // Expires in 1 day
+}
+
+
+/***********************************************************
+ * 2) BACKGROUND + HEADER TITLE
+ ************************************************************/
+
+// ✅ Function: Update Background Color Based on Burn Type
+function updateBackgroundColor() {
+    setTimeout(() => {
+        let burnType = getSessionCookie("selectedIcon") || "thermal"; // Default to thermal
+        let colors = {
+            "thermal": "#800000",
+            "chemical": "#90EE90",
+            "electrical": "#ADD8E6"
+        };
+
+        if (colors[burnType]) {
+            document.body.style.backgroundColor = colors[burnType];
+        }
+    }, 200);
+}
+
+// ✅ Function: Update Header Title Dynamically
+function updateHeaderTitle() {
+    let selectedIcon = getSessionCookie("selectedIcon");
+    let headerElement = document.querySelector(".header");
+
+    if (headerElement) {
+        headerElement.innerHTML = selectedIcon
+            ? `<u>${selectedIcon.toUpperCase()} BURN</u><br> Consult Summary`
+            : "<u>THERMAL BURN</u><br> Consult Summary"; // Default if no icon is selected
+    }
+}
+
+
+/***********************************************************
+ * 3) TBSA FIELDS
+ ************************************************************/
+
+// ✅ Function: Populate Input Fields from Cookies (Fields 1-7) & Calculate TBSA Total
+function populateFieldsFromCookies() {
+    let storedTBSA = getSessionCookie("adultTBSA"); // Retrieve TBSA data from cookies
+    let totalTBSA = 0;
+
+    if (storedTBSA) {
+        try {
+            let tbsaData = JSON.parse(storedTBSA);
+
+            for (let i = 1; i <= 7; i++) {
+                let fieldName = `field${i}`;
+                let inputField = document.querySelector(`.input-field.${fieldName}`);
+
+                if (inputField) {
+                    let value = tbsaData[fieldName] || "0%"; // Use stored value or default to "0%"
+                    inputField.value = value;
+                    inputField.readOnly = true; // Ensure it's non-editable
+
+                    // ✅ Add value to total (removing '%')
+                    totalTBSA += parseFloat(value.replace("%", "")) || 0;
+                }
+            }
+
+            // ✅ Display Total TBSA in Field 8
+            let totalField = document.querySelector(".input-field.field8");
+            if (totalField) {
+                totalField.value = totalTBSA.toFixed(1) + "%"; // ✅ Show as percentage
+                totalField.readOnly = true; // ✅ Make non-editable
+            }
+
+        } catch (error) {
+            console.error("❌ Error parsing TBSA cookie:", error);
+        }
+    } else {
+        console.warn("⚠️ No TBSA data found in cookies.");
+    }
+}
+
+
+/***********************************************************
+ * 4) POPUP CONTROL
+ ************************************************************/
+
+// ✅ Function: Open a step popup
+function openPopup(stepId) {
+    document.getElementById(stepId).style.display = "block";
+}
+
+// ✅ Function: Close Step 1 Popup (Requires Answers for Both Questions)
+function closeStep1Popup() {
+    // We assume Step 1 has two separate radio questions:
+    //  - name="fullThickness" (yes/no)
+    //  - name="partialThickness" (yes/no)
+    let fullThicknessChecked = document.querySelector('input[name="fullThickness"]:checked');
+    let partialThicknessChecked = document.querySelector('input[name="partialThickness"]:checked');
+
+    if (!fullThicknessChecked || !partialThicknessChecked) {
+        alert("❌ You must select an answer for both questions before proceeding.");
+        return; // Stops from closing
     }
 
-    #electricalBurnPopup h3 {
-      margin-top: 0;
-      margin-bottom: 1em;
-      font-size: 1.2em;
+    // If both answered, proceed
+    closePopup("stepPopup1", 1);
+}
+
+// ✅ Function: Close a step popup, save responses, and mark completion
+function closePopup(stepId, stepNumber) {
+    saveStepResponses(stepId);
+    updateStepStatus(stepNumber);
+    document.getElementById(stepId).style.display = "none";
+}
+
+
+/***********************************************************
+ * 5) RADIO / CHECKBOX SAVING & RESTORING
+ ************************************************************/
+
+// ✅ Function: Save Radio + Checkbox State for a Given Step
+function saveStepResponses(stepId) {
+    // Grab both radio and checkbox inputs for this step
+    let inputs = document.querySelectorAll(`#${stepId} input[type="radio"], #${stepId} input[type="checkbox"]`);
+    let stepData = {};
+
+    inputs.forEach(input => {
+        if (input.type === "radio") {
+            // For radio, store which value is selected
+            if (input.checked) {
+                stepData[input.name] = input.value;
+            }
+        } else if (input.type === "checkbox") {
+            // For checkboxes, store "checked" or "unchecked"
+            stepData[input.name] = input.checked ? "checked" : "unchecked";
+        }
+    });
+
+    // Store the data in a session cookie
+    setSessionCookie(stepId, JSON.stringify(stepData));
+}
+
+// ✅ Function: Restore Radio + Checkbox State for a Given Step
+function restoreStepResponses(stepId) {
+    let storedData = getSessionCookie(stepId);
+    if (storedData) {
+        let stepData = JSON.parse(storedData);
+        let inputs = document.querySelectorAll(`#${stepId} input[type="radio"], #${stepId} input[type="checkbox"]`);
+
+        inputs.forEach(input => {
+            if (input.type === "radio") {
+                // Check if this input’s name matches the stored value
+                if (stepData[input.name] === input.value) {
+                    input.checked = true;
+                }
+            } else if (input.type === "checkbox") {
+                if (stepData[input.name] === "checked") {
+                    input.checked = true;
+                }
+            }
+        });
+    }
+}
+
+
+/***********************************************************
+ * 6) STEP STATUS + NAVIGATION
+ ************************************************************/
+
+// ✅ Function: Mark Step as "COMPLETED" or "PENDING"
+function updateStepStatus(stepNumber) {
+    let stepElement = document.getElementById(`stepStatus${stepNumber}`);
+
+    // For simplicity, we consider a step "COMPLETED" if ANY radio/checkbox is checked.
+    // (Step 1 specifically checks each question in closeStep1Popup() before allowing closure.)
+    let inputs = document.querySelectorAll(`#stepPopup${stepNumber} input[type="radio"], #stepPopup${stepNumber} input[type="checkbox"]`);
+    let isCompleted = Array.from(inputs).some(input => input.checked);
+
+    if (stepElement) {
+        stepElement.innerText = isCompleted ? "COMPLETED" : "PENDING";
+        stepElement.style.color = isCompleted ? "darkgreen" : "red";
+        stepElement.style.fontWeight = "bold";
     }
 
-    #electricalBurnPopup .radio-group {
-      margin: 1em 0;
-      text-align: left; /* So radio labels align nicely */
+    enableNextButton(); // ✅ Check if all steps are completed
+}
+
+// ✅ Function: Disable Next Button Initially
+function disableNextButton() {
+    let nextBtn = document.getElementById("nextBtn");
+    if (nextBtn) {
+        nextBtn.style.pointerEvents = "none";
+        nextBtn.style.opacity = "0.5";
+    }
+}
+
+// ✅ Function: Enable Next Button Only If All Steps Are Completed
+function enableNextButton() {
+    let nextBtn = document.getElementById("nextBtn");
+    if (!nextBtn) return;
+
+    // ✅ Check if all 4 steps have "COMPLETED" status
+    let allCompleted = true;
+    for (let i = 1; i <= 4; i++) {
+        let stepStatus = document.getElementById(`stepStatus${i}`);
+        if (!stepStatus || stepStatus.innerText !== "COMPLETED") {
+            allCompleted = false;
+            break;
+        }
     }
 
-    #electricalBurnPopup label {
-      display: block;
-      margin-bottom: 0.5em;
-      cursor: pointer;
+    // ✅ Enable Next Button only if all steps are completed
+    if (allCompleted) {
+        nextBtn.style.pointerEvents = "auto";
+        nextBtn.style.opacity = "1";
+    } else {
+        nextBtn.style.pointerEvents = "none";
+        nextBtn.style.opacity = "0.5";
+    }
+}
+
+
+/***********************************************************
+ * 7) PREV / NEXT BUTTONS
+ ************************************************************/
+
+// ✅ Function: Handle Previous Button Click
+function setupPreviousButton() {
+    let prevBtn = document.getElementById("prevBtn");
+    if (prevBtn) {
+        prevBtn.addEventListener("click", function () {
+          window.location.href = "https://concussed8.github.io/Android-App/pages/modified_parkland/parkland.html";
+        });
+    }
+}
+
+// ✅ Function: Handle Next Button Click
+function setupNextButton() {
+    let nextBtn = document.getElementById("nextBtn");
+    if (nextBtn) {
+        nextBtn.addEventListener("click", function () {
+            window.location.href = "https://concussed8.github.io/Android-App/pages/modified_parkland/parkland.html";
+        });
+    }
+}
+
+
+/***********************************************************
+ * 8) EVENT LISTENERS ON BUTTONS
+ ************************************************************/
+
+// ✅ Attach Event Listeners to Step Buttons
+document.getElementById("step1").addEventListener("click", function () {
+    openPopup("stepPopup1");
+});
+document.getElementById("step2").addEventListener("click", function () {
+    openPopup("stepPopup2");
+});
+document.getElementById("step3").addEventListener("click", function () {
+    openPopup("stepPopup3");
+});
+document.getElementById("step4").addEventListener("click", function () {
+    openPopup("stepPopup4");
+});
+
+// ✅ Attach Event Listeners to Close Buttons
+document.querySelector("#stepPopup1 .close-popup").addEventListener("click", closeStep1Popup);
+document.querySelector("#stepPopup2 .close-popup").addEventListener("click", function () {
+    closePopup("stepPopup2", 2);
+});
+document.querySelector("#stepPopup3 .close-popup").addEventListener("click", function () {
+    closePopup("stepPopup3", 3);
+});
+document.querySelector("#stepPopup4 .close-popup").addEventListener("click", function () {
+    closePopup("stepPopup4", 4);
+});
+
+
+/***********************************************************
+ * 9) ON PAGE LOAD
+ ************************************************************/
+
+document.addEventListener("DOMContentLoaded", function () {
+    updateBackgroundColor();
+    updateHeaderTitle();
+    disableNextButton();
+    setupPreviousButton();
+    setupNextButton();
+
+    for (let i = 1; i <= 4; i++) {
+        restoreStepResponses(`stepPopup${i}`);
+        updateStepStatus(i);
     }
 
-    #electricalBurnPopup button {
-      margin-top: 1em;
-      padding: 0.6em 1.2em;
-      font-size: 1em;
-      cursor: pointer;
-      border: 1px solid #444;
-      border-radius: 4px;
-      background-color: #e5e5e5;
-    }
-  </style>
-</head>
-<body>
-
-  <!-- ================== PAGE CONTENT, HEADER, ETC. ================== -->
-  <!-- ... Your existing page structure, step buttons, etc. ... -->
-
-  <!-- ================== ELECTRICAL BURN POPUP - ADDED ================== -->
-  <!-- This popup appears only if the user selected "electrical" burn. -->
-  <div id="electricalBurnPopup">
-    <h3>Did they get burned with current (≥ 1000 Volts)?</h3>
-    <div class="radio-group">
-      <label>
-        <input type="radio" name="highVoltage" value="Yes">
-        Yes
-      </label>
-      <label>
-        <input type="radio" name="highVoltage" value="No">
-        No
-      </label>
-    </div>
-    <button id="electricalBurnContinueBtn">Continue</button>
-  </div>
+    populateFieldsFromCookies();
+});
 
 
-  <!-- ================== YOUR EXISTING SCRIPT ================== -->
-  <script>
-  /***********************************************************
-   * 1) SESSION COOKIE HELPERS
-   ************************************************************/
-  // ✅ Function: Retrieve a session cookie value
-  function getSessionCookie(name) {
-      let cookies = document.cookie.split('; ');
-      for (let cookie of cookies) {
-          let [cookieName, cookieValue] = cookie.split('=');
-          if (cookieName === name) {
-              return decodeURIComponent(cookieValue);
-          }
-      }
-      return "";
-  }
+/***********************************************************
+ * 10) ORIENTATION CHANGES
+ ************************************************************/
 
-  // ✅ Function: Set a session cookie with expiration
-  function setSessionCookie(name, value) {
-      document.cookie = `${name}=${encodeURIComponent(value)}; path=/; SameSite=Lax; max-age=86400`; // Expires in 1 day
-  }
+// ✅ Listen for Orientation Changes
+window.addEventListener("resize", checkOrientation);
+window.addEventListener("orientationchange", checkOrientation);
 
+// You will need your checkOrientation() function, 
+// or remove these lines if unused.
+function checkOrientation() {
+    // Example:
+    // if(window.innerWidth < window.innerHeight) { ... }
+}
 
-  /***********************************************************
-   * 2) BACKGROUND + HEADER TITLE
-   ************************************************************/
-  // ✅ Function: Update Background Color Based on Burn Type
-  function updateBackgroundColor() {
-      setTimeout(() => {
-          let burnType = getSessionCookie("selectedIcon") || "thermal"; // Default to thermal
-          let colors = {
-              "thermal": "#800000",
-              "chemical": "#90EE90",
-              "electrical": "#ADD8E6"
-          };
-
-          if (colors[burnType]) {
-              document.body.style.backgroundColor = colors[burnType];
-          }
-      }, 200);
-  }
-
-  // ✅ Function: Update Header Title Dynamically
-  function updateHeaderTitle() {
-      let selectedIcon = getSessionCookie("selectedIcon");
-      let headerElement = document.querySelector(".header");
-
-      if (headerElement) {
-          headerElement.innerHTML = selectedIcon
-              ? `<u>${selectedIcon.toUpperCase()} BURN</u><br> Consult Summary`
-              : "<u>THERMAL BURN</u><br> Consult Summary"; // Default
-      }
-  }
-
-
-  /***********************************************************
-   * 3) TBSA FIELDS
-   ************************************************************/
-  // ✅ Function: Populate Input Fields from Cookies & Calculate TBSA
-  function populateFieldsFromCookies() {
-      let storedTBSA = getSessionCookie("adultTBSA"); // Retrieve TBSA data from cookies
-      let totalTBSA = 0;
-
-      if (storedTBSA) {
-          try {
-              let tbsaData = JSON.parse(storedTBSA);
-
-              for (let i = 1; i <= 7; i++) {
-                  let fieldName = `field${i}`;
-                  let inputField = document.querySelector(`.input-field.${fieldName}`);
-
-                  if (inputField) {
-                      let value = tbsaData[fieldName] || "0%";
-                      inputField.value = value;
-                      inputField.readOnly = true; // Non-editable
-                      totalTBSA += parseFloat(value.replace("%", "")) || 0;
-                  }
-              }
-
-              let totalField = document.querySelector(".input-field.field8");
-              if (totalField) {
-                  totalField.value = totalTBSA.toFixed(1) + "%";
-                  totalField.readOnly = true;
-              }
-          } catch (error) {
-              console.error("❌ Error parsing TBSA cookie:", error);
-          }
-      } else {
-          console.warn("⚠️ No TBSA data found in cookies.");
-      }
-  }
-
-
-  /***********************************************************
-   * 4) POPUP CONTROL
-   ************************************************************/
-  // ✅ Function: Open a step popup
-  function openPopup(stepId) {
-      document.getElementById(stepId).style.display = "block";
-  }
-
-  // ✅ Function: Close Step 1 Popup (Requires Answers for Both Questions)
-  function closeStep1Popup() {
-      let fullThicknessChecked = document.querySelector('input[name="fullThickness"]:checked');
-      let partialThicknessChecked = document.querySelector('input[name="partialThickness"]:checked');
-
-      if (!fullThicknessChecked || !partialThicknessChecked) {
-          alert("❌ You must select an answer for both questions before proceeding.");
-          return; // stops from closing
-      }
-      closePopup("stepPopup1", 1);
-  }
-
-  // ✅ Function: Close a step popup, save responses, mark completion
-  function closePopup(stepId, stepNumber) {
-      saveStepResponses(stepId);
-      updateStepStatus(stepNumber);
-      document.getElementById(stepId).style.display = "none";
-  }
-
-
-  /***********************************************************
-   * 5) RADIO / CHECKBOX SAVING & RESTORING
-   ************************************************************/
-  // ✅ Function: Save Radio + Checkbox State for a Given Step
-  function saveStepResponses(stepId) {
-      let inputs = document.querySelectorAll(`#${stepId} input[type="radio"], #${stepId} input[type="checkbox"]`);
-      let stepData = {};
-
-      inputs.forEach(input => {
-          if (input.type === "radio") {
-              if (input.checked) {
-                  stepData[input.name] = input.value;
-              }
-          } else if (input.type === "checkbox") {
-              stepData[input.name] = input.checked ? "checked" : "unchecked";
-          }
-      });
-
-      setSessionCookie(stepId, JSON.stringify(stepData));
-  }
-
-  // ✅ Function: Restore Radio + Checkbox State for a Given Step
-  function restoreStepResponses(stepId) {
-      let storedData = getSessionCookie(stepId);
-      if (storedData) {
-          let stepData = JSON.parse(storedData);
-          let inputs = document.querySelectorAll(`#${stepId} input[type="radio"], #${stepId} input[type="checkbox"]`);
-
-          inputs.forEach(input => {
-              if (input.type === "radio") {
-                  if (stepData[input.name] === input.value) {
-                      input.checked = true;
-                  }
-              } else if (input.type === "checkbox") {
-                  if (stepData[input.name] === "checked") {
-                      input.checked = true;
-                  }
-              }
-          });
-      }
-  }
-
-
-  /***********************************************************
-   * 6) STEP STATUS + NAVIGATION
-   ************************************************************/
-  // ✅ Function: Mark Step as "COMPLETED" or "PENDING"
-  function updateStepStatus(stepNumber) {
-      let stepElement = document.getElementById(`stepStatus${stepNumber}`);
-      let inputs = document.querySelectorAll(`#stepPopup${stepNumber} input[type="radio"], #stepPopup${stepNumber} input[type="checkbox"]`);
-      let isCompleted = Array.from(inputs).some(input => input.checked);
-
-      if (stepElement) {
-          stepElement.innerText = isCompleted ? "COMPLETED" : "PENDING";
-          stepElement.style.color = isCompleted ? "darkgreen" : "red";
-          stepElement.style.fontWeight = "bold";
-      }
-
-      enableNextButton();
-  }
-
-  // ✅ Function: Disable Next Button Initially
-  function disableNextButton() {
-      let nextBtn = document.getElementById("nextBtn");
-      if (nextBtn) {
-          nextBtn.style.pointerEvents = "none";
-          nextBtn.style.opacity = "0.5";
-      }
-  }
-
-  // ✅ Function: Enable Next Button Only If All Steps Are Completed
-  function enableNextButton() {
-      let nextBtn = document.getElementById("nextBtn");
-      if (!nextBtn) return;
-
-      let allCompleted = true;
-      for (let i = 1; i <= 4; i++) {
-          let stepStatus = document.getElementById(`stepStatus${i}`);
-          if (!stepStatus || stepStatus.innerText !== "COMPLETED") {
-              allCompleted = false;
-              break;
-          }
-      }
-
-      if (allCompleted) {
-          nextBtn.style.pointerEvents = "auto";
-          nextBtn.style.opacity = "1";
-      } else {
-          nextBtn.style.pointerEvents = "none";
-          nextBtn.style.opacity = "0.5";
-      }
-  }
-
-
-  /***********************************************************
-   * 7) PREV / NEXT BUTTONS
-   ************************************************************/
-  // ✅ Function: Handle Previous Button Click
-  function setupPreviousButton() {
-      let prevBtn = document.getElementById("prevBtn");
-      if (prevBtn) {
-          prevBtn.addEventListener("click", function () {
-              window.location.href = "https://concussed8.github.io/Android-App/pages/modified_parkland/parkland.html";
-          });
-      }
-  }
-
-  // ✅ Function: Handle Next Button Click
-  function setupNextButton() {
-      let nextBtn = document.getElementById("nextBtn");
-      if (nextBtn) {
-          nextBtn.addEventListener("click", function () {
-              window.location.href = "https://concussed8.github.io/Android-App/pages/modified_parkland/parkland.html";
-          });
-      }
-  }
-
-
-  /***********************************************************
-   * 8) EVENT LISTENERS ON BUTTONS
-   ************************************************************/
-  document.getElementById("step1").addEventListener("click", function () {
-      openPopup("stepPopup1");
-  });
-  document.getElementById("step2").addEventListener("click", function () {
-      openPopup("stepPopup2");
-  });
-  document.getElementById("step3").addEventListener("click", function () {
-      openPopup("stepPopup3");
-  });
-  document.getElementById("step4").addEventListener("click", function () {
-      openPopup("stepPopup4");
-  });
-
-  document.querySelector("#stepPopup1 .close-popup").addEventListener("click", closeStep1Popup);
-  document.querySelector("#stepPopup2 .close-popup").addEventListener("click", function () {
-      closePopup("stepPopup2", 2);
-  });
-  document.querySelector("#stepPopup3 .close-popup").addEventListener("click", function () {
-      closePopup("stepPopup3", 3);
-  });
-  document.querySelector("#stepPopup4 .close-popup").addEventListener("click", function () {
-      closePopup("stepPopup4", 4);
-  });
-
-
-  /***********************************************************
-   * 9) ON PAGE LOAD
-   ************************************************************/
-  document.addEventListener("DOMContentLoaded", function () {
-      updateBackgroundColor();
-      updateHeaderTitle();
-      disableNextButton();
-      setupPreviousButton();
-      setupNextButton();
-
-      for (let i = 1; i <= 4; i++) {
-          restoreStepResponses(`stepPopup${i}`);
-          updateStepStatus(i);
-      }
-
-      populateFieldsFromCookies();
-
-      /* ================== ELECTRICAL BURN POPUP - ADDED ================== */
-      // Show the Electrical Burn Popup immediately if "electrical" was selected
-      if (getSessionCookie("selectedIcon") === "electrical") {
-          document.getElementById("electricalBurnPopup").style.display = "block";
-      }
-  });
-
-
-  /***********************************************************
-   * 10) ORIENTATION CHANGES
-   ************************************************************/
-  window.addEventListener("resize", checkOrientation);
-  window.addEventListener("orientationchange", checkOrientation);
-
-  function checkOrientation() {
-      // Example usage:
-      // if (window.innerWidth < window.innerHeight) {
-      //     // portrait
-      // } else {
-      //     // landscape
-      // }
-  }
-
-
-  /* ================== ELECTRICAL BURN POPUP - ADDED ================== */
-  // Handle the Continue button for the Electrical Burn Popup
-  document.addEventListener("DOMContentLoaded", function () {
-      const electricalContinueBtn = document.getElementById("electricalBurnContinueBtn");
-      if (electricalContinueBtn) {
-          electricalContinueBtn.addEventListener("click", function () {
-              // Check if user selected Yes or No
-              let selectedVoltage = document.querySelector('input[name="highVoltage"]:checked');
-              if (!selectedVoltage) {
-                  alert("Please select Yes or No before continuing.");
-                  return;
-              }
-
-              // Optionally, store their selection in a cookie if needed:
-              // setSessionCookie("electricalHighVoltage", selectedVoltage.value);
-
-              // Hide the popup
-              document.getElementById("electricalBurnPopup").style.display = "none";
-          });
-      }
-  });
-  </script>
-</body>
-</html>
        </script>
 
 </body>
