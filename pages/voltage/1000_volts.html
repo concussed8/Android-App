@@ -85,7 +85,43 @@
     }
 
     /* ==============================
-       5) Navigation Buttons (PNG Icons)
+       5) Popup Overlay
+       ============================== */
+    .overlay {
+      display: none; /* hidden by default */
+      position: fixed;
+      top: 0; 
+      left: 0;
+      width: 100vw;
+      height: 100vh;
+      background: rgba(0,0,0,0.5);
+      z-index: 9999; /* above other page elements */
+      align-items: center;
+      justify-content: center;
+    }
+
+    .popup-content {
+      background: #fff;
+      padding: 20px;
+      border-radius: 8px;
+      text-align: center;
+      max-width: 300px;
+      font-family: Arial, sans-serif;
+    }
+
+    .popup-content button {
+      margin-top: 1em;
+      padding: 0.6em 1.2em;
+      font-size: 16px;
+      font-weight: bold;
+      cursor: pointer;
+      border: 2px solid #444;
+      border-radius: 4px;
+      background-color: #e5e5e5;
+    }
+
+    /* ==============================
+       6) Navigation Buttons (PNG Icons)
        ============================== */
     .nav-buttons {
       position: absolute;
@@ -111,6 +147,11 @@
 
     .nav-buttons img:active {
       transform: scale(1.1);
+    }
+
+    /* Hide Next Button initially */
+    #nextBtn {
+      display: none;
     }
   </style>
 </head>
@@ -143,6 +184,14 @@
     <img src="https://raw.githubusercontent.com/concussed8/Android-App/main/images/next.png" id="nextBtn" alt="Next">
   </div>
 
+  <!-- Popup Overlay -->
+  <div class="overlay" id="overlayPopup">
+    <div class="popup-content">
+      <p>Please acknowledge your selection.</p>
+      <button id="ackBtn">Acknowledge</button>
+    </div>
+  </div>
+
   <script>
     /* ==============================
        1) Cookie Helpers
@@ -169,22 +218,14 @@
       let burnType = getSessionCookie("selectedIcon") || "thermal";
 
       let backgroundColor = "#800000"; // Default (thermal)
-      let headerColor = "#800000";
       if (burnType === "chemical") {
         backgroundColor = "#90EE90";
-        headerColor = "#90EE90";
       } else if (burnType === "electrical") {
         backgroundColor = "#ADD8E6";
-        headerColor = "#ADD8E6";
       }
 
       // Update body BG
       document.body.style.backgroundColor = backgroundColor;
-      // Update container-header text color if needed
-      // (If you have a .container-header, we can color it too.)
-      // For now, we only set the dynamic color for a hypothetical container-header:
-      // let ch = document.querySelector(".container-header");
-      // if (ch) ch.style.color = headerColor;
     }
 
     function updateHeaderTitle() {
@@ -225,50 +266,102 @@
     }
 
     /* ==============================
-       4) Previous & Next Buttons
+       4) Popup & Acknowledge Logic
        ============================== */
- function setupPreviousButton() {
-  let prevBtn = document.getElementById("prevBtn");
-  if (prevBtn) {
-    prevBtn.addEventListener("click", function() {
-      // Redirect directly to the parkland page
-      window.location.href = "https://concussed8.github.io/Android-App/pages/modified_parkland/parkland.html";
-    });
-  }
-}
 
+    // Show the overlay popup
+    function showOverlay() {
+      let overlay = document.getElementById("overlayPopup");
+      if (overlay) {
+        overlay.style.display = "flex"; // Use flex to center content
+      }
+    }
 
-    function setupNextButton() {
-      let nextBtn = document.getElementById("nextBtn");
-      if (nextBtn) {
-        nextBtn.addEventListener("click", function() {
-          // Check radio selection
-          const selectedVoltage = document.querySelector('input[name="voltage"]:checked');
-          if (!selectedVoltage) {
-            alert("Please select Yes or No.");
-            return;
-          }
+    // Hide the overlay popup
+    function hideOverlay() {
+      let overlay = document.getElementById("overlayPopup");
+      if (overlay) {
+        overlay.style.display = "none";
+      }
+    }
 
-          if (selectedVoltage.value === "yes") {
-            // If yes => consult
-            window.location.href = "https://concussed8.github.io/Android-App/pages/consult/consult.html";
-          } else {
-            // If no => placeholder page
-            window.location.href = "https://concussed8.github.io/Android-App/pages/.../NoPage.html";
-          }
+    // Once user selects Yes/No, we show the overlay for acknowledgment
+    function handleRadioSelection() {
+      let selected = document.querySelector('input[name="voltage"]:checked');
+      if (!selected) {
+        alert("Please select Yes or No.");
+        return;
+      }
+      showOverlay();
+    }
+
+    /* ==============================
+       5) Previous & Next Buttons
+       ============================== */
+    function setupPreviousButton() {
+      let prevBtn = document.getElementById("prevBtn");
+      if (prevBtn) {
+        prevBtn.addEventListener("click", function() {
+          // Redirect directly to the parkland page
+          window.location.href = "https://concussed8.github.io/Android-App/pages/modified_parkland/parkland.html";
         });
       }
     }
 
+    // The Next button is hidden initially, and only shown after user acknowledges.
+    function setupNextButton() {
+      let nextBtn = document.getElementById("nextBtn");
+      if (!nextBtn) return;
+
+      // We don't add a radio-check here, because the overlay is the gatekeeper
+      nextBtn.addEventListener("click", function() {
+        // Check if user actually picked yes/no (extra safety)
+        const selectedVoltage = document.querySelector('input[name="voltage"]:checked');
+        if (!selectedVoltage) {
+          alert("Please select Yes or No.");
+          return;
+        }
+
+        if (selectedVoltage.value === "yes") {
+          // If yes => consult
+          window.location.href = "https://concussed8.github.io/Android-App/pages/consult/consult.html";
+        } else {
+          // If no => placeholder page
+          window.location.href = "https://concussed8.github.io/Android-App/pages/.../NoPage.html";
+        }
+      });
+    }
+
     /* ==============================
-       5) On DOM Load
+       6) On DOM Load
        ============================== */
     document.addEventListener("DOMContentLoaded", function() {
-      updateBackgroundColor();      // Adjust body BG color
-      updateHeaderTitle();          // Set main header text
-      updateContainerBorderByAge(); // Pink if 2..15
+      updateBackgroundColor();      
+      updateHeaderTitle();          
+      updateContainerBorderByAge(); 
+
       setupPreviousButton();
       setupNextButton();
+
+      // 1) Listen for changes on the radio group
+      //    Once user picks yes/no, we pop up the overlay
+      document.querySelectorAll('input[name="voltage"]').forEach(radio => {
+        radio.addEventListener("change", function() {
+          handleRadioSelection();
+        });
+      });
+
+      // 2) Acknowledge button inside popup
+      let ackBtn = document.getElementById("ackBtn");
+      let nextBtn = document.getElementById("nextBtn");
+      if (ackBtn && nextBtn) {
+        ackBtn.addEventListener("click", function() {
+          // Hide the overlay
+          hideOverlay();
+          // Now show the Next button
+          nextBtn.style.display = "inline";
+        });
+      }
     });
   </script>
 </body>
