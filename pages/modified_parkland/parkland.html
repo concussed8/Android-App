@@ -62,7 +62,7 @@
       max-width: 488px;
       height: auto;
       background-color: white;
-      border: 3px solid black;
+      border: 3px solid black; /* Default border (will override to pink if age=2..15) */
       border-radius: 8px;
       padding: 20px;
       text-align: center;
@@ -243,7 +243,6 @@
       gap: 100px;
       z-index: 1000;
     }
-
     .nav-buttons img {
       width: 100px;
       height: 75px;
@@ -252,7 +251,6 @@
       opacity: 0.9;
       transition: transform 0.2s ease;
     }
-
     .nav-buttons img:active {
       transform: scale(1.1);
     }
@@ -261,7 +259,9 @@
 <body>
 
   <!-- Main Page Title -->
-  <div class="main-header"><span>THERMAL BURN</span> Fluid Resuscitation</div>
+  <div class="main-header">
+    <span>THERMAL BURN</span> Fluid Resuscitation
+  </div>
 
   <!-- Content Container -->
   <div class="content-container">
@@ -297,7 +297,7 @@
   </div>
 
   <script>
-    // Function to retrieve a session cookie value
+    // Retrieve a session cookie value
     function getSessionCookie(name) {
       let cookies = document.cookie.split('; ');
       for (let cookie of cookies) {
@@ -309,33 +309,49 @@
       return "";
     }
 
-    // Function to set a session cookie
+    // Set a session cookie
     function setSessionCookie(name, value) {
-      document.cookie = `${name}=${encodeURIComponent(value)}; path=/; SameSite=Lax; max-age=3600`; // 1-hour expiry
+      document.cookie = `${name}=${encodeURIComponent(value)}; path=/; SameSite=Lax; max-age=3600`; 
     }
 
-    // Function to update background and container header color based on selected burn type
+    // ==============================
+    // Pink Border Logic if age=2..15
+    // ==============================
+    function applyPinkBorderIfAge2to15() {
+      let age = parseInt(getSessionCookie("age"), 10);
+      let container = document.querySelector(".content-container");
+      if (!container) return;
+
+      if (!isNaN(age) && age >= 2 && age <= 15) {
+        console.log("✅ Age is 2..15 => Pink border");
+        container.style.border = "3px solid #ffc0cb";
+      } else {
+        console.log("✅ Age not 2..15 => Black border");
+        container.style.border = "3px solid black";
+      }
+    }
+
+    // Update background + container header color based on burn type
     function updateBackgroundColor() {
       setTimeout(() => {
         let burnType = getSessionCookie("selectedIcon");
-
         console.log("Applying Background Color for:", burnType);
 
-        let backgroundColor = "#800000"; // Default to thermal
+        let backgroundColor = "#800000"; // default
         let headerColor = "#800000";
 
         if (burnType) {
           switch (burnType) {
             case "thermal":
-              backgroundColor = "#800000"; // Dark Red
+              backgroundColor = "#800000";
               headerColor = "#800000";
               break;
             case "chemical":
-              backgroundColor = "#90EE90"; // Light Green
+              backgroundColor = "#90EE90";
               headerColor = "#90EE90";
               break;
             case "electrical":
-              backgroundColor = "#ADD8E6"; // Light Blue
+              backgroundColor = "#ADD8E6";
               headerColor = "#ADD8E6";
               break;
             default:
@@ -348,7 +364,7 @@
       }, 200);
     }
 
-    // Function to update the main page title dynamically
+    // Update the main page title dynamically
     function updateHeaderTitle() {
       let burnType = getSessionCookie("selectedIcon");
       let headerSpan = document.querySelector(".main-header span");
@@ -370,7 +386,7 @@
       }
     }
 
-    // Function to display the correct fluid resuscitation image inside the container
+    // Display correct fluid resuscitation image inside the container
     function displayFluidImage() {
       let age = parseInt(getSessionCookie("age"), 10);
       let burnType = getSessionCookie("selectedIcon");
@@ -390,7 +406,7 @@
       console.log("Loaded Fluid Image:", imagePath);
     }
 
-    // Function to populate input fields with stored cookie values
+    // Populate input fields with stored cookie values
     function populateInputFields() {
       let weightField = document.getElementById("weight");
       let tbsaField = document.getElementById("tbsa");
@@ -406,7 +422,7 @@
       // Retrieve and sum values for TBSA
       let storedTBSA = getSessionCookie("adultTBSA");
       if (storedTBSA) {
-        let tbsaData = JSON.parse(storedTBSA); // Convert back to object
+        let tbsaData = JSON.parse(storedTBSA);
         let totalTBSA = Object.values(tbsaData).reduce((sum, value) => {
           let numericValue = parseFloat(value.replace("%", "")) || 0;
           return sum + numericValue;
@@ -418,7 +434,7 @@
       }
     }
 
-    // Function to calculate and display the result in calcbox
+    // Calculate and display result in calcbox
     function calculateFluidResuscitation() {
       let age = parseInt(getSessionCookie("age"), 10);
       let burnType = getSessionCookie("selectedIcon");
@@ -451,10 +467,9 @@
       document.getElementById("calcOutput").value = result.toFixed(2);
     }
 
-    // ✅ Function: Handle Previous Button Click (Redirect Based on Age)
+    // ✅ Handle Previous Button Click (Redirect Based on Age)
     function handlePreviousButton() {
       let prevBtn = document.getElementById("prevBtn");
-
       if (prevBtn) {
         prevBtn.addEventListener("click", function () {
           let age = parseInt(getSessionCookie("age"), 10);
@@ -481,20 +496,16 @@
       handlePreviousButton();
     });
 
-    // Function to handle Next Button Click (Redirect to next page)
+    // Handle Next Button Click (Redirect)
     function handleNextButton() {
       let nextBtn = document.getElementById("nextBtn");
-
       if (nextBtn) {
         nextBtn.addEventListener("click", function () {
-          // 1) Check burn type
           let burnType = getSessionCookie("selectedIcon");
-          // 2) If electrical, go to 1000_volts
           if (burnType === "electrical") {
             console.log("Electrical burn selected. Redirecting to 1000_volts page...");
             window.location.href = "https://concussed8.github.io/Android-App/pages/voltage/1000_volts";
           } else {
-            // 3) Otherwise proceed to consult
             console.log("Navigating to Next Page: Consult Page");
             window.location.href = "https://concussed8.github.io/Android-App/pages/consult/consult.html";
           }
@@ -504,13 +515,18 @@
 
     // Run all functions when the page loads
     document.addEventListener("DOMContentLoaded", function () {
+      // 1) Pink border logic
+      applyPinkBorderIfAge2to15();
+
+      // 2) Other dynamic stuff
       updateBackgroundColor();
       updateHeaderTitle();
       displayFluidImage();
       populateInputFields();
-      calculateFluidResuscitation(); // ✅ Ensures calculation runs on page load
-      handlePreviousButton();        // ✅ Handles navigation correctly
-      handleNextButton();            // <-- Updated next button logic
+      calculateFluidResuscitation();
+
+      handlePreviousButton(); 
+      handleNextButton();
     });
   </script>
 </body>
