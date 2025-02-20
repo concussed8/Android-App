@@ -732,19 +732,31 @@ function closePopup(stepId, stepNumber) {
 /***********************************************************
  * 5) RADIO / CHECKBOX SAVING & RESTORING
  ************************************************************/
+
 // ✅ Function: Save Radio + Checkbox State for a Given Step
 function saveStepResponses(stepId) {
-    let inputs = document.querySelectorAll(`#${stepId} input[type="radio"], #${stepId} input[type="checkbox"]`);
+    // Grab all radio and checkbox inputs for this step
+    let inputs = document.querySelectorAll(
+      `#${stepId} input[type="radio"], #${stepId} input[type="checkbox"]`
+    );
     let stepData = {};
+
     inputs.forEach(input => {
         if (input.type === "radio") {
+            // For radio, store which value is selected
             if (input.checked) {
                 stepData[input.name] = input.value;
             }
         } else if (input.type === "checkbox") {
-            stepData[input.name] = input.checked ? "checked" : "unchecked";
+            // ✅ Change for Step 4: Use `input.value` as the key instead of `input.name`
+            // so each checkbox is stored individually: { age:"checked", pregnancy:"checked", ... }
+            // if you still want Steps 1–3 checkboxes keyed by `name`, you can
+            // conditionally handle it here. But typically Step 1–3 are all radios, so no conflict.
+            stepData[input.value] = input.checked ? "checked" : "unchecked";
         }
     });
+
+    // Store the data in a session cookie
     setSessionCookie(stepId, JSON.stringify(stepData));
 }
 
@@ -753,20 +765,27 @@ function restoreStepResponses(stepId) {
     let storedData = getSessionCookie(stepId);
     if (storedData) {
         let stepData = JSON.parse(storedData);
-        let inputs = document.querySelectorAll(`#${stepId} input[type="radio"], #${stepId} input[type="checkbox"]`);
+        let inputs = document.querySelectorAll(
+          `#${stepId} input[type="radio"], #${stepId} input[type="checkbox"]`
+        );
+
         inputs.forEach(input => {
             if (input.type === "radio") {
+                // Check if this input’s name matches the stored value
+                // i.e. stepData["fullThickness"] === "yes", etc.
                 if (stepData[input.name] === input.value) {
                     input.checked = true;
                 }
             } else if (input.type === "checkbox") {
-                if (stepData[input.name] === "checked") {
+                // ✅ Also changed for Step 4: compare stepData[input.value]
+                if (stepData[input.value] === "checked") {
                     input.checked = true;
                 }
             }
         });
     }
 }
+
 
 /***********************************************************
  * 6) STEP STATUS + NAVIGATION
