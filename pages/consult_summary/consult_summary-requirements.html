@@ -12,7 +12,7 @@
       margin: 0;
       padding: 0;
       width: 100vw;
-      height: 100vh;
+      height: auto; /* Instead of 100vh, let content determine height */
       display: flex;
       flex-direction: column;
       align-items: center;
@@ -63,12 +63,11 @@
        4) BANNER TEXT ABOVE THE IMAGE
        ============================================================= */
     .consult-required {
-      /* Example text styling */
-      font-size: 16px;          /* adjust size */
-      color: darkblue;          /* text color */
-      font-family: Arial, sans-serif; /* choose your font */
-      font-weight: bold;        /* bold text */
-      margin-bottom: 10px;      /* space below text before image */
+      font-size: 16px;    /* adjustable size */
+      color: darkblue;    /* text color */
+      font-family: Arial, sans-serif;
+      font-weight: bold;
+      margin-bottom: 10px; /* space below text before image */
       text-align: center;
     }
 
@@ -91,14 +90,7 @@
       margin-top: 10px;        
       margin-bottom: 10px;     
       cursor: pointer;         
-
-      /* Pulse Animation Controls */
-      animation: pulseImage 1.5s ease-in-out infinite; 
-      /* 
-        - 1.5s = duration of one full pulse
-        - infinite = loop forever
-        - 'ease-in-out' = smooth acceleration/deceleration 
-      */
+      animation: pulseImage 1.5s ease-in-out infinite;
     }
 
     /* =============================================================
@@ -106,37 +98,33 @@
        ============================================================= */
     .consult-summary {
       width: 100%;
-      /* Additional spacing from the image if desired: */
       margin-top: 10px;
     }
 
     .consult-summary ul {
       list-style-type: disc; /* bullet style */
       margin: 0;
-      padding-left: 1.2em;  /* space for bullets to appear */
+      padding-left: 1.2em;  /* space for bullets */
     }
-
     .consult-summary li {
-      color: red;           /* bold red text for summary lines */
+      color: red;
       font-weight: bold;
-      margin-bottom: 5px;   /* space between bullet items */
+      margin-bottom: 5px;
     }
 
     /* =============================================================
-       7) NAVIGATION BUTTONS
+       7) NAVIGATION BUTTONS (NOW BELOW THE CONTAINER)
        ============================================================= */
     .nav-buttons {
-      position: absolute;
-      bottom: 20px;
+      /* Removed 'position: absolute;' and other fixed coords */
       display: flex;
-      width: 60vw;
+      width: 60vw;        /* Responsive width */
       max-width: 400px;
       justify-content: center;
       align-items: center;
       gap: 100px;
-      left: 50%;
-      transform: translateX(-50%);
-      z-index: 1000;
+      margin-top: 20px;   /* adds spacing above the nav buttons */
+      margin-bottom: 20px;/* optional spacing at bottom */
     }
     .nav-buttons img {
       width: 100px;
@@ -161,26 +149,21 @@
 
   <!-- CONTENT CONTAINER -->
   <div class="content-container">
-    
-    <!-- BANNER TEXT ABOVE THE IMAGE -->
     <div class="consult-required">
       ***BURN CENTRE CONSULT REQUIRED***
     </div>
-
-    <!-- CRITICALL.JPG (PULSING) -->
     <img
       class="criticall-image"
       src="https://raw.githubusercontent.com/concussed8/Android-App/main/images/criticall.jpg"
       alt="Criticall Burn Image"
     >
-
-    <!-- BULLETED SUMMARY -->
-    <div class="consult-summary" id="consultSummary">
-      <!-- We'll build a UL with red bullets in JS -->
-    </div>
+    <div class="consult-summary" id="consultSummary"></div>
   </div>
 
-  <!-- NAVIGATION ICONS (DIRECTORIES ONLY, NO FILENAMES) -->
+  <!-- 
+    NAVIGATION ICONS NOW IN NORMAL FLOW BELOW THE .content-container.
+    They will move down as the container grows.
+  -->
   <div class="nav-buttons">
     <img src="https://raw.githubusercontent.com/concussed8/Android-App/main/images/prev.png" id="prevBtn" alt="Previous">
     <img src="https://raw.githubusercontent.com/concussed8/Android-App/main/images/next.png" id="nextBtn" alt="Next">
@@ -220,7 +203,6 @@
         }
       }, 200);
     }
-
     function applyPinkBorderIfAge2to15() {
       let age = parseInt(getSessionCookie("age"), 10);
       let container = document.querySelector(".content-container");
@@ -277,7 +259,6 @@
       let container = document.getElementById("consultSummary");
       if (!container) return;
 
-      // We'll place bullet items inside a <ul>
       let ul = document.createElement("ul");
 
       // Step 1
@@ -313,9 +294,7 @@
           }
         }
         if (highRiskChecks.length > 0) {
-          // Add heading as a list item or separate line
-          ul.appendChild(makeListItem("Comorbidities:", true)); // pass true if you want it distinct
-
+          ul.appendChild(makeListItem("Comorbidities:", true));
           if (highRiskChecks.includes("none")) {
             ul.appendChild(makeListItem("None"));
           } else {
@@ -325,7 +304,6 @@
         }
       }
 
-      // Put the <ul> inside container
       container.innerHTML = "";
       container.appendChild(ul);
     }
@@ -333,26 +311,16 @@
     // Convert Step 4 keys to user-friendly text
     function mapCheckboxToText(key) {
       switch (key) {
-        case "age":
-          return "≥ 50 years of age";
-        case "anticoagulated":
-          return "Anticoagulated";
-        case "immunosuppressed":
-          return "Immunosuppression";
-        case "pregnancy":
-          return "Pregnancy";
-        case "diabetes":
-          return "Diabetes";
-        case "social_care":
-          return "Special social/emotional/rehab care needed";
-        case "ed_assessment":
-          return "More care required by ED physician assessment";
-        case "significant_problems":
-          return "Significant medical problems";
-        case "none":
-          return "None";
-        default:
-          return key; // fallback
+        case "age":                return "≥ 50 years of age";
+        case "anticoagulated":     return "Anticoagulated";
+        case "immunosuppressed":   return "Immunosuppression";
+        case "pregnancy":          return "Pregnancy";
+        case "diabetes":           return "Diabetes";
+        case "social_care":        return "Special social/emotional/rehab care needed";
+        case "ed_assessment":      return "More care required by ED physician assessment";
+        case "significant_problems":return "Significant medical problems";
+        case "none":               return "None";
+        default:                   return key; 
       }
     }
 
@@ -361,8 +329,7 @@
       let li = document.createElement("li");
       li.innerHTML = text;
       if (isHeading) {
-        // Could style differently if you want the heading bullet or no bullet
-        li.style.listStyleType = "none"; // or keep bullet
+        li.style.listStyleType = "none";
         li.style.textDecoration = "underline";
         li.style.marginTop = "10px";
       }
@@ -392,12 +359,14 @@
      * 7) ON DOM LOAD
      ************************************************************/
     document.addEventListener("DOMContentLoaded", function() {
-      updateBackgroundColor();        // dynamic BG color
-      applyPinkBorderIfAge2to15();    // pink border if age=2..15
-      updateHeaderTitle();            // dynamic burn type
+      updateBackgroundColor();     // dynamic BG color
+      applyPinkBorderIfAge2to15(); // pink border if age=2..15
+      updateHeaderTitle();         // dynamic burn type
+
       setupPrevButton();
       setupNextButton();
-      buildConsultSummary();          // build bullet summary
+
+      buildConsultSummary();       // build bullet summary
     });
   </script>
 </body>
