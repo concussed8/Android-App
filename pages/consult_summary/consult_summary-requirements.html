@@ -58,11 +58,11 @@
        4) BANNER TEXT ABOVE THE IMAGE
        ============================================================= */
     .consult-required {
-      font-size: 16px;          /* Adjust size */
-      color: darkblue;          /* Text color */
+      font-size: 16px;
+      color: darkblue;
       font-family: Arial, sans-serif;
       font-weight: bold;
-      margin-bottom: 10px;      /* Space below text before image */
+      margin-bottom: 10px;
       text-align: center;
     }
     /* =============================================================
@@ -82,8 +82,8 @@
       background-color: #f0f0f0;
       margin-top: 10px;
       margin-bottom: 10px;
-      cursor: pointer;  /* Makes it clickable */
-      animation: pulseImage 1.5s ease-in-out infinite; /* Pulse animation */
+      cursor: pointer;
+      animation: pulseImage 1.5s ease-in-out infinite;
     }
     /* =============================================================
        6) SUMMARY LIST (BULLETED, RED, BOLD)
@@ -127,34 +127,33 @@
       transform: scale(1.1);
     }
     /* =============================================================
-       8) POPUP OVERLAY FOR CALLING CRITICALL
+       8) CALL POPUP OVERLAY (HIDDEN BY DEFAULT)
        ============================================================= */
     .call-popup-overlay {
-      display: none; /* Hidden by default */
+      display: none; /* Hidden initially */
       position: fixed;
       top: 0;
       left: 0;
       width: 100vw;
       height: 100vh;
       background: rgba(0, 0, 0, 0.5); /* Semi-transparent overlay */
-      z-index: 2000; /* Above everything else */
-      display: flex;
+      z-index: 2000;
       justify-content: center;
       align-items: center;
     }
     .call-popup-content {
-      background-color: #ffffff; /* Popup background */
-      padding: 20px;             /* Inner spacing */
-      border-radius: 10px;       /* Rounded corners */
+      background-color: #ffffff;
+      padding: 20px;
+      border-radius: 10px;
       text-align: center;
       font-family: Arial, sans-serif;
-      font-size: 18px;           /* Adjust text size */
-      color: #000000;            /* Text color */
+      font-size: 18px;
+      color: #000000;
       max-width: 90%;
       box-shadow: 0 4px 10px rgba(0, 0, 0, 0.5);
     }
     .call-popup-content p {
-      margin: 0 0 20px 0;         /* Space below message */
+      margin: 0 0 20px 0;
     }
     .call-popup-content button {
       margin: 10px;
@@ -185,7 +184,6 @@
 
   <!-- CONTENT CONTAINER -->
   <div class="content-container">
-    <!-- Banner Text -->
     <div class="consult-required">
       ***BURN CENTRE CONSULT REQUIRED***<br>
       **IF DELAY IN TRANSPORT ALSO CONSULT VCC**
@@ -197,7 +195,7 @@
       alt="Criticall Burn Image"
       id="callIcon"
     >
-    <!-- SUMMARY (Built via JS) -->
+    <!-- BULLETED SUMMARY -->
     <div class="consult-summary" id="consultSummary"></div>
   </div>
 
@@ -303,10 +301,9 @@
     function buildConsultSummary() {
       let container = document.getElementById("consultSummary");
       if (!container) return;
-
       let ul = document.createElement("ul");
 
-      // Step 1: Full & Partial Thickness Burns
+      // Step 1
       let step1Data = getStepData("stepPopup1");
       if (step1Data) {
         if (step1Data["fullThickness"] === "yes") {
@@ -317,19 +314,19 @@
         }
       }
 
-      // Step 2: Sensitive Areas
+      // Step 2
       let step2Data = getStepData("stepPopup2");
       if (step2Data && step2Data["sensitive"] === "yes") {
         ul.appendChild(makeListItem("Full/Partial thickness burns involving FACE, HANDS, GENITALIA, FEET, PERINEUM, or JOINT(S)"));
       }
 
-      // Step 3: Inhalation Injury
+      // Step 3
       let step3Data = getStepData("stepPopup3");
       if (step3Data && step3Data["inhalation"] === "yes") {
         ul.appendChild(makeListItem("INHALATION injury present"));
       }
 
-      // Step 4: Comorbidities (High-Risk Considerations)
+      // Step 4
       let step4Data = getStepData("stepPopup4");
       if (step4Data) {
         let highRiskChecks = [];
@@ -416,7 +413,6 @@
     /***********************************************************
      * 7) CALL POPUP FUNCTIONALITY
      ************************************************************/
-    // When the pulsing image is clicked, show the popup
     function setupCallPopup() {
       let callIcon = document.getElementById("callIcon");
       let callPopup = document.getElementById("callPopup");
@@ -430,7 +426,6 @@
       }
       if (callYes) {
         callYes.addEventListener("click", function() {
-          // Open the dialer using the tel: URL scheme
           window.location.href = "tel:18006684357";
         });
       }
