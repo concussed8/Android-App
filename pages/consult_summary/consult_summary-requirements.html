@@ -252,83 +252,85 @@
       }
     }
 
-    /***********************************************************
-     * 5) BUILD SUMMARY
-     ************************************************************/
-    function buildConsultSummary() {
-      let container = document.getElementById("consultSummary");
-      if (!container) return;
+ /***********************************************************
+ * 5) BUILD SUMMARY
+ ************************************************************/
+function buildConsultSummary() {
+  let container = document.getElementById("consultSummary");
+  if (!container) return;
 
-      let ul = document.createElement("ul");
+  let ul = document.createElement("ul");
 
-      // Step 1
-      let step1Data = getStepData("stepPopup1");
-      if (step1Data) {
-        if (step1Data["fullThickness"] === "yes") {
-          ul.appendChild(makeListItem("Full thickness burns present"));
-        }
-        if (step1Data["partialThickness"] === "yes") {
-          ul.appendChild(makeListItem("Partial thickness burns ≥ 10% TBSA"));
-        }
-      }
-
-      // Step 2
-      let step2Data = getStepData("stepPopup2");
-      if (step2Data && step2Data["sensitive"] === "yes") {
-        ul.appendChild(makeListItem("Full/Partial thickness burns involving FACE, HANDS, GENITALIA, FEET, PERINEUM, or JOINT(S)"));
-      }
-
-      // Step 3
-      let step3Data = getStepData("stepPopup3");
-      if (step3Data && step3Data["inhalation"] === "yes") {
-        ul.appendChild(makeListItem("INHALATION injury present"));
-      }
-
-      // Step 4
-      let step4Data = getStepData("stepPopup4");
-      if (step4Data) {
-        let highRiskChecks = [];
-        for (let key in step4Data) {
-          if (step4Data[key] === "checked") {
-            highRiskChecks.push(key);
-          }
-        }
-        if (highRiskChecks.length // Step 4
-let step4Data = getStepData("stepPopup4");
-if (step4Data) {
-  let highRiskChecks = [];
-  for (let key in step4Data) {
-    if (step4Data[key] === "checked") {
-      highRiskChecks.push(key);
+  // Step 1: Full and Partial Thickness Burns
+  let step1Data = getStepData("stepPopup1");
+  if (step1Data) {
+    if (step1Data["fullThickness"] === "yes") {
+      ul.appendChild(makeListItem("Full thickness burns present"));
+    }
+    if (step1Data["partialThickness"] === "yes") {
+      ul.appendChild(makeListItem("Partial thickness burns ≥ 10% TBSA"));
     }
   }
-  if (highRiskChecks.length > 0) {
-    ul.appendChild(makeListItem("Comorbidities:", true));
-    if (highRiskChecks.includes("none")) {
-      ul.appendChild(makeListItem("None"));
-    } else {
-      let mapped = highRiskChecks.map(mapCheckboxToText);
-      mapped.forEach(txt => ul.appendChild(makeListItem(txt)));
+
+  // Step 2: Sensitive Areas Involved
+  let step2Data = getStepData("stepPopup2");
+  if (step2Data && step2Data["sensitive"] === "yes") {
+    ul.appendChild(makeListItem("Full/Partial thickness burns involving FACE, HANDS, GENITALIA, FEET, PERINEUM, or JOINT(S)"));
+  }
+
+  // Step 3: Inhalation Injury
+  let step3Data = getStepData("stepPopup3");
+  if (step3Data && step3Data["inhalation"] === "yes") {
+    ul.appendChild(makeListItem("INHALATION injury present"));
+  }
+
+  // Step 4: High-Risk / Comorbidities
+  let step4Data = getStepData("stepPopup4");
+  if (step4Data) {
+    let highRiskChecks = [];
+    for (let key in step4Data) {
+      if (step4Data[key] === "checked") {
+        highRiskChecks.push(key);
+      }
+    }
+    if (highRiskChecks.length > 0) {
+      ul.appendChild(makeListItem("Comorbidities:", true)); // Heading in black
+      if (highRiskChecks.includes("none")) {
+        ul.appendChild(makeListItem("None"));
+      } else {
+        let mapped = highRiskChecks.map(mapCheckboxToText);
+        mapped.forEach(txt => ul.appendChild(makeListItem(txt)));
+      }
     }
   }
+
+  container.innerHTML = "";
+  container.appendChild(ul);
 }
-
-container.innerHTML = "";
-container.appendChild(ul);
 
 // Convert Step 4 keys to user-friendly text
 function mapCheckboxToText(key) {
   switch (key) {
-    case "age":                 return "≥ 50 years of age";
-    case "anticoagulated":      return "Anticoagulated";
-    case "immunosuppressed":    return "Immunosuppression";
-    case "pregnancy":           return "Pregnancy";
-    case "diabetes":            return "Diabetes";
-    case "social_care":         return "Special social/emotional/rehab care needed";
-    case "ed_assessment":       return "More care required by ED physician assessment";
-    case "significant_problems": return "Significant medical problems";
-    case "none":                return "None";
-    default:                    return key; 
+    case "age":
+      return "≥ 50 years of age";
+    case "anticoagulated":
+      return "Anticoagulated";
+    case "immunosuppressed":
+      return "Immunosuppression";
+    case "pregnancy":
+      return "Pregnancy";
+    case "diabetes":
+      return "Diabetes";
+    case "social_care":
+      return "Special social/emotional/rehab care needed";
+    case "ed_assessment":
+      return "More care required by ED physician assessment";
+    case "significant_problems":
+      return "Significant medical problems";
+    case "none":
+      return "None";
+    default:
+      return key;
   }
 }
 
@@ -337,10 +339,10 @@ function makeListItem(text, isHeading = false) {
   let li = document.createElement("li");
   li.innerHTML = text;
   if (isHeading) {
-    li.style.listStyleType = "none"; // Optionally remove bullet for heading
+    li.style.listStyleType = "none";      // Optionally remove the bullet for headings
     li.style.textDecoration = "underline";
     li.style.marginTop = "10px";
-    li.style.color = "black"; // Force heading text to appear in black
+    li.style.color = "black";             // Force heading text to appear in black
   } else {
     li.style.color = "red";
     li.style.fontWeight = "bold";
