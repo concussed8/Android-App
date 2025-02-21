@@ -293,48 +293,60 @@
             highRiskChecks.push(key);
           }
         }
-        if (highRiskChecks.length > 0) {
-          ul.appendChild(makeListItem("Comorbidities:", true));
-          if (highRiskChecks.includes("none")) {
-            ul.appendChild(makeListItem("None"));
-          } else {
-            let mapped = highRiskChecks.map(mapCheckboxToText);
-            mapped.forEach(txt => ul.appendChild(makeListItem(txt)));
-          }
-        }
-      }
-
-      container.innerHTML = "";
-      container.appendChild(ul);
+        if (highRiskChecks.length // Step 4
+let step4Data = getStepData("stepPopup4");
+if (step4Data) {
+  let highRiskChecks = [];
+  for (let key in step4Data) {
+    if (step4Data[key] === "checked") {
+      highRiskChecks.push(key);
     }
-
-    // Convert Step 4 keys to user-friendly text
-    function mapCheckboxToText(key) {
-      switch (key) {
-        case "age":                return "≥ 50 years of age";
-        case "anticoagulated":     return "Anticoagulated";
-        case "immunosuppressed":   return "Immunosuppression";
-        case "pregnancy":          return "Pregnancy";
-        case "diabetes":           return "Diabetes";
-        case "social_care":        return "Special social/emotional/rehab care needed";
-        case "ed_assessment":      return "More care required by ED physician assessment";
-        case "significant_problems":return "Significant medical problems";
-        case "none":               return "None";
-        default:                   return key; 
-      }
+  }
+  if (highRiskChecks.length > 0) {
+    ul.appendChild(makeListItem("Comorbidities:", true));
+    if (highRiskChecks.includes("none")) {
+      ul.appendChild(makeListItem("None"));
+    } else {
+      let mapped = highRiskChecks.map(mapCheckboxToText);
+      mapped.forEach(txt => ul.appendChild(makeListItem(txt)));
     }
+  }
+}
 
-    // Helper to create a <li> element in bold red text
-    function makeListItem(text, isHeading = false) {
-      let li = document.createElement("li");
-      li.innerHTML = text;
-      if (isHeading) {
-        li.style.listStyleType = "none";
-        li.style.textDecoration = "underline";
-        li.style.marginTop = "10px";
-      }
-      return li;
-    }
+container.innerHTML = "";
+container.appendChild(ul);
+
+// Convert Step 4 keys to user-friendly text
+function mapCheckboxToText(key) {
+  switch (key) {
+    case "age":                 return "≥ 50 years of age";
+    case "anticoagulated":      return "Anticoagulated";
+    case "immunosuppressed":    return "Immunosuppression";
+    case "pregnancy":           return "Pregnancy";
+    case "diabetes":            return "Diabetes";
+    case "social_care":         return "Special social/emotional/rehab care needed";
+    case "ed_assessment":       return "More care required by ED physician assessment";
+    case "significant_problems": return "Significant medical problems";
+    case "none":                return "None";
+    default:                    return key; 
+  }
+}
+
+// Helper to create a <li> element in bold red text (or black if heading)
+function makeListItem(text, isHeading = false) {
+  let li = document.createElement("li");
+  li.innerHTML = text;
+  if (isHeading) {
+    li.style.listStyleType = "none"; // Optionally remove bullet for heading
+    li.style.textDecoration = "underline";
+    li.style.marginTop = "10px";
+    li.style.color = "black"; // Force heading text to appear in black
+  } else {
+    li.style.color = "red";
+    li.style.fontWeight = "bold";
+  }
+  return li;
+}
 
     /***********************************************************
      * 6) NAV BUTTONS
