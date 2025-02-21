@@ -12,20 +12,17 @@
       margin: 0;
       padding: 0;
       width: 100vw;
-      height: auto; /* Instead of 100vh, let content determine height */
+      height: auto; /* Let content determine height */
       display: flex;
       flex-direction: column;
       align-items: center;
       background-color: white; /* Dynamically overridden if needed */
     }
-
     @media screen and (orientation: landscape) {
-      /* Hides everything if device is in landscape */
       body {
         display: none;
       }
     }
-
     /* =============================================================
        2) FIXED HEADER
        ============================================================= */
@@ -35,13 +32,12 @@
       font-size: 6vw;
       font-weight: bold;
       font-family: "Courier New", Courier, monospace;
-      color: white; /* Contrasts against dynamic BG if used */
+      color: white;
       z-index: 1000;
       padding-top: 5px;
       padding-bottom: 10px;
       background-color: rgba(0, 0, 0, 0.2);
     }
-
     /* =============================================================
        3) MAIN CONTENT CONTAINER
        ============================================================= */
@@ -58,41 +54,37 @@
       align-items: center;
       justify-content: flex-start;
     }
-
     /* =============================================================
        4) BANNER TEXT ABOVE THE IMAGE
        ============================================================= */
     .consult-required {
-      font-size: 16px;    /* adjustable size */
-      color: darkblue;    /* text color */
+      font-size: 16px;          /* Adjust size */
+      color: darkblue;          /* Text color */
       font-family: Arial, sans-serif;
       font-weight: bold;
-      margin-bottom: 10px; /* space below text before image */
+      margin-bottom: 10px;      /* Space below text before image */
       text-align: center;
     }
-
     /* =============================================================
        5) PULSE ANIMATION FOR CRITICALL.JPG
        ============================================================= */
     @keyframes pulseImage {
-      0%   { transform: scale(1);   opacity: 1;   }
-      50%  { transform: scale(1.05);opacity: 0.9; }
-      100% { transform: scale(1);   opacity: 1;   }
+      0%   { transform: scale(1);   opacity: 1; }
+      50%  { transform: scale(1.05); opacity: 0.9; }
+      100% { transform: scale(1);   opacity: 1; }
     }
-
     .criticall-image {
       width: 100%;
       max-width: 300px;
       height: auto;
-      border: 2px solid #444;   
-      border-radius: 10px;      
+      border: 2px solid #444;
+      border-radius: 10px;
       background-color: #f0f0f0;
-      margin-top: 10px;        
-      margin-bottom: 10px;     
-      cursor: pointer;         
-      animation: pulseImage 1.5s ease-in-out infinite;
+      margin-top: 10px;
+      margin-bottom: 10px;
+      cursor: pointer;  /* Makes it clickable */
+      animation: pulseImage 1.5s ease-in-out infinite; /* Pulse animation */
     }
-
     /* =============================================================
        6) SUMMARY LIST (BULLETED, RED, BOLD)
        ============================================================= */
@@ -100,31 +92,28 @@
       width: 100%;
       margin-top: 10px;
     }
-
     .consult-summary ul {
-      list-style-type: disc; /* bullet style */
+      list-style-type: disc;
       margin: 0;
-      padding-left: 1.2em;  /* space for bullets */
+      padding-left: 1.2em;
     }
     .consult-summary li {
       color: red;
       font-weight: bold;
       margin-bottom: 5px;
     }
-
     /* =============================================================
-       7) NAVIGATION BUTTONS (NOW BELOW THE CONTAINER)
+       7) NAVIGATION BUTTONS (DYNAMIC POSITIONING BELOW THE CONTAINER)
        ============================================================= */
     .nav-buttons {
-      /* Removed 'position: absolute;' and other fixed coords */
       display: flex;
-      width: 60vw;        /* Responsive width */
+      width: 60vw;
       max-width: 400px;
       justify-content: center;
       align-items: center;
       gap: 100px;
-      margin-top: 20px;   /* adds spacing above the nav buttons */
-      margin-bottom: 20px;/* optional spacing at bottom */
+      margin-top: 20px;
+      margin-bottom: 20px;
     }
     .nav-buttons img {
       width: 100px;
@@ -136,6 +125,53 @@
     }
     .nav-buttons img:active {
       transform: scale(1.1);
+    }
+    /* =============================================================
+       8) POPUP OVERLAY FOR CALLING CRITICALL
+       ============================================================= */
+    .call-popup-overlay {
+      display: none; /* Hidden by default */
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100vw;
+      height: 100vh;
+      background: rgba(0, 0, 0, 0.5); /* Semi-transparent overlay */
+      z-index: 2000; /* Above everything else */
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+    .call-popup-content {
+      background-color: #ffffff; /* Popup background */
+      padding: 20px;             /* Inner spacing */
+      border-radius: 10px;       /* Rounded corners */
+      text-align: center;
+      font-family: Arial, sans-serif;
+      font-size: 18px;           /* Adjust text size */
+      color: #000000;            /* Text color */
+      max-width: 90%;
+      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.5);
+    }
+    .call-popup-content p {
+      margin: 0 0 20px 0;         /* Space below message */
+    }
+    .call-popup-content button {
+      margin: 10px;
+      padding: 10px 20px;
+      font-size: 16px;
+      font-weight: bold;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+    }
+    .call-popup-content .yes-btn {
+      background-color: #4CAF50; /* Green */
+      color: white;
+    }
+    .call-popup-content .no-btn {
+      background-color: #f44336; /* Red */
+      color: white;
     }
   </style>
 </head>
@@ -149,24 +185,35 @@
 
   <!-- CONTENT CONTAINER -->
   <div class="content-container">
+    <!-- Banner Text -->
     <div class="consult-required">
-      ***BURN CENTRE CONSULT REQUIRED***<br>**IF DELAY IN TRANSPORT ALSO CONSULT VCC**
+      ***BURN CENTRE CONSULT REQUIRED***<br>
+      **IF DELAY IN TRANSPORT ALSO CONSULT VCC**
     </div>
+    <!-- PULSING, CLICKABLE IMAGE -->
     <img
       class="criticall-image"
       src="https://raw.githubusercontent.com/concussed8/Android-App/main/images/criticall.jpg"
       alt="Criticall Burn Image"
+      id="callIcon"
     >
+    <!-- SUMMARY (Built via JS) -->
     <div class="consult-summary" id="consultSummary"></div>
   </div>
 
-  <!-- 
-    NAVIGATION ICONS NOW IN NORMAL FLOW BELOW THE .content-container.
-    They will move down as the container grows.
-  -->
+  <!-- NAVIGATION BUTTONS -->
   <div class="nav-buttons">
     <img src="https://raw.githubusercontent.com/concussed8/Android-App/main/images/prev.png" id="prevBtn" alt="Previous">
     <img src="https://raw.githubusercontent.com/concussed8/Android-App/main/images/next.png" id="nextBtn" alt="Next">
+  </div>
+
+  <!-- CALL POPUP OVERLAY -->
+  <div class="call-popup-overlay" id="callPopup">
+    <div class="call-popup-content">
+      <p>Would you like to call CRITICALL now?</p>
+      <button class="yes-btn" id="callYes">YES</button>
+      <button class="no-btn" id="callNo">NO</button>
+    </div>
   </div>
 
   <script>
@@ -207,7 +254,6 @@
       let age = parseInt(getSessionCookie("age"), 10);
       let container = document.querySelector(".content-container");
       if (!container) return;
-
       if (!isNaN(age) && age >= 2 && age <= 15) {
         container.style.border = "3px solid #ffc0cb";
       } else {
@@ -222,7 +268,6 @@
       let burnType = getSessionCookie("selectedIcon") || "thermal";
       let dynamicHeader = document.getElementById("dynamicHeader");
       if (!dynamicHeader) return;
-
       switch (burnType) {
         case "thermal":
           dynamicHeader.textContent = "THERMAL BURN";
@@ -252,103 +297,103 @@
       }
     }
 
- /***********************************************************
- * 5) BUILD SUMMARY
- ************************************************************/
-function buildConsultSummary() {
-  let container = document.getElementById("consultSummary");
-  if (!container) return;
+    /***********************************************************
+     * 5) BUILD SUMMARY
+     ************************************************************/
+    function buildConsultSummary() {
+      let container = document.getElementById("consultSummary");
+      if (!container) return;
 
-  let ul = document.createElement("ul");
+      let ul = document.createElement("ul");
 
-  // Step 1: Full and Partial Thickness Burns
-  let step1Data = getStepData("stepPopup1");
-  if (step1Data) {
-    if (step1Data["fullThickness"] === "yes") {
-      ul.appendChild(makeListItem("Full thickness burns present"));
+      // Step 1: Full & Partial Thickness Burns
+      let step1Data = getStepData("stepPopup1");
+      if (step1Data) {
+        if (step1Data["fullThickness"] === "yes") {
+          ul.appendChild(makeListItem("Full thickness burns present"));
+        }
+        if (step1Data["partialThickness"] === "yes") {
+          ul.appendChild(makeListItem("Partial thickness burns ≥ 10% TBSA"));
+        }
+      }
+
+      // Step 2: Sensitive Areas
+      let step2Data = getStepData("stepPopup2");
+      if (step2Data && step2Data["sensitive"] === "yes") {
+        ul.appendChild(makeListItem("Full/Partial thickness burns involving FACE, HANDS, GENITALIA, FEET, PERINEUM, or JOINT(S)"));
+      }
+
+      // Step 3: Inhalation Injury
+      let step3Data = getStepData("stepPopup3");
+      if (step3Data && step3Data["inhalation"] === "yes") {
+        ul.appendChild(makeListItem("INHALATION injury present"));
+      }
+
+      // Step 4: Comorbidities (High-Risk Considerations)
+      let step4Data = getStepData("stepPopup4");
+      if (step4Data) {
+        let highRiskChecks = [];
+        for (let key in step4Data) {
+          if (step4Data[key] === "checked") {
+            highRiskChecks.push(key);
+          }
+        }
+        if (highRiskChecks.length > 0) {
+          ul.appendChild(makeListItem("Comorbidities:", true)); // Heading in black
+          if (highRiskChecks.includes("none")) {
+            ul.appendChild(makeListItem("None"));
+          } else {
+            let mapped = highRiskChecks.map(mapCheckboxToText);
+            mapped.forEach(txt => ul.appendChild(makeListItem(txt)));
+          }
+        }
+      }
+
+      container.innerHTML = "";
+      container.appendChild(ul);
     }
-    if (step1Data["partialThickness"] === "yes") {
-      ul.appendChild(makeListItem("Partial thickness burns ≥ 10% TBSA"));
-    }
-  }
 
-  // Step 2: Sensitive Areas Involved
-  let step2Data = getStepData("stepPopup2");
-  if (step2Data && step2Data["sensitive"] === "yes") {
-    ul.appendChild(makeListItem("Full/Partial thickness burns involving FACE, HANDS, GENITALIA, FEET, PERINEUM, or JOINT(S)"));
-  }
-
-  // Step 3: Inhalation Injury
-  let step3Data = getStepData("stepPopup3");
-  if (step3Data && step3Data["inhalation"] === "yes") {
-    ul.appendChild(makeListItem("INHALATION injury present"));
-  }
-
-  // Step 4: High-Risk / Comorbidities
-  let step4Data = getStepData("stepPopup4");
-  if (step4Data) {
-    let highRiskChecks = [];
-    for (let key in step4Data) {
-      if (step4Data[key] === "checked") {
-        highRiskChecks.push(key);
+    // Convert Step 4 keys to user-friendly text
+    function mapCheckboxToText(key) {
+      switch (key) {
+        case "age":
+          return "≥ 50 years of age";
+        case "anticoagulated":
+          return "Anticoagulated";
+        case "immunosuppressed":
+          return "Immunosuppression";
+        case "pregnancy":
+          return "Pregnancy";
+        case "diabetes":
+          return "Diabetes";
+        case "social_care":
+          return "Special social/emotional/rehab care needed";
+        case "ed_assessment":
+          return "More care required by ED physician assessment";
+        case "significant_problems":
+          return "Significant medical problems";
+        case "none":
+          return "None";
+        default:
+          return key;
       }
     }
-    if (highRiskChecks.length > 0) {
-      ul.appendChild(makeListItem("Comorbidities:", true)); // Heading in black
-      if (highRiskChecks.includes("none")) {
-        ul.appendChild(makeListItem("None"));
+
+    // Helper to create a <li> element in bold red text (or black if heading)
+    function makeListItem(text, isHeading = false) {
+      let li = document.createElement("li");
+      li.innerHTML = text;
+      if (isHeading) {
+        li.style.listStyleType = "none";
+        li.style.textDecoration = "underline";
+        li.style.marginTop = "10px";
+        li.style.color = "black";
       } else {
-        let mapped = highRiskChecks.map(mapCheckboxToText);
-        mapped.forEach(txt => ul.appendChild(makeListItem(txt)));
+        li.style.color = "red";
+        li.style.fontWeight = "bold";
       }
+      return li;
     }
-  }
-
-  container.innerHTML = "";
-  container.appendChild(ul);
-}
-
-// Convert Step 4 keys to user-friendly text
-function mapCheckboxToText(key) {
-  switch (key) {
-    case "age":
-      return "≥ 50 years of age";
-    case "anticoagulated":
-      return "Anticoagulated";
-    case "immunosuppressed":
-      return "Immunosuppression";
-    case "pregnancy":
-      return "Pregnancy";
-    case "diabetes":
-      return "Diabetes";
-    case "social_care":
-      return "Special social/emotional/rehab care needed";
-    case "ed_assessment":
-      return "More care required by ED physician assessment";
-    case "significant_problems":
-      return "Significant medical problems";
-    case "none":
-      return "None";
-    default:
-      return key;
-  }
-}
-
-// Helper to create a <li> element in bold red text (or black if heading)
-function makeListItem(text, isHeading = false) {
-  let li = document.createElement("li");
-  li.innerHTML = text;
-  if (isHeading) {
-    li.style.listStyleType = "none";      // Optionally remove the bullet for headings
-    li.style.textDecoration = "underline";
-    li.style.marginTop = "10px";
-    li.style.color = "black";             // Force heading text to appear in black
-  } else {
-    li.style.color = "red";
-    li.style.fontWeight = "bold";
-  }
-  return li;
-}
 
     /***********************************************************
      * 6) NAV BUTTONS
@@ -360,7 +405,6 @@ function makeListItem(text, isHeading = false) {
         console.log("Prev clicked. Directory placeholder. Insert real path if needed.");
       });
     }
-
     function setupNextButton() {
       let nextBtn = document.getElementById("nextBtn");
       if (!nextBtn) return;
@@ -370,17 +414,44 @@ function makeListItem(text, isHeading = false) {
     }
 
     /***********************************************************
-     * 7) ON DOM LOAD
+     * 7) CALL POPUP FUNCTIONALITY
+     ************************************************************/
+    // When the pulsing image is clicked, show the popup
+    function setupCallPopup() {
+      let callIcon = document.getElementById("callIcon");
+      let callPopup = document.getElementById("callPopup");
+      let callYes = document.getElementById("callYes");
+      let callNo = document.getElementById("callNo");
+
+      if (callIcon && callPopup) {
+        callIcon.addEventListener("click", function() {
+          callPopup.style.display = "flex";
+        });
+      }
+      if (callYes) {
+        callYes.addEventListener("click", function() {
+          // Open the dialer using the tel: URL scheme
+          window.location.href = "tel:18006684357";
+        });
+      }
+      if (callNo && callPopup) {
+        callNo.addEventListener("click", function() {
+          callPopup.style.display = "none";
+        });
+      }
+    }
+
+    /***********************************************************
+     * 8) ON PAGE LOAD
      ************************************************************/
     document.addEventListener("DOMContentLoaded", function() {
-      updateBackgroundColor();     // dynamic BG color
-      applyPinkBorderIfAge2to15(); // pink border if age=2..15
-      updateHeaderTitle();         // dynamic burn type
-
+      updateBackgroundColor();
+      applyPinkBorderIfAge2to15();
+      updateHeaderTitle();
       setupPrevButton();
       setupNextButton();
-
-      buildConsultSummary();       // build bullet summary
+      buildConsultSummary();
+      setupCallPopup();
     });
   </script>
 </body>
