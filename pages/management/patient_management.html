@@ -313,7 +313,7 @@ background-color:#8B0000;
   <!-- NAVIGATION BUTTONS (Displayed dynamically at the bottom) -->
   <div class="nav-buttons">
     <img src="https://raw.githubusercontent.com/concussed8/Android-App/main/images/prev.png" id="prevBtn" alt="Previous">
-    <img src="https://raw.githubusercontent.com/concussed8/Android-App/main/images/next.png" id="nextBtn" alt="Next">
+    
   </div>
 <!-- 4 POPUPS FOR BUTTONS 1-4 -->
    <div class="popup-overlay" id="popup1">
@@ -429,13 +429,7 @@ background-color:#8B0000;
         console.log("Prev clicked. Directory placeholder. Insert real path if needed.");
       });
     }
-    function setupNextButton() {
-      let nextBtn = document.getElementById("nextBtn");
-      if (!nextBtn) return;
-      nextBtn.addEventListener("click", function() {
-        console.log("Next clicked. Directory placeholder. Insert real path if needed.");
-      });
-    }
+
 // =============================================================
     // 6) POPUP FUNCTIONALITY FOR BUTTONS 1-4
     // =============================================================
