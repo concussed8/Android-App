@@ -422,13 +422,14 @@ background-color:#8B0000;
     // =============================================================
     // 5) NAVIGATION BUTTONS
     // =============================================================
-    function setupPrevButton() {
-      let prevBtn = document.getElementById("prevBtn");
-      if (!prevBtn) return;
-      prevBtn.addEventListener("click", function() {
-        console.log("Prev clicked. Directory placeholder. Insert real path if needed.");
-      });
-    }
+ function setupPrevButton() {
+  let prevBtn = document.getElementById("prevBtn");
+  if (!prevBtn) return;
+  prevBtn.addEventListener("click", function() {
+    window.location.href = 'https://concussed8.github.io/Android-App/pages/consult_summary/consult_summary-requirements.html';
+  });
+}
+
 
 // =============================================================
     // 6) POPUP FUNCTIONALITY FOR BUTTONS 1-4
