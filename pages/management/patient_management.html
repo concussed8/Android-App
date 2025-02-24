@@ -285,7 +285,7 @@ background-color:#8B0000;
   <!-- HEADER (DYNAMIC BURN TYPE + "Consult Summary") -->
   <div class="header">
     <span id="dynamicHeader"></span><br>
-    Consult Summary
+    Management Guidelines
   </div>
 
   <!-- CONTENT CONTAINER WITH SIX BUTTONS AND SIX LABEL BOXES -->
@@ -332,13 +332,6 @@ background-color:#8B0000;
   </div>
 </div>
 
-
-  <div class="popup-overlay" id="popup3">
-    <div class="popup-content popup3">
-      <p>Popup for Button 3</p>
-      <button class="close-button" id="close3">CLOSE</button>
-    </div>
-  </div>
   <div class="popup-overlay" id="popup4">
     <div class="popup-content popup4">
       <p>Popup for Button 4</p>
@@ -465,14 +458,14 @@ background-color:#8B0000;
         });
       }
 
-      // Button 3 triggers Popup 3
-      let btn3 = document.getElementById("btn3");
-      let popup3 = document.getElementById("popup3");
-      if(btn3 && popup3) {
-        btn3.addEventListener("click", function(){
-          popup3.style.display = "flex";
-        });
-      }
+   // Button 3 triggers a redirect to the stored page
+let btn3 = document.getElementById("btn3");
+if (btn3) {
+  btn3.addEventListener("click", function() {
+    window.location.href = 'https://raw.githubusercontent.com/concussed8/Android-App/main/pages/management/inhalation_management.html';
+  });
+}
+
       // Button 4 triggers Popup 4
       let btn4 = document.getElementById("btn4");
       let popup4 = document.getElementById("popup4");
