@@ -396,12 +396,13 @@
      * 6) NAV BUTTONS
      ************************************************************/
     function setupPrevButton() {
-      let prevBtn = document.getElementById("prevBtn");
-      if (!prevBtn) return;
-      prevBtn.addEventListener("click", function() {
-        console.log("Prev clicked. Directory placeholder. Insert real path if needed.");
-      });
-    }
+  let prevBtn = document.getElementById("prevBtn");
+  if (!prevBtn) return;
+  prevBtn.addEventListener("click", function() {
+    window.location.href = 'https://raw.githubusercontent.com/concussed8/Android-App/main/pages/consult.html';
+  });
+}
+
     function setupNextButton() {
       let nextBtn = document.getElementById("nextBtn");
       if (!nextBtn) return;
