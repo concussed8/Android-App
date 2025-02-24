@@ -5,19 +5,20 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
   <title>Burn Management Checklist</title>
   <style>
-    /* =============================================================
+      /* =============================================================
        1) GENERAL LAYOUT
        ============================================================= */
-    html, body {
-      margin: 0;
-      padding: 0;
-      width: 100vw;
-      height: 100vh; /* This makes it always fill the viewport */
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      background-color: white; /* Will be overridden dynamically */
-    }
+  html, body {
+  margin: 0;
+  padding: 0;
+  width: 100vw;
+  height: 100vh; /* This makes it always fill the viewport */
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  background-color: white; /* Will be overridden dynamically */
+}
+
     @media screen and (orientation: landscape) {
       body {
         display: none;
@@ -54,7 +55,7 @@
       flex-direction: column;
       align-items: center;
       justify-content: center;
-      min-height: 525px; /* Set a minimum height if needed */
+      min-height: 400px; /* Set a minimum height if needed */
     }
     /* =============================================================
        4) INDIVIDUAL BUTTON STYLING
@@ -77,7 +78,7 @@
         inset -2px -2px 4px rgba(0, 0, 0, 0.7);      /* Inset shadow */
       transition: all 0.2s ease;
       position: absolute;                   /* Enables manual positioning */
-      width: 100px;                         /* Button width */
+      width: 75px;                         /* Button width */
       height: 60px;                         /* Button height */
     }
     .button:hover {
@@ -94,24 +95,26 @@
     /* Unique positions for each button */
     .button1 {
       top: 35px;
-      left: 400px;
-      background-color: #228B22;
+      left: 250px;
+background-color: #ADD8E6;
+
     }
     .button2 {
       top: 135px;
-      left: 400px;
-      background-color: #FFD700;
+      left: 250px;
+ background-color: #FFC107;
     }
     .button3 {
-      top: 235px;
-      left: 400px;
-      background-color:#8B0000;
+       top: 235px;
+      left: 250px;
+background-color:#8B0000;
       color: #fff;
     }
     .button4 {
       top: 335px;
-      left: 400px;
+      left:250px;
     }
+   
     /* =============================================================
        5a) LABEL (Non-editable) BOX STYLING
        ============================================================= */
@@ -120,9 +123,9 @@
       border: none;
       border-radius: 5px;
       color: #333;
-      font-size: 16px;
+      font-size: 12px;
       font-family: Arial, sans-serif;
-      font-weight: bold;
+font-weight: bold;
       padding: 10px 20px;
       text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.3);
       box-shadow:
@@ -141,50 +144,52 @@
     /* Unique positions for each label box (placed next to each corresponding button) */
     .label-box1 {
       top: 25px;
-      left: 25px;
-      background-color: #228B22;
-      text-align: center;
+      left: 25px; /* 375px + button width (100px) + margin */
+      background-color: #ADD8E6;
+text-align: center;
     }
     .label-box2 {
       top: 125px;
       left: 25px;
-      background-color: #FFD700;
-      text-align: center;
+      background-color: #FFC107;
+text-align: center;
     }
     .label-box3 {
       top: 225px;
       left: 25px;
-      text-align: center;
-      background-color:#8B0000;
+text-align: center;
+background-color:#8B0000;
       color: #fff;
     }
     .label-box4 {
       top: 325px;
       left: 25px;
     }
-    /* Common arrow styling */
+    
+/* Common arrow styling */
     .arrow {
       position: absolute;
-      width: 150px;    /* Default width; adjust as needed */
+      width: 75px;    /* Default width; adjust as needed */
       height: auto;   /* Maintain aspect ratio */
     }
     /* Unique positions for each arrow */
     .arrow1 {
-      top: 25px;
-      left:250px;
+      top: 45px;
+      left:165px;
     }
     .arrow2 {
-      top: 120px;
-      left: 250px;
+      top: 145px;
+      left: 165px;
     }
     .arrow3 {
-      top: 220px;
-      left: 250px;
+      top: 245px;
+      left: 165px;
     }
     .arrow4 {
-      top: 320px;
-      left: 250px;
+      top: 345px;
+      left: 165px;
     }
+   
     /* =============================================================
        6) NAVIGATION BUTTONS (Fixed at the bottom of the viewport)
        ============================================================= */
@@ -208,7 +213,7 @@
     .nav-buttons img:active {
       transform: scale(1.1);
     }
-    /* =============================================================
+ /* =============================================================
        7) POPUPS FOR BUTTONS 1-4
        ============================================================= */
     .popup-overlay {
@@ -234,12 +239,13 @@
       max-width: 90%;
       box-shadow: 0 4px 10px rgba(0,0,0,0.5);
     }
-    .popup-image {
-      display: block;
-      max-width: 100%;
-      height: auto;
-      margin: 0 auto 20px auto;
-    }
+.popup-image {
+  display: block;           /* Make the image a block element */
+  max-width: 100%;          /* Limit its width to the popup container's width */
+  height: auto;             /* Maintain aspect ratio */
+  margin: 0 auto 20px auto;  /* Center horizontally and add bottom margin */
+}
+
     /* Unique popup classes (for extra styling if needed) */
     .popup1 { }
     .popup2 { }
@@ -264,12 +270,13 @@
       transition: all 0.2s ease;
       margin-top: 20px;
     }
-    .popup2 {
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-    }
+
+.popup2 {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
   </style>
 </head>
 <body>
