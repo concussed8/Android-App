@@ -95,24 +95,24 @@
     /* Unique positions for each button */
     .button1 {
       top: 35px;
-      left: 225px;
+      left: 250px;
 background-color: #ADD8E6;
 
     }
     .button2 {
       top: 135px;
-      left: 225px;
+      left: 250px;
  background-color: #FFC107;
     }
     .button3 {
        top: 235px;
-      left: 225px;
+      left: 250px;
 background-color:#8B0000;
       color: #fff;
     }
     .button4 {
       top: 335px;
-      left:225px;
+      left:250px;
     }
    
     /* =============================================================
@@ -175,19 +175,19 @@ background-color:#8B0000;
     /* Unique positions for each arrow */
     .arrow1 {
       top: 45px;
-      left:150px;
+      left:175px;
     }
     .arrow2 {
       top: 145px;
-      left: 150px;
+      left: 175px;
     }
     .arrow3 {
       top: 245px;
-      left: 150px;
+      left: 175px;
     }
     .arrow4 {
       top: 345px;
-      left: 150px;
+      left: 175px;
     }
    
     /* =============================================================
@@ -302,21 +302,21 @@ background-color:#8B0000;
     <div id="label3" class="label-box label-box3">INHALATION<br>MANAGEMENT</div>
     <div id="label4" class="label-box label-box4">FUTURE USE</div>
 
- <div class="arrow-container">
-    <img class="arrow arrow1" src="https://raw.githubusercontent.com/concussed8/Android-App/main/images/arrow.png" alt="Arrow 1">
-    <img class="arrow arrow2" src="https://raw.githubusercontent.com/concussed8/Android-App/main/images/arrow.png" alt="Arrow 2">
-    <img class="arrow arrow3" src="https://raw.githubusercontent.com/concussed8/Android-App/main/images/arrow.png" alt="Arrow 3">
-    <img class="arrow arrow4" src="https://raw.githubusercontent.com/concussed8/Android-App/main/images/arrow.png" alt="Arrow 4">
-    
+    <div class="arrow-container">
+      <img class="arrow arrow1" src="https://raw.githubusercontent.com/concussed8/Android-App/main/images/arrow.png" alt="Arrow 1">
+      <img class="arrow arrow2" src="https://raw.githubusercontent.com/concussed8/Android-App/main/images/arrow.png" alt="Arrow 2">
+      <img class="arrow arrow3" src="https://raw.githubusercontent.com/concussed8/Android-App/main/images/arrow.png" alt="Arrow 3">
+      <img class="arrow arrow4" src="https://raw.githubusercontent.com/concussed8/Android-App/main/images/arrow.png" alt="Arrow 4">
+    </div>
   </div>
 
   <!-- NAVIGATION BUTTONS (Displayed dynamically at the bottom) -->
   <div class="nav-buttons">
     <img src="https://raw.githubusercontent.com/concussed8/Android-App/main/images/prev.png" id="prevBtn" alt="Previous">
-    <img src="https://raw.githubusercontent.com/concussed8/Android-App/main/images/next.png" id="nextBtn" alt="Next">
   </div>
-<!-- 4 POPUPS FOR BUTTONS 1-4 -->
-   <div class="popup-overlay" id="popup1">
+
+  <!-- 4 POPUPS FOR BUTTONS 1-4 -->
+  <div class="popup-overlay" id="popup1">
     <div class="popup-content popup1">
       <!-- Display the image goal_resus in popup 1 -->
       <img class="popup-image" src="https://raw.githubusercontent.com/concussed8/Android-App/main/images/goal_resus.png" alt="Goal Resus">
@@ -324,13 +324,12 @@ background-color:#8B0000;
     </div>
   </div>
   
-     <div class="popup-overlay" id="popup2">
-  <div class="popup-content popup2">
-    <img class="popup-image" src="https://raw.githubusercontent.com/concussed8/Android-App/main/images/titration.png" alt="Titration">
-   
-    <button class="close-button" id="close2">CLOSE</button>
+  <div class="popup-overlay" id="popup2">
+    <div class="popup-content popup2">
+      <img class="popup-image" src="https://raw.githubusercontent.com/concussed8/Android-App/main/images/titration.png" alt="Titration">
+      <button class="close-button" id="close2">CLOSE</button>
+    </div>
   </div>
-</div>
 
   <div class="popup-overlay" id="popup4">
     <div class="popup-content popup4">
@@ -355,7 +354,6 @@ background-color:#8B0000;
     }
     function setSessionCookie(name, value) {
       document.cookie = `${name}=${encodeURIComponent(value)}; path=/; SameSite=Lax; max-age=3600`;
-
     }
     // =============================================================
     // 2) DYNAMIC BACKGROUND & PINK BORDER
@@ -426,17 +424,10 @@ background-color:#8B0000;
       let prevBtn = document.getElementById("prevBtn");
       if (!prevBtn) return;
       prevBtn.addEventListener("click", function() {
-        console.log("Prev clicked. Directory placeholder. Insert real path if needed.");
+        window.location.href = 'https://concussed8.github.io/Android-App/pages/consult_summary/consult_summary-requirements.html';
       });
     }
-    function setupNextButton() {
-      let nextBtn = document.getElementById("nextBtn");
-      if (!nextBtn) return;
-      nextBtn.addEventListener("click", function() {
-        console.log("Next clicked. Directory placeholder. Insert real path if needed.");
-      });
-    }
-// =============================================================
+    // =============================================================
     // 6) POPUP FUNCTIONALITY FOR BUTTONS 1-4
     // =============================================================
     function setupPopupTriggers() {
@@ -448,8 +439,7 @@ background-color:#8B0000;
           popup1.style.display = "flex";
         });
       }
-
-     // Button 2 triggers Popup 2 (fluid rate component)
+      // Button 2 triggers Popup 2 (fluid rate component)
       let btn2 = document.getElementById("btn2");
       let popup2 = document.getElementById("popup2");
       if(btn2 && popup2) {
@@ -457,15 +447,13 @@ background-color:#8B0000;
           popup2.style.display = "flex";
         });
       }
-
-   // Button 3 triggers a redirect to the stored page
-let btn3 = document.getElementById("btn3");
-if (btn3) {
-  btn3.addEventListener("click", function() {
-    window.location.href = 'https://raw.githubusercontent.com/concussed8/Android-App/main/pages/management/inhalation_management.html';
-  });
-}
-
+      // Button 3 triggers a redirect to the stored page
+      let btn3 = document.getElementById("btn3");
+      if (btn3) {
+        btn3.addEventListener("click", function() {
+          window.location.href = 'https://concussed8.github.io/Android-App/pages/management/inhalation_management.html';
+        });
+      }
       // Button 4 triggers Popup 4
       let btn4 = document.getElementById("btn4");
       let popup4 = document.getElementById("popup4");
@@ -474,7 +462,6 @@ if (btn3) {
           popup4.style.display = "flex";
         });
       }
-
       // Close buttons for each popup
       let close1 = document.getElementById("close1");
       if(close1 && popup1) {
@@ -488,12 +475,7 @@ if (btn3) {
           popup2.style.display = "none";
         });
       }
-      let close3 = document.getElementById("close3");
-      if(close3 && popup3) {
-        close3.addEventListener("click", function(){
-          popup3.style.display = "none";
-        });
-      }
+      // Removed popup3 close button handling since popup3 is not used
       let close4 = document.getElementById("close4");
       if(close4 && popup4) {
         close4.addEventListener("click", function(){
@@ -502,7 +484,7 @@ if (btn3) {
       }
     }
     // =============================================================
-    // 6) ON PAGE LOAD
+    // 7) ON PAGE LOAD
     // =============================================================
     document.addEventListener("DOMContentLoaded", function() {
       updateBackgroundColor();
@@ -510,7 +492,7 @@ if (btn3) {
       updateHeaderTitle();
       setupButtons();
       setupPrevButton();
-      setupNextButton();
+      // Removed setupNextButton() call
       setupPopupTriggers();
     });
   </script>
