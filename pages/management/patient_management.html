@@ -8,16 +8,17 @@
     /* =============================================================
        1) GENERAL LAYOUT
        ============================================================= */
-    html, body {
-      margin: 0;
-      padding: 0;
-      width: 100vw;
-      height: 100vh; /* This makes it always fill the viewport */
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      background-color: white; /* Will be overridden dynamically */
-    }
+  html, body {
+  margin: 0;
+  padding: 0;
+  width: 100vw;
+  height: 100vh; /* This makes it always fill the viewport */
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  background-color: white; /* Will be overridden dynamically */
+}
+
     @media screen and (orientation: landscape) {
       body {
         display: none;
@@ -77,7 +78,7 @@
         inset -2px -2px 4px rgba(0, 0, 0, 0.7);      /* Inset shadow */
       transition: all 0.2s ease;
       position: absolute;                   /* Enables manual positioning */
-      width: 100px;                         /* Button width */
+      width: 75px;                         /* Button width */
       height: 60px;                         /* Button height */
     }
     .button:hover {
@@ -94,24 +95,26 @@
     /* Unique positions for each button */
     .button1 {
       top: 35px;
-      left: 400px;
-      background-color: #ADD8E6;
+      left: 225px;
+background-color: #ADD8E6;
+
     }
     .button2 {
       top: 135px;
-      left: 400px;
-      background-color: #FFC107;
+      left: 225px;
+ background-color: #FFC107;
     }
     .button3 {
-      top: 235px;
-      left: 400px;
-      background-color:#8B0000;
+       top: 235px;
+      left: 225px;
+background-color:#8B0000;
       color: #fff;
     }
     .button4 {
       top: 335px;
-      left: 400px;
+      left:225px;
     }
+   
     /* =============================================================
        5a) LABEL (Non-editable) BOX STYLING
        ============================================================= */
@@ -120,9 +123,9 @@
       border: none;
       border-radius: 5px;
       color: #333;
-      font-size: 16px;
+      font-size: 12px;
       font-family: Arial, sans-serif;
-      font-weight: bold;
+font-weight: bold;
       padding: 10px 20px;
       text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.3);
       box-shadow:
@@ -132,7 +135,7 @@
         inset -2px -2px 4px rgba(0, 0, 0, 0.7);
       transition: all 0.2s ease;
       position: absolute;
-      width: 150px;      /* Label box width */
+      width: 75px;      /* Label box width */
       height: 60px;      /* Label box height */
       display: flex;
       align-items: center;
@@ -141,50 +144,52 @@
     /* Unique positions for each label box (placed next to each corresponding button) */
     .label-box1 {
       top: 25px;
-      left: 25px;
+      left: 25px; /* 375px + button width (100px) + margin */
       background-color: #ADD8E6;
-      text-align: center;
+text-align: center;
     }
     .label-box2 {
       top: 125px;
       left: 25px;
       background-color: #FFC107;
-      text-align: center;
+text-align: center;
     }
     .label-box3 {
       top: 225px;
       left: 25px;
-      text-align: center;
-      background-color:#8B0000;
+text-align: center;
+background-color:#8B0000;
       color: #fff;
     }
     .label-box4 {
       top: 325px;
       left: 25px;
     }
-    /* Common arrow styling */
+    
+/* Common arrow styling */
     .arrow {
       position: absolute;
-      width: 150px;    /* Default width; adjust as needed */
+      width: 75px;    /* Default width; adjust as needed */
       height: auto;   /* Maintain aspect ratio */
     }
     /* Unique positions for each arrow */
     .arrow1 {
-      top: 25px;
-      left:250px;
+      top: 45px;
+      left:150px;
     }
     .arrow2 {
-      top: 120px;
-      left: 250px;
+      top: 145px;
+      left: 150px;
     }
     .arrow3 {
-      top: 220px;
-      left: 250px;
+      top: 245px;
+      left: 150px;
     }
     .arrow4 {
-      top: 320px;
-      left: 250px;
+      top: 345px;
+      left: 150px;
     }
+   
     /* =============================================================
        6) NAVIGATION BUTTONS (Fixed at the bottom of the viewport)
        ============================================================= */
@@ -208,7 +213,7 @@
     .nav-buttons img:active {
       transform: scale(1.1);
     }
-    /* =============================================================
+ /* =============================================================
        7) POPUPS FOR BUTTONS 1-4
        ============================================================= */
     .popup-overlay {
@@ -234,12 +239,13 @@
       max-width: 90%;
       box-shadow: 0 4px 10px rgba(0,0,0,0.5);
     }
-    .popup-image {
-      display: block;           /* Make the image a block element */
-      max-width: 100%;          /* Limit its width to the popup container's width */
-      height: auto;             /* Maintain aspect ratio */
-      margin: 0 auto 20px auto;  /* Center horizontally and add bottom margin */
-    }
+.popup-image {
+  display: block;           /* Make the image a block element */
+  max-width: 100%;          /* Limit its width to the popup container's width */
+  height: auto;             /* Maintain aspect ratio */
+  margin: 0 auto 20px auto;  /* Center horizontally and add bottom margin */
+}
+
     /* Unique popup classes (for extra styling if needed) */
     .popup1 { }
     .popup2 { }
@@ -264,12 +270,14 @@
       transition: all 0.2s ease;
       margin-top: 20px;
     }
-    .popup2 {
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-    }
+
+.popup2 {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
   </style>
 </head>
 <body>
@@ -294,21 +302,21 @@
     <div id="label3" class="label-box label-box3">INHALATION<br>MANAGEMENT</div>
     <div id="label4" class="label-box label-box4">FUTURE USE</div>
 
-    <div class="arrow-container">
-      <img class="arrow arrow1" src="https://raw.githubusercontent.com/concussed8/Android-App/main/images/arrow.png" alt="Arrow 1">
-      <img class="arrow arrow2" src="https://raw.githubusercontent.com/concussed8/Android-App/main/images/arrow.png" alt="Arrow 2">
-      <img class="arrow arrow3" src="https://raw.githubusercontent.com/concussed8/Android-App/main/images/arrow.png" alt="Arrow 3">
-      <img class="arrow arrow4" src="https://raw.githubusercontent.com/concussed8/Android-App/main/images/arrow.png" alt="Arrow 4">
-    </div>
+ <div class="arrow-container">
+    <img class="arrow arrow1" src="https://raw.githubusercontent.com/concussed8/Android-App/main/images/arrow.png" alt="Arrow 1">
+    <img class="arrow arrow2" src="https://raw.githubusercontent.com/concussed8/Android-App/main/images/arrow.png" alt="Arrow 2">
+    <img class="arrow arrow3" src="https://raw.githubusercontent.com/concussed8/Android-App/main/images/arrow.png" alt="Arrow 3">
+    <img class="arrow arrow4" src="https://raw.githubusercontent.com/concussed8/Android-App/main/images/arrow.png" alt="Arrow 4">
+    
   </div>
 
   <!-- NAVIGATION BUTTONS (Displayed dynamically at the bottom) -->
   <div class="nav-buttons">
     <img src="https://raw.githubusercontent.com/concussed8/Android-App/main/images/prev.png" id="prevBtn" alt="Previous">
+    <img src="https://raw.githubusercontent.com/concussed8/Android-App/main/images/next.png" id="nextBtn" alt="Next">
   </div>
-
-  <!-- 4 POPUPS FOR BUTTONS 1-4 -->
-  <div class="popup-overlay" id="popup1">
+<!-- 4 POPUPS FOR BUTTONS 1-4 -->
+   <div class="popup-overlay" id="popup1">
     <div class="popup-content popup1">
       <!-- Display the image goal_resus in popup 1 -->
       <img class="popup-image" src="https://raw.githubusercontent.com/concussed8/Android-App/main/images/goal_resus.png" alt="Goal Resus">
@@ -316,12 +324,13 @@
     </div>
   </div>
   
-  <div class="popup-overlay" id="popup2">
-    <div class="popup-content popup2">
-      <img class="popup-image" src="https://raw.githubusercontent.com/concussed8/Android-App/main/images/titration.png" alt="Titration">
-      <button class="close-button" id="close2">CLOSE</button>
-    </div>
+     <div class="popup-overlay" id="popup2">
+  <div class="popup-content popup2">
+    <img class="popup-image" src="https://raw.githubusercontent.com/concussed8/Android-App/main/images/titration.png" alt="Titration">
+   
+    <button class="close-button" id="close2">CLOSE</button>
   </div>
+</div>
 
   <div class="popup-overlay" id="popup4">
     <div class="popup-content popup4">
@@ -346,6 +355,7 @@
     }
     function setSessionCookie(name, value) {
       document.cookie = `${name}=${encodeURIComponent(value)}; path=/; SameSite=Lax; max-age=3600`;
+
     }
     // =============================================================
     // 2) DYNAMIC BACKGROUND & PINK BORDER
@@ -416,10 +426,17 @@
       let prevBtn = document.getElementById("prevBtn");
       if (!prevBtn) return;
       prevBtn.addEventListener("click", function() {
-        window.location.href = 'https://concussed8.github.io/Android-App/pages/consult_summary/consult_summary-requirements.html';
+        console.log("Prev clicked. Directory placeholder. Insert real path if needed.");
       });
     }
-    // =============================================================
+    function setupNextButton() {
+      let nextBtn = document.getElementById("nextBtn");
+      if (!nextBtn) return;
+      nextBtn.addEventListener("click", function() {
+        console.log("Next clicked. Directory placeholder. Insert real path if needed.");
+      });
+    }
+// =============================================================
     // 6) POPUP FUNCTIONALITY FOR BUTTONS 1-4
     // =============================================================
     function setupPopupTriggers() {
@@ -431,7 +448,8 @@
           popup1.style.display = "flex";
         });
       }
-      // Button 2 triggers Popup 2 (fluid rate component)
+
+     // Button 2 triggers Popup 2 (fluid rate component)
       let btn2 = document.getElementById("btn2");
       let popup2 = document.getElementById("popup2");
       if(btn2 && popup2) {
@@ -439,13 +457,15 @@
           popup2.style.display = "flex";
         });
       }
-      // Button 3 triggers a redirect to the stored page
-      let btn3 = document.getElementById("btn3");
-      if (btn3) {
-        btn3.addEventListener("click", function() {
-          window.location.href = 'https://concussed8.github.io/Android-App/pages/management/inhalation_management.html';
-        });
-      }
+
+   // Button 3 triggers a redirect to the stored page
+let btn3 = document.getElementById("btn3");
+if (btn3) {
+  btn3.addEventListener("click", function() {
+    window.location.href = 'https://raw.githubusercontent.com/concussed8/Android-App/main/pages/management/inhalation_management.html';
+  });
+}
+
       // Button 4 triggers Popup 4
       let btn4 = document.getElementById("btn4");
       let popup4 = document.getElementById("popup4");
@@ -454,6 +474,7 @@
           popup4.style.display = "flex";
         });
       }
+
       // Close buttons for each popup
       let close1 = document.getElementById("close1");
       if(close1 && popup1) {
@@ -467,7 +488,12 @@
           popup2.style.display = "none";
         });
       }
-      // Removed popup3 close button handling since popup3 is not used
+      let close3 = document.getElementById("close3");
+      if(close3 && popup3) {
+        close3.addEventListener("click", function(){
+          popup3.style.display = "none";
+        });
+      }
       let close4 = document.getElementById("close4");
       if(close4 && popup4) {
         close4.addEventListener("click", function(){
@@ -476,7 +502,7 @@
       }
     }
     // =============================================================
-    // 7) ON PAGE LOAD
+    // 6) ON PAGE LOAD
     // =============================================================
     document.addEventListener("DOMContentLoaded", function() {
       updateBackgroundColor();
@@ -484,7 +510,7 @@
       updateHeaderTitle();
       setupButtons();
       setupPrevButton();
-      // Removed setupNextButton() call
+      setupNextButton();
       setupPopupTriggers();
     });
   </script>
