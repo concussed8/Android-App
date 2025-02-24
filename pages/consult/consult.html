@@ -452,12 +452,68 @@
       font-weight: bold;
       color: red;
     }
+/* Mandatory Popup Overlay */
+.mandatory-popup {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background: rgba(0, 0, 0, 0.7); /* Semi-transparent overlay */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 3000;
+}
+
+/* Mandatory Popup Content */
+.mandatory-popup-content {
+  background: rgba(255, 255, 255, 0.95); /* Nearly opaque container */
+  padding: 20px;
+  border-radius: 10px;
+  width: 80%;
+  max-width: 600px;
+  text-align: center;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.5);
+  position: relative;
+}
+
+/* Image within the Popup */
+.mandatory-popup-content img {
+  width: 100%;
+  height: auto;
+  display: block;
+  margin-bottom: 20px;
+}
+
+/* Close Button Styling */
+.mandatory-close {
+  background-color: #eee;
+  border: none;
+  border-radius: 5px;
+  color: #333;
+  font-size: 16px;
+  padding: 10px 20px;
+  cursor: pointer;
+  transition: background 0.2s ease;
+}
+
+.mandatory-close:hover {
+  background-color: #ddd;
+}
+
   </style>
 </head>
 <body>
 <!-- Fixed Header (now controlled by JavaScript) -->
 <div class="header"></div>
-
+<!-- Mandatory Steps Popup -->
+<div class="popup-overlay mandatory-popup" id="mandatoryPopup">
+  <div class="popup-content mandatory-popup-content">
+    <img class="popup-image" src="https://raw.githubusercontent.com/concussed8/Android-App/main/images/mandatory_steps.png" alt="Mandatory Steps">
+    <button class="close-button mandatory-close" id="mandatoryClose">CLOSE</button>
+  </div>
+</div>
 <!-- Main Container -->
 <div class="content-container">
     <!-- Consult Image -->
@@ -702,6 +758,16 @@ function populateFieldsFromCookies() {
         console.warn("⚠️ No TBSA data found in cookies.");
     }
 }
+
+// JavaScript to handle closing the popup on button click
+document.addEventListener("DOMContentLoaded", function() {
+  const mandatoryClose = document.getElementById("mandatoryClose");
+  const mandatoryPopup = document.getElementById("mandatoryPopup");
+
+  mandatoryClose.addEventListener("click", function() {
+    mandatoryPopup.style.display = "none";
+  });
+});
 
 /***********************************************************
  * 4) POPUP CONTROL
