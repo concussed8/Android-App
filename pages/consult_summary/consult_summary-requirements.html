@@ -395,11 +395,12 @@
     /***********************************************************
      * 6) NAV BUTTONS
      ************************************************************/
-    function setupPrevButton() {
+function setupPrevButton() {
   let prevBtn = document.getElementById("prevBtn");
   if (!prevBtn) return;
+  // Use your GitHub Pages URL so that the HTML is rendered as a page.
   prevBtn.addEventListener("click", function() {
-    window.location.href = 'https://raw.githubusercontent.com/concussed8/Android-App/main/pages/consult/consult.html';
+    window.location.href = 'https://concussed8.github.io/Android-App/pages/consult.html';
   });
 }
 
