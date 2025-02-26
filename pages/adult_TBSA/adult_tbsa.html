@@ -200,43 +200,42 @@
       setSessionCookie("adultTBSA", JSON.stringify(tbsaData)); // Save JSON data as a cookie
     }
 
-    // Function to update background color based on selected burn type
-    function updateBackgroundColor() {
-      setTimeout(() => {
-        let burnType = getSessionCookie("selectedIcon");
-        console.log("Applying Background Color for:", burnType);
+    /function updateBackgroundColor() {
+  setTimeout(() => {
+    let burnType = getSessionCookie("selectedIcon");
+    console.log("Applying Background Color for:", burnType);
 
-        let backgroundColor = "";
-        let headerColor = "";
+    let backgroundColor = "";
+    let headerColor = "";  // <--- Remove references to this
 
-        if (burnType) {
-          switch (burnType) {
-            case "thermal":
-              backgroundColor = "#800000";
-              headerColor = "#800000";
-              break;
-            case "chemical":
-              backgroundColor = "#90EE90";
-              headerColor = "#90EE90";
-              break;
-            case "electrical":
-              backgroundColor = "#ADD8E6";
-              headerColor = "#ADD8E6";
-              break;
-            default:
-              console.warn("Unexpected burn type:", burnType);
-              return;
-          }
-          document.body.style.backgroundColor = backgroundColor;
+    if (burnType) {
+      switch (burnType) {
+        case "thermal":
+          backgroundColor = "#800000";
+          headerColor = "#800000"; // <--- Remove
+          break;
+        case "chemical":
+          backgroundColor = "#90EE90";
+          headerColor = "#90EE90"; // <--- Remove
+          break;
+        case "electrical":
+          backgroundColor = "#ADD8E6";
+          headerColor = "#ADD8E6"; // <--- Remove
+          break;
+        default:
+          console.warn("Unexpected burn type:", burnType);
+          return;
+      }
+      document.body.style.backgroundColor = backgroundColor;
 
-          // Update the header text color to match
-          const headerText = document.querySelector(".main-header h1");
-          if (headerText) {
-            headerText.style.color = headerColor;
-          }
-        }
-      }, 200);
+      // Remove the section that sets the header text color
+      // const headerText = document.querySelector(".main-header h1");
+      // if (headerText) {
+      //   headerText.style.color = headerColor;
+      // }
     }
+  }, 200);
+}
 
     // Input validation and dynamic saving
     document.querySelectorAll(".input-field").forEach(input => {
