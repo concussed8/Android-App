@@ -165,45 +165,46 @@
 <body>
 
   <!-- Flames GIF Background -->
-  <div class="viewport-container">
+<div class="viewport-container">
     <img src="https://raw.githubusercontent.com/concussed8/Android-App/main/images/flames.gif" alt="Flames Background">
-  </div>
+</div>
 
-  <!-- Fixed Header -->
-  <div class="header">Burn Management Checklist</div>
+<!-- Fixed Header -->
+<div class="header">Burn Management Checklist</div> 
 
-  <!-- Input Container -->
-  <div class="input-container">
+<!-- Input Container -->
+<div class="input-container">
     <div class="input-section">
-      <label class="label" for="sex">Sex:</label>
-      <select id="sex" class="select-box">
-        <option value="" selected disabled>Select</option>
-        <option value="Male">Male</option>
-        <option value="Female">Female</option>
-      </select>
+        <label class="label" for="sex">Sex:</label>
+        <select id="sex" class="select-box">
+            <option value="" selected disabled>Select</option>
+            <option value="Male">Male</option>
+            <option value="Female">Female</option>
+        </select>
     </div>
 
     <div class="input-section">
-      <label class="label" for="age">Age:</label>
-      <input type="tel" id="age" class="input-box" placeholder="YEARS" maxlength="3">
+        <label class="label" for="age">Age:</label>
+        <input type="number" id="age" class="input-box" placeholder="YEARS" inputmode="numeric" pattern="[0-9]*" onclick="Android.showKeyboard()" maxlength="3">
     </div>
 
     <div class="input-section">
-      <label class="label" for="weight">Weight:</label>
-      <input type="tel" id="weight" class="input-box" placeholder="Kg" maxlength="3">
+        <label class="label" for="weight">Weight:</label>
+        <input type="number" id="weight" class="input-box" placeholder="Kg" inputmode="numeric" pattern="[0-9]*" onclick="Android.showKeyboard()" maxlength="3">
     </div>
-  </div>
+</div>
 
-  <!-- Next & Prev Buttons -->
-  <div class="nav-buttons">
+<!-- Next & Prev Buttons -->
+<div class="nav-buttons">
     <img src="https://raw.githubusercontent.com/concussed8/Android-App/main/images/prev.png" id="prevBtn" alt="Previous">
     <img src="https://raw.githubusercontent.com/concussed8/Android-App/main/images/next.png" id="nextBtn" alt="Next">
-  </div>
+</div>
 
-  <!-- Disclaimer Section -->
-  <div class="disclaimer-container">
+<!-- Disclaimer Section -->
+<div class="disclaimer-container">
     <img src="https://raw.githubusercontent.com/concussed8/Android-App/main/images/CCSO_disclaimer.jpg" alt="CCSO Disclaimer">
-  </div>
+</div>
+
 
 <script>
  // Function to set session cookies
