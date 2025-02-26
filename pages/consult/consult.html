@@ -79,23 +79,47 @@
       z-index: 10;
     }
 
-    /* ✅ TBSA Total Box */
-    .field8 { 
-      width: 80px;
-      height: 25px;
-      bottom: 15px;
-      left: 50%;
-      transform: translateX(-50%);
-    }
+/* ✅ TBSA Total Box (percent-based) */
+.field8 { 
+  position: absolute;
+  width: 37%;
+  height: 7.5%;
+  bottom: 5.3%;
+  left: 50.5%;
+  transform: translateX(-50%);
+}
 
-    /* ✅ Input Field Positions (Modify Manually) */
-    .field1 { top: 35px;  left: 62px; }
-    .field2 { top: 90px;  left: 61px; }
-    .field3 { top: 155px; left: 63px; }
-    .field4 { top: 114px; left: 18px; }
-    .field5 { top: 114px; left: 106px; }
-    .field6 { top: 215px; left: 45px; }
-    .field7 { top: 215px; left: 88px; }
+
+   /* ✅ Input Field Positions (using % relative to 488×985) */
+.field1 {
+  top: 11.3%;
+  left: 36.5%;
+}
+.field2 {
+  top: 29%;
+  left: 37%;
+}
+.field3 {
+  top: 50%;
+  left: 38%;
+}
+.field4 {
+  top: 36.4%;
+  left: 10.1%;
+}
+.field5 {
+  top: 36.4%;
+  left: 63%;
+}
+.field6 {
+  top:70%;
+  left: 24.7%;
+}
+.field7 {
+  top: 70%;
+  left: 52%;
+}
+
 
     /* ✅ Navigation Buttons */
     .nav-buttons {
@@ -159,15 +183,19 @@
       box-shadow: inset -2px 2px 5px rgba(0, 0, 0, 0.5), inset 2px -2px 5px rgba(255, 255, 255, 0.2);
     }
 
-    /* ✅ Main Adjustable Container */
-    .adjustable-container {
-      position: absolute;
-      width: 75%;
-      height: 69%;
-      max-width: 300px;
-      max-height: 120px;
-      top: 400px;
-      left: 25px;
+    /* ✅ Main Adjustable Container (converted to %) */
+.adjustable-container {
+  position: absolute;
+  top: 61%;
+  left: 5.12%;
+
+  /* Already in % (assuming you want to keep them as-is) */
+  width: 80%;
+  height: 72%;
+
+  /* Converted from px to % */
+  max-width: 61.48%;
+  max-height:18%;
 
       background-color: white;
       border: 3px solid black;
